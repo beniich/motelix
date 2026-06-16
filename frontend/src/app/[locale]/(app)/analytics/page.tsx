@@ -71,8 +71,8 @@ export default function AnalyticsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-display font-semibold" style={{ color: '#E6E8F2' }}>{t('nav.analytics')}</h1>
-        <p className="mt-1 text-sm" style={{ color: '#8E96BD' }}>Vue d'ensemble des performances</p>
+        <h1 className="text-4xl font-light tracking-tight text-gray-900">{t('nav.analytics')}</h1>
+        <p className="mt-1 text-sm text-gray-500">Vue d&apos;ensemble des performances</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -84,16 +84,15 @@ export default function AnalyticsPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <GlassCard>
-          <h2 className="text-sm font-semibold mb-4" style={{ color: '#C2C7DC' }}>Occupation par étage</h2>
+          <h2 className="text-sm font-semibold mb-4 text-gray-700">Occupation par étage</h2>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={Object.values(byFloor)}>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
-                <XAxis dataKey="floor" stroke="#8E96BD" fontSize={11} />
-                <YAxis stroke="#8E96BD" fontSize={11} allowDecimals={false} />
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.06)" />
+                <XAxis dataKey="floor" stroke="#9ca3af" fontSize={11} />
+                <YAxis stroke="#9ca3af" fontSize={11} allowDecimals={false} />
                 <Tooltip
-                  contentStyle={{ background: '#0A0E27', border: '1px solid rgba(212,175,55,0.3)', borderRadius: 8 }}
-                  labelStyle={{ color: '#F5E8B8' }}
+                  contentStyle={{ background: 'rgba(255,255,255,0.97)', border: '1px solid rgba(0,0,0,0.08)', borderRadius: 8, boxShadow: '0 4px 16px rgba(0,0,0,0.08)', color: '#1a1a1a' }}
                 />
                 <Legend wrapperStyle={{ fontSize: 11 }} />
                 <Bar dataKey="disponibles" stackId="a" fill="#10B981" name="Disponibles" radius={[0, 0, 0, 0]} />
@@ -104,7 +103,7 @@ export default function AnalyticsPage() {
         </GlassCard>
 
         <GlassCard>
-          <h2 className="text-sm font-semibold mb-4" style={{ color: '#C2C7DC' }}>Répartition des statuts</h2>
+          <h2 className="text-sm font-semibold mb-4 text-gray-700">Répartition des statuts</h2>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
@@ -126,7 +125,7 @@ export default function AnalyticsPage() {
                   })}
                 </Pie>
                 <Tooltip
-                  contentStyle={{ background: '#0A0E27', border: '1px solid rgba(212,175,55,0.3)', borderRadius: 8 }}
+                  contentStyle={{ background: 'rgba(255,255,255,0.97)', border: '1px solid rgba(0,0,0,0.08)', borderRadius: 8, boxShadow: '0 4px 16px rgba(0,0,0,0.08)', color: '#1a1a1a' }}
                 />
                 <Legend wrapperStyle={{ fontSize: 11 }} />
               </PieChart>
@@ -135,15 +134,15 @@ export default function AnalyticsPage() {
         </GlassCard>
 
         <GlassCard>
-          <h2 className="text-sm font-semibold mb-4" style={{ color: '#C2C7DC' }}>Tâches par priorité</h2>
+          <h2 className="text-sm font-semibold mb-4 text-gray-700">Tâches par priorité</h2>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={tasksByPriority}>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
-                <XAxis dataKey="priority" stroke="#8E96BD" fontSize={11} />
-                <YAxis stroke="#8E96BD" fontSize={11} allowDecimals={false} />
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.06)" />
+                <XAxis dataKey="priority" stroke="#9ca3af" fontSize={11} />
+                <YAxis stroke="#9ca3af" fontSize={11} allowDecimals={false} />
                 <Tooltip
-                  contentStyle={{ background: '#0A0E27', border: '1px solid rgba(212,175,55,0.3)', borderRadius: 8 }}
+                  contentStyle={{ background: 'rgba(255,255,255,0.97)', border: '1px solid rgba(0,0,0,0.08)', borderRadius: 8, boxShadow: '0 4px 16px rgba(0,0,0,0.08)', color: '#1a1a1a' }}
                 />
                 <Line
                   type="monotone"
@@ -159,15 +158,15 @@ export default function AnalyticsPage() {
         </GlassCard>
 
         <GlassCard>
-          <h2 className="text-sm font-semibold mb-4" style={{ color: '#C2C7DC' }}>Revenu par type de chambre</h2>
+          <h2 className="text-sm font-semibold mb-4 text-gray-700">Revenu par type de chambre</h2>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={revenueData} layout="vertical">
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
-                <XAxis type="number" stroke="#8E96BD" fontSize={11} />
-                <YAxis type="category" dataKey="type" stroke="#8E96BD" fontSize={11} width={80} />
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.06)" />
+                <XAxis type="number" stroke="#9ca3af" fontSize={11} />
+                <YAxis type="category" dataKey="type" stroke="#9ca3af" fontSize={11} width={80} />
                 <Tooltip
-                  contentStyle={{ background: '#0A0E27', border: '1px solid rgba(212,175,55,0.3)', borderRadius: 8 }}
+                  contentStyle={{ background: 'rgba(255,255,255,0.97)', border: '1px solid rgba(0,0,0,0.08)', borderRadius: 8, boxShadow: '0 4px 16px rgba(0,0,0,0.08)', color: '#1a1a1a' }}
                   formatter={(v: any) => `${v}€`}
                 />
                 <Bar dataKey="value" fill="url(#goldGradient)" radius={[0, 4, 4, 0]} />
