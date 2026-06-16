@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import Chart from 'chart.js/auto';
-import { Radio, Mail, MessageSquare, Instagram, Star } from 'lucide-react';
+import { Radio, Mail, MessageSquare, Camera, Star } from 'lucide-react';
 
 export default function OmniStreamPage() {
   const commChartRef = useRef<HTMLCanvasElement>(null);
@@ -102,7 +102,7 @@ export default function OmniStreamPage() {
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-2">
                   <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-500 flex items-center justify-center">
-                    <Instagram className="w-4 h-4 text-white" />
+                    <Camera className="w-4 h-4 text-white" />
                   </div>
                   <span className="font-medium text-sm">Instagram</span>
                 </div>
@@ -186,7 +186,7 @@ export default function OmniStreamPage() {
             <article className="rounded-2xl p-4 space-y-2 bg-white/70 backdrop-blur-md border border-white/70 shadow-sm">
               <div className="flex items-center gap-2">
                 <div className="w-6 h-6 rounded bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-500 flex items-center justify-center">
-                  <Instagram className="w-3.5 h-3.5 text-white" />
+                  <Camera className="w-3.5 h-3.5 text-white" />
                 </div>
                 <span className="font-medium text-sm">Instagram</span>
                 <span className="ml-auto text-[10px] font-bold bg-[#e0f2e9] text-[#2e7d32] px-2 py-0.5 rounded">AIS</span>
