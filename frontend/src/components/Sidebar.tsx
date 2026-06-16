@@ -81,19 +81,11 @@ export function Sidebar() {
         key={item.key}
         href={item.href}
         className={clsx(
-          'flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-all duration-200',
-          isActive ? 'text-white' : 'hover:bg-white/5'
+          'flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200',
+          isActive ? 'bg-white shadow-sm text-[#0a66c2]' : 'text-slate-600 hover:bg-white/40 hover:text-slate-900'
         )}
-        style={
-          isActive
-            ? {
-                background: 'linear-gradient(135deg, #3B82F6, #8B5CF6)',
-                boxShadow: '0 0 24px rgba(139,92,246,0.35)',
-              }
-            : { color: '#8E96BD' }
-        }
       >
-        <Icon className="w-4 h-4 shrink-0" />
+        <Icon className={clsx("w-5 h-5 shrink-0", isActive ? "text-[#0a66c2]" : "text-slate-400")} />
         {t(`nav.${item.key}`)}
       </Link>
     );
@@ -101,29 +93,33 @@ export function Sidebar() {
 
   return (
     <aside
-      className="w-64 h-screen p-4 flex flex-col flex-shrink-0"
-      style={{ borderRight: '1px solid rgba(255,255,255,0.1)' }}
+      className="w-64 h-screen p-4 flex flex-col flex-shrink-0 z-50 relative"
+      style={{ 
+        background: 'rgba(255, 255, 255, 0.4)', 
+        backdropFilter: 'blur(20px)', 
+        borderRight: '1px solid rgba(255, 255, 255, 0.5)',
+        boxShadow: '4px 0 24px rgba(0,0,0,0.02)'
+      }}
     >
       {/* Logo */}
-      <Link href="/dashboard" className="flex items-center gap-2 px-3 py-2 mb-4 shrink-0">
+      <Link href="/dashboard" className="flex items-center gap-3 px-3 py-2 mb-6 shrink-0">
         <div
-          className="w-9 h-9 rounded-xl flex items-center justify-center"
-          style={{
-            background: 'linear-gradient(135deg, #3B82F6, #8B5CF6)',
-            boxShadow: '0 0 24px rgba(139,92,246,0.35)',
-          }}
+          className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md"
+          style={{ background: 'linear-gradient(135deg, #0a66c2, #003c8f)' }}
         >
-          <Sparkles className="w-4 h-4 text-white" />
+          <span className="text-white font-bold text-xl" style={{ fontFamily: 'var(--font-playfair), serif' }}>Z</span>
         </div>
-        <span
-          className="font-semibold text-lg gradient-text-gold"
-          style={{ fontFamily: 'var(--font-playfair), serif' }}
-        >
-          {t('common.appName')}
-        </span>
+        <div className="flex flex-col">
+          <span className="font-semibold text-lg leading-tight text-slate-800">
+            Zafir
+          </span>
+          <span className="text-sm text-slate-500 leading-tight font-medium">
+            Command
+          </span>
+        </div>
       </Link>
 
-      <div className="shrink-0 mb-4">
+      <div className="shrink-0 mb-4 px-2">
         <HotelSwitcher />
       </div>
 
@@ -135,8 +131,7 @@ export function Sidebar() {
           <div className="pt-4 pb-2">
             <button
               onClick={() => setAdvancedOpen(!advancedOpen)}
-              className="flex items-center justify-between w-full px-3 py-2 text-xs font-bold uppercase tracking-wider transition-colors hover:text-white"
-              style={{ color: '#5A659E' }}
+              className="flex items-center justify-between w-full px-3 py-2 text-xs font-bold uppercase tracking-wider transition-colors text-slate-400 hover:text-slate-700"
             >
               <span className="flex items-center gap-2">
                 <Cpu className="w-3.5 h-3.5" />
@@ -146,7 +141,7 @@ export function Sidebar() {
             </button>
             
             {advancedOpen && (
-              <div className="mt-2 space-y-1 pl-2 border-l border-white/10 ml-4">
+              <div className="mt-2 space-y-1 pl-2 border-l border-slate-200 ml-4">
                 {advItems.map(renderLink)}
               </div>
             )}
@@ -155,29 +150,28 @@ export function Sidebar() {
       </nav>
 
       {/* Footer */}
-      <div className="space-y-2 pt-4 mt-2 shrink-0" style={{ borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+      <div className="space-y-2 pt-4 mt-2 shrink-0 border-t border-slate-200/50">
         <LocaleSwitcher />
 
-        <div className="glass rounded-xl p-3 flex items-center gap-3">
+        <div className="bg-white/60 backdrop-blur-md border border-white/50 shadow-sm rounded-xl p-3 flex items-center gap-3">
           <div
-            className="w-9 h-9 rounded-full flex items-center justify-center text-[#0A0E27] font-semibold text-sm shrink-0"
-            style={{ background: 'linear-gradient(135deg, #D4AF37, #F5E8B8)' }}
+            className="w-9 h-9 rounded-full flex items-center justify-center text-slate-800 font-semibold text-sm shrink-0"
+            style={{ background: 'linear-gradient(135deg, #fef3c7, #fde68a)' }}
           >
             {user.firstName[0]}
             {user.lastName[0]}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium truncate" style={{ color: '#E6E8F2' }}>
+            <p className="text-sm font-medium truncate text-slate-800">
               {user.firstName} {user.lastName}
             </p>
-            <p className="text-xs" style={{ color: '#D4AF37' }}>
+            <p className="text-xs text-amber-600 font-medium">
               {t(`roles.${user.role}`)}
             </p>
           </div>
           <button
             onClick={handleLogout}
-            className="p-1.5 rounded-lg hover:bg-white/10 transition-colors shrink-0"
-            style={{ color: '#8E96BD' }}
+            className="p-1.5 rounded-lg hover:bg-white/80 text-slate-400 hover:text-slate-700 transition-colors shrink-0"
             title={t('common.logout')}
           >
             <LogOut className="w-4 h-4" />
