@@ -1,0 +1,43 @@
+{
+  "entities": {
+    "SystemLog": {
+      "title": "System Log",
+      "description": "Log representing a high-fidelity system action in the command center",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "time": { "type": "string" },
+        "module": { "type": "string" },
+        "type": { "type": "string", "enum": ["INFO", "OK", "WARN", "ERROR"] },
+        "message": { "type": "string" }
+      },
+      "required": ["id", "time", "module", "type", "message"]
+    },
+    "LuxuryItem": {
+      "title": "Luxury Item",
+      "description": "Luxury product stored in the retail boutique manager catalog",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "image": { "type": "string" },
+        "category": { "type": "string", "enum": ["watches", "jewelry", "fashion"] },
+        "stockCount": { "type": "integer" },
+        "status": { "type": "string", "enum": ["Optimal", "Low", "Critical", "Out of Stock"] },
+        "price": { "type": "string" },
+        "details": { "type": "string" }
+      },
+      "required": ["id", "name", "category", "stockCount", "status", "price"]
+    }
+  },
+  "firestore": {
+    "/system_logs/{logId}": {
+      "schema": "SystemLog",
+      "description": "Collection of system-wide logs for the luxury control center"
+    },
+    "/luxury_items/{itemId}": {
+      "schema": "LuxuryItem",
+      "description": "Collection of luxury items for the Boutique Dashboard"
+    }
+  }
+}

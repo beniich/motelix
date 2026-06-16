@@ -1,0 +1,68 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+  
+    // Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Primitive Helpers
+    function isValidId(id) { 
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); 
+    }
+    
+    function incoming() { 
+      return request.resource.data; 
+    }
+    
+    function existing() { 
+      return resource.data; 
+    }
+    
+    function isSignedIn() { 
+      return request.auth != null; 
+    }
+    
+    // Helpers for specific models
+    function isValidSystemLog(data) {
+      return data.keys().hasAll(['id', 'time', 'module', 'type', 'message']) 
+        && data.keys().size() == 5
+        && data.id is string && data.id.size() <= 128
+        && data.time is string && data.time.size() <= 64
+        && data.module is string && data.module.size() <= 64
+        && data.type is string && (data.type == 'INFO' || data.type == 'OK' || data.type == 'WARN' || data.type == 'ERROR')
+        && data.message is string && data.message.size() <= 1000;
+    }
+
+    function isValidLuxuryItem(data) {
+      return data.keys().hasAll(['id', 'name', 'category', 'stockCount', 'status', 'price'])
+        && data.keys().size() >= 6 && data.keys().size() <= 8
+        && data.id is string && data.id.size() <= 128
+        && data.name is string && data.name.size() <= 256
+        && data.category is string && (data.category == 'watches' || data.category == 'jewelry' || data.category == 'fashion')
+        && data.stockCount is int
+        && data.status is string && (data.status == 'Optimal' || data.status == 'Low' || data.status == 'Critical' || data.status == 'Out of Stock')
+        && data.price is string && data.price.size() <= 64
+        && (!data.keys().hasAny(['image']) || (data.image is string && data.image.size() <= 2048))
+        && (!data.keys().hasAny(['details']) || (data.details is string && data.details.size() <= 4096));
+    }
+
+    // Rules matching individual collections
+    match /system_logs/{logId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && isValidId(logId) && isValidSystemLog(incoming());
+      allow update: if isSignedIn() && isValidId(logId) && isValidSystemLog(incoming()) 
+        && incoming().diff(existing()).affectedKeys().hasOnly(['message', 'type']);
+      allow delete: if false;
+    }
+
+    match /luxury_items/{itemId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && isValidId(itemId) && isValidLuxuryItem(incoming());
+      allow update: if isSignedIn() && isValidId(itemId) && isValidLuxuryItem(incoming())
+        && incoming().diff(existing()).affectedKeys().hasAny(['stockCount', 'status', 'price', 'name', 'image', 'details']);
+      allow delete: if isSignedIn();
+    }
+  }
+}

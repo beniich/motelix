@@ -1,0 +1,124 @@
+/* ============ SUBTLE GLOW (almost invisible) ============ */
+
+.luxury-glow {
+  box-shadow:
+    0 0 0 1px rgba(212, 175, 55, 0.06),
+    0 1px 3px rgba(212, 175, 55, 0.04);
+}
+
+.luxury-glow-hover:hover {
+  box-shadow:
+    0 0 0 1px rgba(212, 175, 55, 0.10),
+    0 2px 6px rgba(212, 175, 55, 0.06);
+}
+
+/* ============ EMBOSSED TEXT ============ */
+
+.luxury-embossed {
+  color: #D4AF37;
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.08),
+    0 -1px 0 rgba(0, 0, 0, 0.5);
+  font-weight: 500;
+  letter-spacing: 0.15em;
+}
+
+/* ============ SERIF TYPOGRAPHY ============ */
+
+.luxury-serif {
+  font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+}
+
+/* ============ SUBTLE GOLD ACCENT ============ */
+
+.luxury-accent-line {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(212, 175, 55, 0.3) 50%,
+    transparent 100%
+  );
+  margin: 1rem 0;
+}
+
+/* ============ MATTE CARD ============ */
+
+.luxury-card {
+  background: #0A0E1A;
+  border: 1px solid rgba(212, 175, 55, 0.08);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.02);
+  transition: border-color 400ms ease, box-shadow 400ms ease;
+}
+
+.luxury-card:hover {
+  border-color: rgba(212, 175, 55, 0.15);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+/* ============ DISCREET BADGE ============ */
+
+.luxury-badge {
+  background: rgba(212, 175, 55, 0.05);
+  color: #D4AF37;
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: 4px;
+}
+
+/* ============ FADE IN ON HOVER ============ */
+
+.luxury-fade-in {
+  opacity: 0.6;
+  transition: opacity 600ms ease;
+}
+
+.luxury-fade-in:hover {
+  opacity: 1;
+}
+
+/* ============ LINE GROW ON HOVER ============ */
+
+.luxury-underline {
+  position: relative;
+  display: inline-block;
+}
+
+.luxury-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: #D4AF37;
+  transition: width 400ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.luxury-underline:hover::after {
+  width: 100%;
+}
+
+/* ============ LUXURY MODE GLOBAL OVERRIDES ============ */
+
+html.luxury-mode .text-indigo-400,
+html.luxury-mode .text-indigo-500 {
+  color: #D4AF37 !important;
+}
+
+html.luxury-mode [class*="bg-indigo-"] {
+  background-color: #B8941F !important;
+}
+
+html.luxury-mode [class*="border-indigo-"] {
+  border-color: rgba(212, 175, 55, 0.3) !important;
+}

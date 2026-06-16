@@ -1,0 +1,244 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Fira+Code:wght@400;500;600&display=swap');
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+@import "./styles/cyberpunk.css";
+@import "./styles/luxury.css";
+
+@theme {
+  --font-sans: "Outfit", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
+
+  /* Premium Identity Tokens from the Luxe-OS Spec sheet */
+  --color-broken-white: #F8F9FA;
+  --color-luxury-gold: #C5A059;
+  --color-golden: #C5A059;
+  --color-blue-violet: #7B61FF;
+  --color-slate-navy: #1A1F2B;
+  --color-cyber-green: #10B981;
+
+  /* Zafir Brand Tokens */
+  --color-zafir-blue: #0052cc;
+  --color-zafir-lightBlue: #e6f0ff;
+  --color-zafir-bg: #f8fafc;
+  --color-zafir-glass: rgba(255, 255, 255, 0.65);
+  --color-zafir-glassBorder: rgba(255, 255, 255, 0.4);
+  --color-zafir-text: #1e293b;
+  --color-zafir-textMuted: #64748b;
+
+  /* Custom blurs */
+  --blur-xs: 2px;
+  --blur-sm: 4px;
+  --blur-md: 8px;
+  --blur-lg: 12px;
+  --blur-xl: 16px;
+  --blur-2xl: 24px;
+  --blur-3xl: 40px;
+}
+
+/* ============================================
+   GLOBAL OVERRIDES (Zafir Light Glassmorphism)
+   ============================================ */
+
+:root {
+  --color-zafir-glass-100: rgba(255, 255, 255, 0.7);
+  --color-zafir-glass-200: rgba(255, 255, 255, 0.4);
+  --color-zafir-glass-300: rgba(255, 255, 255, 0.2);
+  --color-zafir-glass-border: rgba(255, 255, 255, 0.3);
+}
+
+.glass-panel {
+  background: var(--color-zafir-glass-100);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--color-zafir-glass-border);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
+}
+
+.glass-card {
+  background: var(--color-zafir-glass-200);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--color-zafir-glass-border);
+  box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.glass-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px 0 rgba(0, 0, 0, 0.08);
+}
+
+.vip-badge-gold {
+  background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+  color: #000;
+}
+
+.vip-badge-silver {
+  background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+  color: #000;
+}
+
+.blueprint-bg {
+  background-image: linear-gradient(rgba(0, 82, 204, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 82, 204, 0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+  background-color: rgba(255, 255, 255, 0.85);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* ============================================
+   UTILITY CLASSES (Electric Glow variants)
+   ============================================ */
+
+/* Glow variants */
+.glow-blue { box-shadow: 0 0 20px rgba(0, 212, 255, 0.4), 0 0 40px rgba(0, 212, 255, 0.2); }
+.glow-blue-strong { box-shadow: 0 0 30px rgba(0, 212, 255, 0.6), 0 0 60px rgba(0, 212, 255, 0.3); }
+.glow-blue-subtle { box-shadow: 0 0 15px rgba(0, 212, 255, 0.2), 0 0 30px rgba(0, 212, 255, 0.08); }
+
+.glow-purple { box-shadow: 0 0 20px rgba(176, 38, 255, 0.4), 0 0 40px rgba(176, 38, 255, 0.2); }
+.glow-purple-strong { box-shadow: 0 0 30px rgba(176, 38, 255, 0.6), 0 0 60px rgba(176, 38, 255, 0.3); }
+.glow-purple-subtle { box-shadow: 0 0 15px rgba(176, 38, 255, 0.2), 0 0 30px rgba(176, 38, 255, 0.08); }
+
+.glow-cyan { box-shadow: 0 0 20px rgba(0, 255, 255, 0.5), 0 0 40px rgba(0, 255, 255, 0.25); }
+.glow-pink { box-shadow: 0 0 20px rgba(255, 0, 229, 0.5), 0 0 40px rgba(255, 0, 229, 0.25); }
+.glow-green { box-shadow: 0 0 20px rgba(0, 255, 136, 0.4), 0 0 40px rgba(0, 255, 136, 0.2); }
+.glow-gold { box-shadow: 0 0 20px rgba(255, 215, 0, 0.5), 0 0 40px rgba(255, 215, 0, 0.25); }
+
+/* Text glow */
+.text-glow-blue { text-shadow: 0 0 12px rgba(0, 212, 255, 0.6); }
+.text-glow-purple { text-shadow: 0 0 12px rgba(176, 38, 255, 0.6); }
+.text-glow-gold { text-shadow: 0 0 12px rgba(255, 215, 0, 0.6); }
+
+/* Background variants */
+.bg-primary { background-color: var(--bg-primary); }
+.bg-secondary { background-color: var(--bg-secondary); }
+.bg-tertiary { background-color: var(--bg-tertiary); }
+.bg-elevated { background-color: var(--bg-elevated); }
+
+/* Border variants */
+.border-black { border-color: var(--border-primary); }
+.border-black-soft { border-color: rgba(0, 0, 0, 0.6); }
+
+/* Text variants */
+.text-primary { color: var(--text-primary); }
+.text-secondary { color: var(--text-secondary); }
+.text-muted { color: var(--text-muted); }
+
+/* Gradient backgrounds */
+.bg-gradient-electric {
+  background: linear-gradient(135deg, #00D4FF 0%, #B026FF 100%);
+}
+
+.bg-gradient-electric-soft {
+  background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, rgba(176, 38, 255, 0.1) 100%);
+}
+
+/* Animated glow (for CTAs, important buttons) */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.4), 0 0 40px rgba(0, 212, 255, 0.2); }
+  50% { box-shadow: 0 0 30px rgba(0, 212, 255, 0.6), 0 0 60px rgba(0, 212, 255, 0.3); }
+}
+
+.animate-glow {
+  animation: pulse-glow 2.5s ease-in-out infinite;
+}
+
+/* ============================================
+   MICRO-ANIMATIONS — Polish UI/UX
+   ============================================ */
+
+/* Shake (form errors) */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-3px); }
+  40%, 80% { transform: translateX(3px); }
+}
+.animate-shake { animation: shake 0.4s ease-in-out; }
+
+/* Hover scale */
+.hover-scale { transition: transform 200ms ease; }
+.hover-scale:hover { transform: scale(1.02); }
+
+/* Click bounce */
+@keyframes bounce-subtle {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(0.95); }
+}
+.animate-bounce-subtle:active { animation: bounce-subtle 200ms ease; }
+
+/* Fade in + slide up */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in { animation: fade-in 300ms ease forwards; }
+
+/* Stagger children */
+.stagger-children > * { animation: fade-in 300ms ease backwards; }
+.stagger-children > *:nth-child(1) { animation-delay: 0ms; }
+.stagger-children > *:nth-child(2) { animation-delay: 50ms; }
+.stagger-children > *:nth-child(3) { animation-delay: 100ms; }
+.stagger-children > *:nth-child(4) { animation-delay: 150ms; }
+.stagger-children > *:nth-child(5) { animation-delay: 200ms; }
+.stagger-children > *:nth-child(6) { animation-delay: 250ms; }
+.stagger-children > *:nth-child(7) { animation-delay: 300ms; }
+.stagger-children > *:nth-child(8) { animation-delay: 350ms; }
+
+/* Animated fill (progress bars) */
+@keyframes fill-bar {
+  from { width: 0%; }
+}
+.animate-fill { animation: fill-bar 1s ease-out forwards; }
+
+/* Hover glow */
+.hover-glow { transition: box-shadow 200ms ease; }
+.hover-glow:hover { box-shadow: 0 0 24px rgba(0, 212, 255, 0.4); }
+
+/* Slide in from right (toast / notifications) */
+@keyframes slide-in-right {
+  from { transform: translateX(120%); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+.animate-slide-in { animation: slide-in-right 300ms cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+
+/* Slide out to right */
+@keyframes slide-out-right {
+  from { transform: translateX(0);    opacity: 1; }
+  to   { transform: translateX(120%); opacity: 0; }
+}
+.animate-slide-out { animation: slide-out-right 250ms ease-in forwards; }
+
+/* Pulse glow (distinct from button glow) */
+@keyframes pulse-glow-cyan {
+  0%, 100% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.3); }
+  50%       { box-shadow: 0 0 30px rgba(0, 212, 255, 0.6); }
+}
+.animate-pulse-glow { animation: pulse-glow-cyan 2s ease-in-out infinite; }
+
+/* Number count-up flash */
+@keyframes flash-value {
+  0%   { color: #00D4FF; }
+  100% { color: inherit; }
+}
+.animate-flash { animation: flash-value 0.4s ease-out; }
+
+/* Smooth height (accordions) */
+.transition-height { transition: max-height 300ms ease-in-out; }
+
+/* Import light mode at the very end to guarantee overrides over dark mode defaults */
+@import "./styles/light-mode.css";

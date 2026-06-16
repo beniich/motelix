@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Zafir Command Center</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Outfit', sans-serif; background: #0f172a; color: #fff; }
+    .nav-item { transition: all 0.2s; }
+    .nav-item:hover { background: rgba(255,255,255,0.08); transform: translateX(4px); }
+    .nav-item.active { background: linear-gradient(90deg, #f59e0b, #d97706); color: #000; font-weight: 600; }
+    #content { animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
+  </style>
+</head>
+<body class="flex h-screen">
+
+  <!-- SIDEBAR -->
+  <aside class="w-72 bg-slate-900/95 border-r border-slate-700 flex flex-col p-4 overflow-y-auto">
+    <div class="flex items-center gap-3 mb-8 p-2">
+      <div class="w-12 h-12 bg-gradient-to-br from-amber-400 to-amber-600 rounded-xl flex items-center justify-center text-slate-900 font-bold text-2xl shadow-lg">Z</div>
+      <div>
+        <h1 class="font-bold text-xl text-amber-400">ZAFIR</h1>
+        <p class="text-[10px] text-slate-400 tracking-widest">COMMAND CENTER</p>
+      </div>
+    </div>
+    
+    <div class="mb-4">
+      <p class="text-[10px] text-amber-400/70 tracking-widest px-2 mb-2">PÔLE BUSINESS</p>
+      <nav class="space-y-1">
+        <a class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm" data-page="memberships">💎 Club Memberships</a>
+        <a class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm" data-page="channel-sync">🔄 Channel Sync</a>
+        <a class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm" data-page="billing">💰 Billing & Folios</a>
+        <a class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm" data-page="vault">🔐 Secure Vault</a>
+        <a class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm" data-page="reservations">📅 Global Reservations</a>
+        <a class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm" data-page="guest-intelligence">👤 Guest Intelligence</a>
+      </nav>
+    </div>
+    
+    <div class="mb-4">
+      <p class="text-[10px] text-amber-400/70 tracking-widest px-2 mb-2">PÔLE OPÉRATIONS</p>
+      <nav class="space-y-1">
+        <a class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm" data-page="concierge">💬 Concierge Hub</a>
+        <a class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm" data-page="housekeeping">🛏️ Housekeeping Matrix</a>
+        <a class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm" data-page="minibar">🥂 Smart Minibar</a>
+        <a class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm" data-page="pool-spa">🏊 Pool & Spa Hub</a>
+        <a class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm" data-page="room-service">🍽️ Room Service</a>
+        <a class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm" data-page="arrivals">✈️ Arrivals</a>
+        <a class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm" data-page="boutique">🛍️ Luxury Boutique</a>
+      </nav>
+    </div>
+    
+    <div class="mb-4">
+      <p class="text-[10px] text-amber-400/70 tracking-widest px-2 mb-2">PÔLE TECH</p>
+      <nav class="space-y-1">
+        <a class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm" data-page="maintenance">🔧 3D Maintenance</a>
+        <a class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm" data-page="master-switch">🚨 Master Switch</a>
+      </nav>
+    </div>
+  </aside>
+
+  <!-- CONTENT -->
+  <main id="content" class="flex-1 overflow-y-auto bg-slate-950">
+    <div class="flex items-center justify-center h-full">
+      <div class="text-center">
+        <div class="text-6xl mb-4">👈</div>
+        <h2 class="text-2xl font-semibold text-amber-400 mb-2">Bienvenue dans Zafir Command Center</h2>
+        <p class="text-slate-400">Sélectionnez un module dans la sidebar pour commencer</p>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // ROUTER
+    const content = document.getElementById('content');
+    const items = document.querySelectorAll('.nav-item');
+    
+    items.forEach(item => {
+      item.addEventListener('click', async (e) => {
+        e.preventDefault();
+        const page = item.dataset.page;
+        items.forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+        
+        content.innerHTML = '<div class="flex items-center justify-center h-full"><div class="text-amber-400">Chargement...</div></div>';
+        
+        try {
+          const res = await fetch(`pages/${page}.html`);
+          const html = await res.text();
+          content.innerHTML = html;
+        } catch (err) {
+          content.innerHTML = `<div class="p-8 text-red-400">❌ Impossible de charger <code>pages/${page}.html</code><br><br>Vérifiez que le fichier existe dans le dossier <code>pages/</code></div>`;
+        }
+      });
+    });
+  </script>
+</body>
+</html>

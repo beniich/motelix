@@ -1,0 +1,214 @@
+/* ============ ANIMATED SCANLINES ============ */
+
+@keyframes scanline-move {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+.cyberpunk-scanlines {
+  position: relative;
+  overflow: hidden;
+}
+
+.cyberpunk-scanlines::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 212, 255, 0.8) 50%,
+    transparent 100%
+  );
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.8);
+  animation: scanline-move 4s linear infinite;
+  pointer-events: none;
+  z-index: 50;
+}
+
+/* ============ CRT MONITOR EFFECT ============ */
+
+@keyframes crt-flicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.98; }
+  52% { opacity: 0.95; }
+  54% { opacity: 1; }
+}
+
+.cyberpunk-crt {
+  animation: crt-flicker 3s infinite;
+  position: relative;
+}
+
+.cyberpunk-crt::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.1) 2px,
+    rgba(0, 0, 0, 0.1) 4px
+  );
+  pointer-events: none;
+  z-index: 40;
+}
+
+/* ============ GLITCH TEXT ============ */
+
+@keyframes glitch-shift {
+  0%, 100% { transform: translate(0); text-shadow: none; }
+  20% { transform: translate(-2px, 1px); text-shadow: 2px 0 #00D4FF, -2px 0 #B026FF; }
+  40% { transform: translate(2px, -1px); text-shadow: -2px 0 #00D4FF, 2px 0 #B026FF; }
+  60% { transform: translate(-1px, 2px); text-shadow: 2px 0 #FF00E5, -2px 0 #00D4FF; }
+  80% { transform: translate(1px, -2px); text-shadow: -2px 0 #FF00E5, 2px 0 #B026FF; }
+}
+
+.cyberpunk-glitch {
+  animation: glitch-shift 5s infinite;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 0.1em;
+}
+
+.cyberpunk-glitch-hover:hover {
+  animation: glitch-shift 0.3s infinite;
+}
+
+/* ============ NEON BORDER ============ */
+
+@keyframes neon-pulse {
+  0%, 100% {
+    box-shadow:
+      0 0 5px var(--glow-color, #00D4FF),
+      0 0 10px var(--glow-color, #00D4FF),
+      0 0 20px var(--glow-color, #00D4FF),
+      inset 0 0 5px rgba(0, 0, 0, 0.8);
+  }
+  50% {
+    box-shadow:
+      0 0 10px var(--glow-color, #00D4FF),
+      0 0 20px var(--glow-color, #00D4FF),
+      0 0 40px var(--glow-color, #00D4FF),
+      0 0 80px var(--glow-color, #00D4FF),
+      inset 0 0 5px rgba(0, 0, 0, 0.8);
+  }
+}
+
+.cyberpunk-neon-border {
+  --glow-color: #00D4FF;
+  border: 1px solid var(--glow-color);
+  animation: neon-pulse 2s ease-in-out infinite;
+}
+
+.cyberpunk-neon-border.purple { --glow-color: #B026FF; }
+.cyberpunk-neon-border.pink { --glow-color: #FF00E5; }
+.cyberpunk-neon-border.green { --glow-color: #00FF88; }
+
+/* ============ HOLOGRAM TEXT ============ */
+
+@keyframes hologram {
+  0%, 100% {
+    text-shadow:
+      0 0 1px rgba(0, 255, 255, 0.5),
+      0 0 2px rgba(0, 255, 255, 0.5),
+      0 0 5px rgba(0, 255, 255, 0.5);
+    opacity: 0.95;
+  }
+  50% {
+    text-shadow:
+      0 0 3px rgba(0, 255, 255, 0.8),
+      0 0 6px rgba(0, 255, 255, 0.8),
+      0 0 12px rgba(0, 255, 255, 0.8);
+    opacity: 1;
+  }
+}
+
+.cyberpunk-hologram {
+  color: #00FFFF;
+  animation: hologram 3s ease-in-out infinite;
+}
+
+/* ============ DATA STREAM (Matrix-like) ============ */
+
+@keyframes data-stream {
+  0% { transform: translateY(-100%); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(100vh); opacity: 0; }
+}
+
+.cyberpunk-data-stream {
+  position: absolute;
+  top: 0;
+  width: 2px;
+  height: 100px;
+  background: linear-gradient(180deg, transparent, #00FF88, transparent);
+  animation: data-stream 3s linear infinite;
+  pointer-events: none;
+}
+
+/* ============ TYPING CURSOR ============ */
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.cyberpunk-cursor::after {
+  content: '█';
+  color: #00D4FF;
+  animation: blink 1s infinite;
+  margin-left: 2px;
+}
+
+/* ============ PARTICLE FIELD ============ */
+
+@keyframes float-up {
+  0% {
+    transform: translateY(0) translateX(0);
+    opacity: 0;
+  }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% {
+    transform: translateY(-100vh) translateX(20px);
+    opacity: 0;
+  }
+}
+
+.cyberpunk-particles {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.cyberpunk-particles span {
+  position: absolute;
+  bottom: 0;
+  width: 4px;
+  height: 4px;
+  background: #00D4FF;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #00D4FF;
+  animation: float-up linear infinite;
+}
+
+/* ============ CYBERPUNK MODE GLOBAL OVERRIDES ============ */
+
+html.cyberpunk-mode {
+  --glow-blue: #00D4FF;
+  --glow-purple: #B026FF;
+}
+
+html.cyberpunk-mode body {
+  background: #020510 !important;
+}

@@ -1,0 +1,174 @@
+/* ============ LIGHT MODE OVERRIDES ============ */
+/* Applied via .light class on <html> element     */
+
+html.light {
+  --bg-primary: transparent;
+  --bg-secondary: rgba(255, 255, 255, 0.4); /* Frosted Glass Base */
+  --bg-tertiary: rgba(255, 255, 255, 0.6);
+  --bg-elevated: rgba(255, 255, 255, 0.8);
+  --text-primary: #1A1F2B;
+  --text-secondary: #4A5568;
+  --text-muted: #718096;
+  --border-primary: rgba(255, 255, 255, 0.6);
+}
+
+/* Add a luxury hotel lobby background to the body in light mode */
+html.light body {
+  background: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAiWcFRfVi1yIpap6AGnnGDNGOnBk4cSASuqDTWg89lnEPuqCLyDUl4jV3gYVDbqgK46EDLlsZ9grsvqbJkh8XCnTGnmkBYUXrVYSdaF0-H3Fu46yN4djH3vJP9oVHQmj5kW6aLfytj3Z8-W_lhId3yd5ig4DlreSCoN3hMO5dGuZJP_2cY8IQ7GCnFiRPSmBEJNt3c5HGucPIsV8NxhzvZ-SfFgL1g9FsgNY93RP98GcNPzmsuOQNpsF47S0zHnNUBPpJjbK8IJW8") no-repeat center center fixed !important;
+  background-size: cover !important;
+  color: #1e293b;
+  font-family: "Outfit", sans-serif;
+}
+
+/* Base custom classes matching user's prototype */
+html.light .glass-panel {
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+}
+
+html.light .glass-card {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+html.light .glass-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+}
+
+html.light .blueprint-bg {
+  background-image: linear-gradient(rgba(0, 82, 204, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 82, 204, 0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+  background-color: rgba(255, 255, 255, 0.85);
+}
+
+/* Ensure the main app shell doesn't override the body background */
+html.light .app-shell,
+html.light [class*="bg-slate-50"],
+html.light [class*="bg-slate-100"],
+html.light [class*="bg-white"]:not(button) {
+  background-color: transparent !important;
+}
+
+/* Sidebar & Header Glassmorphism */
+html.light aside,
+html.light header,
+html.light [class*="topbar"] {
+  background: rgba(255, 255, 255, 0.45) !important;
+  backdrop-filter: blur(28px) !important;
+  -webkit-backdrop-filter: blur(28px) !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.7) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.7) !important;
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.03) !important;
+}
+
+/* Glass Cards (Panels in the dashboard) */
+html.light [class*="rounded-2xl"],
+html.light [class*="rounded-xl"],
+html.light [class*="rounded-lg"]:not([class*="rounded-full"]):not(.badge):not([class*="rounded-sm"]):not(button):not(input):not(select) {
+  background: rgba(255, 255, 255, 0.45) !important;
+  backdrop-filter: blur(28px) !important;
+  -webkit-backdrop-filter: blur(28px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.7) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Sidebar active item styling matching the image */
+html.light button[style*="background: linear-gradient"],
+html.light button[style*="borderLeft"],
+html.light .active-nav-item {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border: 1px solid rgba(255, 255, 255, 1) !important;
+  border-left: none !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05) !important;
+  color: #1A1F2B !important;
+  border-radius: 12px !important;
+}
+html.light button[style*="background: linear-gradient"] svg,
+html.light button[style*="borderLeft"] svg {
+  color: #007AFF !important; /* iOS blue style */
+}
+
+/* Override dark mode text */
+html.light .dark\:text-white,
+html.light .dark\:text-slate-100 {
+  color: var(--text-primary) !important;
+}
+
+html.light .dark\:text-slate-400,
+html.light .dark\:text-slate-500 {
+  color: var(--text-secondary) !important;
+}
+
+html.light .dark\:border-slate-800,
+html.light .dark\:border-slate-850 {
+  border-color: rgba(255, 255, 255, 0.6) !important;
+}
+
+html.light .text-slate-100,
+html.light .text-slate-200,
+html.light .text-slate-300 {
+  color: var(--text-primary) !important;
+}
+
+html.light .text-slate-400,
+html.light .text-slate-500 {
+  color: var(--text-secondary) !important;
+}
+
+/* Fix inputs and interactive elements */
+html.light input:not([type="color"]),
+html.light textarea,
+html.light select {
+  background: rgba(255, 255, 255, 0.7) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(12px) !important;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02) !important;
+}
+
+/* Gradient overrides (remove dark gradients in light mode to preserve the glass look) */
+html.light .bg-slate-950,
+html.light .bg-slate-900,
+html.light .bg-slate-900\/80,
+html.light .bg-slate-950\/50,
+html.light .bg-slate-950\/90,
+html.light .bg-slate-950\/30 {
+  background: transparent !important;
+}
+
+/* Adjust timeline circles and badges for light mode */
+html.light .bg-indigo-500\/10,
+html.light .bg-emerald-500\/10,
+html.light .bg-amber-500\/10,
+html.light .bg-cyan-400\/20 {
+  background: rgba(255, 255, 255, 0.6) !important;
+  border: 1px solid rgba(255, 255, 255, 0.9) !important;
+}
+
+/* Tables and specific card sub-elements */
+html.light table, 
+html.light thead {
+  background: transparent !important;
+}
+html.light tr:hover td {
+  background: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Make logos and critical text pop */
+html.light .text-white {
+  color: var(--text-primary) !important;
+}
+html.light svg {
+  opacity: 0.8;
+}
+
+/* Subtle shadows on hover for cards */
+html.light [class*="rounded-2xl"]:hover {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08) !important;
+}

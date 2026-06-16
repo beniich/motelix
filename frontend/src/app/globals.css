@@ -1,0 +1,188 @@
+@import "tailwindcss";
+
+/* ─── Design Tokens ──────────────────────────────────────────────────── */
+@theme {
+  /* Midnight palette */
+  --color-midnight-50:  #E6E8F2;
+  --color-midnight-100: #C2C7DC;
+  --color-midnight-200: #8E96BD;
+  --color-midnight-300: #5A659E;
+  --color-midnight-400: #2D3B7F;
+  --color-midnight-500: #1A2660;
+  --color-midnight-600: #0F1A47;
+  --color-midnight-700: #0A1233;
+  --color-midnight-800: #070B22;
+  --color-midnight-900: #0A0E27;
+  --color-midnight-950: #05071A;
+
+  /* Gold palette */
+  --color-gold-50:  #FBF6E7;
+  --color-gold-100: #F5E8B8;
+  --color-gold-200: #EDD988;
+  --color-gold-300: #E5C958;
+  --color-gold-400: #D4AF37;
+  --color-gold-500: #B8941F;
+  --color-gold-600: #8F7418;
+  --color-gold-700: #665411;
+  --color-gold-800: #3D340A;
+  --color-gold-900: #1A1404;
+
+  /* Sapphire/Emerald accent aliases */
+  --color-sapphire-400: #3B82F6;
+  --color-sapphire-500: #6366F1;
+  --color-sapphire-600: #8B5CF6;
+  --color-emerald-400:  #10B981;
+  --color-emerald-500:  #06B6D4;
+
+  /* Background images */
+  --background-gradient-a:    linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%);
+  --background-gradient-b:    linear-gradient(135deg, #10B981 0%, #06B6D4 100%);
+  --background-gradient-gold: linear-gradient(135deg, #D4AF37 0%, #F5E8B8 100%);
+  --background-gradient-dark: linear-gradient(180deg, #0A0E27 0%, #05071A 100%);
+
+  /* Box shadows */
+  --shadow-glass:         0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  --shadow-glow-gold:     0 0 24px rgba(212, 175, 55, 0.35);
+  --shadow-glow-sapphire: 0 0 24px rgba(139, 92, 246, 0.35);
+
+  /* Fonts */
+  --font-sans:    var(--font-inter), system-ui, sans-serif;
+  --font-display: var(--font-playfair), serif;
+
+  /* Animations */
+  --animate-pulse-slow: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-shimmer:    shimmer 2s linear infinite;
+
+  @keyframes shimmer {
+    0%   { background-position: -200% 0; }
+    100% { background-position:  200% 0; }
+  }
+}
+
+/* ─── Base ───────────────────────────────────────────────────────────── */
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background-color: #0A0E27;
+    color: #E6E8F2;
+    min-height: 100vh;
+    background-image:
+      radial-gradient(circle at 15% 20%, rgba(59, 130, 246, 0.15) 0%, transparent 40%),
+      radial-gradient(circle at 85% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.05) 0%, transparent 50%);
+    background-attachment: fixed;
+  }
+
+  * {
+    border-color: rgba(45, 59, 127, 0.3);
+  }
+}
+
+/* ─── Components ─────────────────────────────────────────────────────── */
+@layer components {
+  .glass {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  }
+
+  .glass-strong {
+    background: rgba(255, 255, 255, 0.10);
+    backdrop-filter: blur(32px);
+    -webkit-backdrop-filter: blur(32px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  }
+
+  .glass-gold {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.10), rgba(212, 175, 55, 0.05));
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(212, 175, 55, 0.20);
+  }
+
+  /* Keep legacy names for existing page.tsx */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    @apply rounded-2xl p-6 transition-all duration-300;
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, #3B82F6, #8B5CF6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Legacy alias */
+  .text-gradient {
+    background: linear-gradient(135deg, #3B82F6, #8B5CF6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .gradient-text-gold {
+    background: linear-gradient(135deg, #D4AF37, #F5E8B8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .gradient-text-success {
+    background: linear-gradient(135deg, #10B981, #06B6D4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .gradient-border {
+    position: relative;
+  }
+  .gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    border-radius: inherit;
+    background: linear-gradient(135deg, #3B82F6, #8B5CF6);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  /* Legacy gradient bg */
+  .bg-gradient-primary {
+    background: linear-gradient(135deg, #3B82F6, #8B5CF6);
+  }
+  .bg-gradient-primary:hover {
+    background: linear-gradient(135deg, #8B5CF6, #3B82F6);
+  }
+}
+
+/* ─── Utilities ──────────────────────────────────────────────────────── */
+@layer utilities {
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(212, 175, 55, 0.3) transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: rgba(212, 175, 55, 0.3);
+    border-radius: 3px;
+  }
+}

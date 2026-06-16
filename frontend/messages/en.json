@@ -1,0 +1,134 @@
+{
+  "common": {
+    "appName": "Sapphire",
+    "loading": "Loading…",
+    "error": "An error occurred",
+    "retry": "Retry",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "search": "Search",
+    "logout": "Log out"
+  },
+  "auth": {
+    "login": "Log in",
+    "email": "Email address",
+    "password": "Password",
+    "submitLogin": "Sign in",
+    "invalidCredentials": "Invalid email or password",
+    "welcomeBack": "Welcome back",
+    "loginSubtitle": "Access your operations center"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "super": "Super admin",
+    "reservations": "Reservations",
+    "guests": "Guests",
+    "rooms": "Rooms",
+    "housekeeping": "Housekeeping",
+    "tasks": "Tasks",
+    "invoices": "Invoices",
+    "channels": "Channel Manager",
+    "team": "Team",
+    "analytics": "Analytics",
+    "forecast": "Revenue Forecast",
+    "segments": "Guest Segments",
+    "memberships": "Memberships",
+    "roomService": "Room Service",
+    "vault": "Secure Vault",
+    "admin": "Administration",
+    "settings": "Settings",
+    "advancedModules": "Advanced Modules",
+    "masterSwitch": "Master Switch",
+    "security": "Security",
+    "digitalTwin": "Digital Twin",
+    "drones": "Drone Fleet",
+    "energy": "Energy",
+    "omnistream": "OmniStream",
+    "strategy": "Strategy",
+    "aethelred": "Aethelred AI",
+    "academy": "Academy",
+    "boutique": "Boutique",
+    "pool": "Pool & Spa",
+    "valet": "Valet",
+    "concierge": "Concierge",
+    "arrivals": "Arrivals",
+    "maintenance": "Maintenance",
+    "minibar": "Minibar"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome, {name}",
+    "roomsAvailable": "Available rooms",
+    "roomsOccupied": "Occupied rooms",
+    "tasksPending": "Pending tasks",
+    "revenue": "Today's revenue",
+    "liveOperations": "Live operations"
+  },
+  "rooms": {
+    "title": "Room management",
+    "number": "Number",
+    "floor": "Floor",
+    "type": "Type",
+    "price": "Price",
+    "status": {
+      "AVAILABLE": "Available",
+      "OCCUPIED": "Occupied",
+      "CLEANING": "Cleaning",
+      "MAINTENANCE": "Maintenance"
+    }
+  },
+  "tasks": {
+    "title": "Operational tasks",
+    "newTask": "New task",
+    "priority": "Priority",
+    "assignee": "Assigned to",
+    "dueAt": "Due at",
+    "status": {
+      "PENDING": "Pending",
+      "IN_PROGRESS": "In progress",
+      "COMPLETED": "Completed",
+      "CANCELLED": "Cancelled"
+    }
+  },
+  "roles": {
+    "SUPER_ADMIN": "Super Admin",
+    "ADMIN": "Administrator",
+    "MANAGER": "Manager",
+    "STAFF": "Staff"
+  },
+  "Index": {
+    "title": "Sapphire",
+    "description": "Your luxury hotel operations center",
+    "login": "Log in",
+    "dashboard": "Dashboard"
+  },
+  "housekeeping": {
+    "title": "Housekeeping",
+    "myTasks": "My Tasks",
+    "allTasks": "All Tasks",
+    "status": {
+      "PENDING": "Pending",
+      "IN_PROGRESS": "In Progress",
+      "COMPLETED": "To Inspect",
+      "INSPECTED": "Inspected (Ready)",
+      "REJECTED": "Rejected (Redo)"
+    },
+    "type": {
+      "CHECKOUT_CLEAN": "Checkout Clean",
+      "STAYOVER": "Stayover Clean",
+      "DEEP_CLEAN": "Deep Clean",
+      "INSPECTION": "Quality Inspection",
+      "TURNDOWN": "Turndown Service"
+    },
+    "priority": {
+      "1": "Low",
+      "2": "Normal",
+      "3": "High",
+      "4": "Urgent",
+      "5": "Immediate"
+    }
+  }
+}

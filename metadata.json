@@ -1,0 +1,6 @@
+{
+  "name": "Aurum Valet & Parking Control",
+  "description": "Luxury operations command center featuring premium Aurum branding, multi-level coordinate 3D spatial mapping, LPR license scanners, and automated digital retrieval queues.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
