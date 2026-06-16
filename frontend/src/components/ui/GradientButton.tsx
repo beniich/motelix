@@ -15,6 +15,34 @@ type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
   rightIcon?: ReactNode;
 };
 
+const variantStyles: Record<Variant, React.CSSProperties> = {
+  primary: {
+    background: 'linear-gradient(135deg, #0a66c2, #2563eb)',
+    color: '#fff',
+    boxShadow: '0 4px 16px rgba(10,102,194,0.3)',
+  },
+  secondary: {
+    background: 'rgba(255,255,255,0.6)',
+    color: '#374151',
+    border: '1px solid rgba(255,255,255,0.7)',
+    boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+  },
+  gold: {
+    background: 'linear-gradient(135deg, #D4AF37, #d4a14a)',
+    color: '#1a1a1a',
+    boxShadow: '0 4px 16px rgba(212,175,55,0.3)',
+  },
+  ghost: {
+    background: 'transparent',
+    color: '#374151',
+  },
+  outline: {
+    background: 'transparent',
+    color: '#d4a14a',
+    border: '1px solid rgba(212,175,55,0.5)',
+  },
+};
+
 export function GradientButton({
   children,
   variant = 'primary',
@@ -32,27 +60,16 @@ export function GradientButton({
       className={clsx(
         'relative inline-flex items-center justify-center gap-2 font-medium rounded-xl',
         'transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed',
-        'focus:outline-none focus:ring-2 focus:ring-offset-2',
+        'focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-300',
         'transform hover:scale-[1.02] active:scale-[0.98]',
         size === 'sm' && 'px-3 py-1.5 text-sm',
         size === 'md' && 'px-5 py-2.5 text-sm',
         size === 'lg' && 'px-7 py-3 text-base',
-        variant === 'primary' &&
-          'bg-gradient-primary text-white focus:ring-[#8B5CF6] shadow-[0_0_24px_rgba(139,92,246,0.35)]',
-        variant === 'secondary' &&
-          'glass text-[#E6E8F2] hover:bg-white/10 focus:ring-white/30',
-        variant === 'gold' &&
-          'text-[#0A0E27] focus:ring-[#D4AF37] shadow-[0_0_24px_rgba(212,175,55,0.35)]',
-        variant === 'ghost' && 'text-[#E6E8F2] hover:bg-white/5',
-        variant === 'outline' &&
-          'glass text-[#D4AF37] border border-[rgba(212,175,55,0.5)] hover:border-[rgba(212,175,55,0.8)]',
+        variant === 'ghost' && 'hover:bg-gray-100',
+        variant === 'outline' && 'hover:border-amber-400',
         className
       )}
-      style={
-        variant === 'gold'
-          ? { background: 'linear-gradient(135deg, #D4AF37, #F5E8B8)' }
-          : undefined
-      }
+      style={variantStyles[variant]}
       {...rest}
     >
       {isLoading ? (

@@ -1,6 +1,5 @@
 import { clsx } from 'clsx';
 import { forwardRef, type InputHTMLAttributes } from 'react';
-
 import type { ReactNode } from 'react';
 
 type Props = InputHTMLAttributes<HTMLInputElement> & {
@@ -19,17 +18,13 @@ export const GlassInput = forwardRef<HTMLInputElement, Props>(function GlassInpu
   return (
     <div className="w-full">
       {label && (
-        <label
-          htmlFor={inputId}
-          className="block text-sm font-medium mb-1.5"
-          style={{ color: '#C2C7DC' }}
-        >
+        <label htmlFor={inputId} className="block text-sm font-medium text-gray-700 mb-1.5">
           {label}
         </label>
       )}
       <div className="relative">
         {leftIcon && (
-          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8E96BD] pointer-events-none">
+          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
             {leftIcon}
           </div>
         )}
@@ -37,24 +32,25 @@ export const GlassInput = forwardRef<HTMLInputElement, Props>(function GlassInpu
           ref={ref}
           id={inputId}
           className={clsx(
-            'w-full py-2.5 rounded-xl glass',
+            'w-full py-2.5 rounded-xl text-gray-800 text-sm',
+            'bg-white/80 border border-gray-200',
             leftIcon ? 'pl-11 pr-4' : 'px-4',
             rightIcon ? 'pr-11' : '',
-            'text-[#E6E8F2] placeholder:text-[#5A659E]',
-            'focus:outline-none focus:ring-2 focus:ring-[rgba(212,175,55,0.5)]',
+            'placeholder:text-gray-400',
+            'focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-400',
             'transition-all duration-200',
-            error && 'border-red-400/50 focus:ring-red-400/50',
+            error && 'border-red-400 focus:ring-red-200',
             className
           )}
           {...rest}
         />
         {rightIcon && (
-          <div className="absolute right-4 top-1/2 -translate-y-1/2 text-[#8E96BD]">
+          <div className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
             {rightIcon}
           </div>
         )}
       </div>
-      {error && <p className="mt-1.5 text-xs text-red-300">{error}</p>}
+      {error && <p className="mt-1.5 text-xs text-red-500">{error}</p>}
     </div>
   );
 });

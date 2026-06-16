@@ -12,42 +12,43 @@ type Props = {
 
 const gradientStyles = {
   a: {
-    background: 'linear-gradient(135deg, #3B82F6, #8B5CF6)',
-    boxShadow: '0 0 24px rgba(139,92,246,0.35)',
+    background: 'linear-gradient(135deg, rgba(59,130,246,0.1), rgba(139,92,246,0.1))',
+    color: '#0a66c2',
+    border: '1px solid rgba(59,130,246,0.15)',
   },
   b: {
-    background: 'linear-gradient(135deg, #10B981, #06B6D4)',
+    background: 'linear-gradient(135deg, rgba(16,185,129,0.1), rgba(6,182,212,0.1))',
+    color: '#10B981',
+    border: '1px solid rgba(16,185,129,0.15)',
   },
   gold: {
-    background: 'linear-gradient(135deg, #D4AF37, #F5E8B8)',
-    boxShadow: '0 0 24px rgba(212,175,55,0.35)',
+    background: 'linear-gradient(135deg, rgba(212,175,55,0.1), rgba(245,232,184,0.2))',
+    color: '#d4a14a',
+    border: '1px solid rgba(212,175,55,0.15)',
   },
 };
 
 export function StatCard({ label, value, icon: Icon, trend, gradient = 'a' }: Props) {
   return (
-    <GlassCard className="group hover:bg-white/[0.07] transition-all duration-300">
+    <GlassCard className="group hover:-translate-y-0.5 transition-transform duration-300">
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-sm font-medium" style={{ color: '#8E96BD' }}>
+          <p className="text-sm font-medium text-gray-500">
             {label}
           </p>
-          <p
-            className="mt-2 text-3xl font-semibold"
-            style={{ fontFamily: 'var(--font-playfair), serif', color: '#E6E8F2' }}
-          >
+          <p className="mt-2 text-3xl font-light text-gray-900">
             {value}
           </p>
           {trend && (
             <p
-              className={clsx('mt-2 text-xs font-medium', trend.positive ? 'text-[#10B981]' : 'text-red-400')}
+              className={clsx('mt-2 text-xs font-medium', trend.positive ? 'text-emerald-600' : 'text-red-500')}
             >
               {trend.positive ? '↑' : '↓'} {Math.abs(trend.value)}% vs hier
             </p>
           )}
         </div>
-        <div className="p-3 rounded-xl" style={gradientStyles[gradient]}>
-          <Icon className="w-5 h-5 text-white" />
+        <div className="p-3 rounded-xl flex items-center justify-center" style={gradientStyles[gradient]}>
+          <Icon className="w-5 h-5" style={{ color: gradientStyles[gradient].color }} />
         </div>
       </div>
     </GlassCard>

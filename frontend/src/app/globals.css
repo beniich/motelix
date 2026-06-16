@@ -2,7 +2,7 @@
 
 /* ─── Design Tokens ──────────────────────────────────────────────────── */
 @theme {
-  /* Midnight palette */
+  /* Midnight palette (kept for legacy components) */
   --color-midnight-50:  #E6E8F2;
   --color-midnight-100: #C2C7DC;
   --color-midnight-200: #8E96BD;
@@ -34,16 +34,23 @@
   --color-emerald-400:  #10B981;
   --color-emerald-500:  #06B6D4;
 
-  /* Background images */
+  /* Background gradients */
   --background-gradient-a:    linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%);
   --background-gradient-b:    linear-gradient(135deg, #10B981 0%, #06B6D4 100%);
   --background-gradient-gold: linear-gradient(135deg, #D4AF37 0%, #F5E8B8 100%);
-  --background-gradient-dark: linear-gradient(180deg, #0A0E27 0%, #05071A 100%);
+
+  /* Zafir light palette */
+  --zafir-bg:        #f4ede0;
+  --zafir-bg-warm:   #ede3ce;
+  --zafir-brand:     #0a66c2;
+  --zafir-gold:      #d4a14a;
+  --zafir-text:      #1a1a1a;
+  --zafir-muted:     #5b6472;
 
   /* Box shadows */
-  --shadow-glass:         0 8px 32px 0 rgba(0, 0, 0, 0.37);
-  --shadow-glow-gold:     0 0 24px rgba(212, 175, 55, 0.35);
-  --shadow-glow-sapphire: 0 0 24px rgba(139, 92, 246, 0.35);
+  --shadow-glass:         0 8px 32px 0 rgba(0, 0, 0, 0.08);
+  --shadow-glow-gold:     0 0 24px rgba(212, 175, 55, 0.25);
+  --shadow-glow-blue:     0 0 24px rgba(10, 102, 194, 0.25);
 
   /* Fonts */
   --font-sans:    var(--font-inter), system-ui, sans-serif;
@@ -67,73 +74,109 @@
   }
 
   body {
-    background-color: #0A0E27;
-    color: #E6E8F2;
+    /* Zafir light warm background — matches all mockup screenshots */
+    background-color: #f4ede0;
+    color: #1a1a1a;
     min-height: 100vh;
     background-image:
-      radial-gradient(circle at 15% 20%, rgba(59, 130, 246, 0.15) 0%, transparent 40%),
-      radial-gradient(circle at 85% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 40%),
-      radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.05) 0%, transparent 50%);
+      radial-gradient(ellipse at 20% 20%, #f5efe1 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 80%, #ebe2cb 0%, transparent 60%),
+      linear-gradient(135deg, #f8f3e7 0%, #e8dcc4 100%);
     background-attachment: fixed;
   }
 
+  /* Subtle grid overlay on top of body */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image:
+      linear-gradient(90deg, transparent 49.5%, rgba(180,160,120,0.06) 50%, transparent 50.5%),
+      linear-gradient(0deg,  transparent 49.5%, rgba(180,160,120,0.06) 50%, transparent 50.5%);
+    background-size: 80px 80px;
+  }
+
+  /* All app content should sit above the grid overlay */
+  #__next, body > div {
+    position: relative;
+    z-index: 1;
+  }
+
   * {
-    border-color: rgba(45, 59, 127, 0.3);
+    border-color: rgba(0, 0, 0, 0.06);
   }
 }
 
 /* ─── Components ─────────────────────────────────────────────────────── */
 @layer components {
-  .glass {
-    background: rgba(255, 255, 255, 0.05);
+
+  /* ── Light Glassmorphism (primary panels) */
+  .glass-panel {
+    background: rgba(255, 255, 255, 0.55);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.08);
+  }
+
+  /* ── Light Glass Card (inner cards) */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+    @apply rounded-2xl transition-all duration-200;
+  }
+
+  .glass-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.07);
+  }
+
+  /* ── Legacy "glass" alias (dark theme — kept for backward compat) */
+  .glass {
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.06);
   }
 
   .glass-strong {
-    background: rgba(255, 255, 255, 0.10);
+    background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(32px);
     -webkit-backdrop-filter: blur(32px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.06);
   }
 
   .glass-gold {
-    background: linear-gradient(135deg, rgba(212, 175, 55, 0.10), rgba(212, 175, 55, 0.05));
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.12), rgba(212, 175, 55, 0.06));
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(212, 175, 55, 0.20);
+    border: 1px solid rgba(212, 175, 55, 0.25);
   }
 
-  /* Keep legacy names for existing page.tsx */
-  .glass-card {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-    @apply rounded-2xl p-6 transition-all duration-300;
-  }
-
+  /* ── Text gradients */
   .gradient-text {
-    background: linear-gradient(135deg, #3B82F6, #8B5CF6);
+    background: linear-gradient(135deg, #0a66c2, #2563eb);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
-  /* Legacy alias */
   .text-gradient {
-    background: linear-gradient(135deg, #3B82F6, #8B5CF6);
+    background: linear-gradient(135deg, #0a66c2, #2563eb);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
   .gradient-text-gold {
-    background: linear-gradient(135deg, #D4AF37, #F5E8B8);
+    background: linear-gradient(135deg, #D4AF37, #d4a14a);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -155,19 +198,30 @@
     inset: 0;
     padding: 1px;
     border-radius: inherit;
-    background: linear-gradient(135deg, #3B82F6, #8B5CF6);
+    background: linear-gradient(135deg, #0a66c2, #3b82f6);
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
     pointer-events: none;
   }
 
-  /* Legacy gradient bg */
   .bg-gradient-primary {
-    background: linear-gradient(135deg, #3B82F6, #8B5CF6);
+    background: linear-gradient(135deg, #0a66c2, #2563eb);
   }
   .bg-gradient-primary:hover {
-    background: linear-gradient(135deg, #8B5CF6, #3B82F6);
+    background: linear-gradient(135deg, #2563eb, #0a66c2);
+  }
+
+  /* ── Nav items */
+  .nav-item {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200;
+    color: #5b6472;
+  }
+  .nav-item:hover { background: rgba(255, 255, 255, 0.4); color: #1a1a1a; }
+  .nav-item.active {
+    background: rgba(255, 255, 255, 0.85);
+    color: #0a66c2;
+    box-shadow: 0 2px 8px rgba(10, 102, 194, 0.12);
   }
 }
 
@@ -175,14 +229,22 @@
 @layer utilities {
   .scrollbar-thin {
     scrollbar-width: thin;
-    scrollbar-color: rgba(212, 175, 55, 0.3) transparent;
+    scrollbar-color: rgba(180, 160, 120, 0.3) transparent;
   }
   .scrollbar-thin::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 4px;
+    height: 4px;
   }
   .scrollbar-thin::-webkit-scrollbar-thumb {
-    background-color: rgba(212, 175, 55, 0.3);
-    border-radius: 3px;
+    background-color: rgba(180, 160, 120, 0.3);
+    border-radius: 4px;
   }
+
+  .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+  .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(0, 0, 0, 0.18); }
 }
