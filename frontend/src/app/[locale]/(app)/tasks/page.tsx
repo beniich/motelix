@@ -41,10 +41,10 @@ export default function TasksPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-display font-semibold" style={{ color: '#E6E8F2' }}>
+          <h1 className="text-4xl font-light tracking-tight text-gray-900">
             {t('tasks.title')}
           </h1>
-          <p className="mt-1 text-sm" style={{ color: '#8E96BD' }}>
+          <p className="mt-1 text-sm text-gray-500">
             {data?.items.length ?? 0} tâches
           </p>
         </div>
@@ -58,7 +58,7 @@ export default function TasksPage() {
           <GlassCard key={status} className="min-h-[400px]">
             <div className="flex items-center justify-between mb-4">
               <TaskStatusBadge status={status} />
-              <span className="text-xs" style={{ color: '#8E96BD' }}>{byStatus(status).length}</span>
+              <span className="text-xs text-gray-400 font-semibold">{byStatus(status).length}</span>
             </div>
             <div className="space-y-3">
               {byStatus(status).map((task) => (
@@ -77,7 +77,7 @@ export default function TasksPage() {
                 />
               ))}
               {byStatus(status).length === 0 && (
-                <p className="text-xs text-center py-6" style={{ color: '#5A659E' }}>—</p>
+                <p className="text-xs text-center py-6 text-gray-300">—</p>
               )}
             </div>
           </GlassCard>
@@ -95,23 +95,22 @@ export default function TasksPage() {
 }
 
 function TaskCard({ task, onAdvance }: { task: Task; onAdvance: () => void }) {
-  const priorityColor = task.priority >= 4 ? 'text-red-400' : task.priority >= 2 ? 'text-amber-400' : 'text-[#8E96BD]';
+  const priorityColor = task.priority >= 4 ? 'text-red-500' : task.priority >= 2 ? 'text-amber-500' : 'text-gray-400';
   return (
-    <div className="glass rounded-xl p-3 space-y-2 hover:bg-white/[0.07] transition-colors">
+    <div className="rounded-xl p-3 space-y-2 transition-all hover:-translate-y-0.5 cursor-pointer" style={{ background: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.6)', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
       <div className="flex items-start justify-between gap-2">
-        <p className="text-sm font-medium leading-snug" style={{ color: '#E6E8F2' }}>{task.title}</p>
-        <AlertCircle className={clsx('w-3.5 h-3.5 flex-shrink-0', priorityColor)} />
+        <p className="text-sm font-medium leading-snug text-gray-800">{task.title}</p>
+        <AlertCircle className={clsx('w-3.5 h-3.5 flex-shrink-0 mt-0.5', priorityColor)} />
       </div>
-      {task.description && <p className="text-xs line-clamp-2" style={{ color: '#C2C7DC' }}>{task.description}</p>}
+      {task.description && <p className="text-xs line-clamp-2 text-gray-500">{task.description}</p>}
       <div className="flex items-center justify-between text-xs">
-        <span style={{ color: '#5A659E' }}>
+        <span className="text-gray-400">
           {task.assignee ? `${task.assignee.firstName} ${task.assignee.lastName[0]}.` : 'Non assigné'}
         </span>
         {task.status !== 'COMPLETED' && (
           <button
             onClick={onAdvance}
-            className="text-xs hover:text-[#F5E8B8]"
-            style={{ color: '#D4AF37' }}
+            className="text-xs font-medium text-amber-600 hover:text-amber-700 transition-colors"
           >
             {task.status === 'PENDING' ? 'Démarrer' : 'Terminer'} →
           </button>
@@ -151,13 +150,12 @@ function CreateTaskModal({
       >
         <GlassInput label="Titre" value={title} onChange={(e) => setTitle(e.target.value)} required />
         <div className="w-full">
-          <label className="block text-sm font-medium mb-1.5" style={{ color: '#C2C7DC' }}>Description</label>
+          <label className="block text-sm font-medium mb-1.5 text-gray-700">Description</label>
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             rows={3}
-            className="w-full px-4 py-2.5 rounded-xl glass focus:outline-none focus:ring-2 focus:ring-[rgba(212,175,55,0.5)]"
-            style={{ color: '#E6E8F2' }}
+            className="w-full px-4 py-2.5 rounded-xl text-gray-800 text-sm bg-white/80 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-400 transition-all"
           />
         </div>
         <div className="grid grid-cols-2 gap-3">

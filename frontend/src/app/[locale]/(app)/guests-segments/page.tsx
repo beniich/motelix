@@ -33,7 +33,7 @@ export default function GuestSegmentsPage() {
     queryFn: () => segmentationApi.getSegments(),
   });
   
-  if (isLoading || !data) return <div className="p-8 text-midnight-200">Chargement…</div>;
+  if (isLoading || !data) return <div className="p-8 text-gray-400">Chargement…</div>;
   
   const formatCurrency = (v: number) => new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(v);
   
@@ -47,8 +47,8 @@ export default function GuestSegmentsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-display font-semibold text-midnight-50">Segmentation Clients (RFM)</h1>
-        <p className="mt-1 text-sm text-midnight-200">
+        <h1 className="text-4xl font-light tracking-tight text-gray-900">Segmentation Clients (RFM)</h1>
+        <p className="mt-1 text-sm text-gray-500">
           Analyse de la base clients et recommandations d'actions marketing
         </p>
       </div>
@@ -57,15 +57,15 @@ export default function GuestSegmentsPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
           <GlassCard>
-            <h2 className="text-sm font-semibold text-midnight-100 mb-4">Revenu généré par segment</h2>
+            <h2 className="text-sm font-semibold text-gray-700 mb-4">Revenu généré par segment</h2>
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={chartData} layout="vertical">
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
-                  <XAxis type="number" stroke="#8E96BD" fontSize={11} tickFormatter={(v) => `${v / 1000}k€`} />
-                  <YAxis type="category" dataKey="name" stroke="#8E96BD" fontSize={11} width={80} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.06)" />
+                  <XAxis type="number" stroke="#9ca3af" fontSize={11} tickFormatter={(v) => `${v / 1000}k€`} />
+                  <YAxis type="category" dataKey="name" stroke="#9ca3af" fontSize={11} width={80} />
                   <Tooltip
-                    contentStyle={{ background: '#0A0E27', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8 }}
+                    contentStyle={{ background: 'rgba(255,255,255,0.95)', border: '1px solid rgba(0,0,0,0.08)', borderRadius: 8, boxShadow: '0 4px 16px rgba(0,0,0,0.08)', color: '#1a1a1a' }}
                     formatter={(((value: number, name: string) => [
                       name === 'Revenu' ? formatCurrency(value) : value, 
                       name
@@ -100,10 +100,10 @@ export default function GuestSegmentsPage() {
       
       {/* Liste des profils */}
       <GlassCard>
-        <h2 className="text-sm font-semibold text-midnight-100 mb-4">Base Clients Actionnable</h2>
+        <h2 className="text-sm font-semibold text-gray-700 mb-4">Base Clients Actionnable</h2>
         <div className="overflow-x-auto">
-          <table className="w-full text-sm text-left text-midnight-200">
-            <thead className="text-xs uppercase bg-white/5 text-midnight-300">
+          <table className="w-full text-sm text-left text-gray-600">
+            <thead className="text-xs uppercase text-gray-500" style={{ background: 'rgba(0,0,0,0.03)' }}>
               <tr>
                 <th className="px-4 py-3 rounded-tl-lg">Client</th>
                 <th className="px-4 py-3">Segment</th>
@@ -117,7 +117,7 @@ export default function GuestSegmentsPage() {
               {data.guests.slice(0, 50).map((g: any) => {
                 const Icon = SEGMENT_ICONS[g.segment] || Users;
                 return (
-                  <tr key={g.guestId} className="hover:bg-white/[0.02] transition-colors">
+                  <tr key={g.guestId} className="border-b border-gray-50 hover:bg-white/60 transition-colors">
                     <td className="px-4 py-3 font-medium text-midnight-50">
                       {g.firstName} {g.lastName}
                     </td>
@@ -128,13 +128,13 @@ export default function GuestSegmentsPage() {
                       </div>
                     </td>
                     <td className="px-4 py-3">{g.totalStays}</td>
-                    <td className="px-4 py-3 font-medium text-midnight-50">{formatCurrency(g.totalRevenue)}</td>
+                    <td className="px-4 py-3 font-medium text-gray-900">{formatCurrency(g.totalRevenue)}</td>
                     <td className="px-4 py-3">
                       {g.daysSinceLastStay !== null ? `Il y a ${g.daysSinceLastStay}j` : '-'}
                     </td>
                     <td className="px-4 py-3">
                       {g.recommendedActions[0] && (
-                        <span className="inline-block px-2 py-1 rounded bg-white/5 border border-white/10 text-xs">
+                        <span className="inline-block px-2 py-1 rounded-lg text-xs text-gray-600" style={{ background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.06)' }}>
                           💡 {g.recommendedActions[0]}
                         </span>
                       )}
