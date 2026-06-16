@@ -41,8 +41,8 @@ export default function AdminPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-display font-semibold" style={{ color: '#E6E8F2' }}>Gestion de l'équipe</h1>
-          <p className="mt-1 text-sm" style={{ color: '#8E96BD' }}>{data?.pagination.total ?? 0} membres</p>
+          <h1 className="text-4xl font-light tracking-tight text-gray-900">Gestion de l&apos;équipe</h1>
+          <p className="mt-1 text-sm text-gray-500">{data?.pagination.total ?? 0} membres</p>
         </div>
         <GradientButton leftIcon={<Plus className="w-4 h-4" />} onClick={() => setOpen(true)} variant="primary">
           Inviter un membre
@@ -53,7 +53,7 @@ export default function AdminPage() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-left text-xs uppercase tracking-wider border-b border-white/10" style={{ color: '#8E96BD' }}>
+              <tr className="text-left text-xs uppercase tracking-wider border-b border-gray-100 text-gray-500">
                 <th className="py-3 px-2">Nom</th>
                 <th className="py-3 px-2">Email</th>
                 <th className="py-3 px-2">Rôle</th>
@@ -63,9 +63,9 @@ export default function AdminPage() {
             </thead>
             <tbody>
               {data?.items.map((u) => (
-                <tr key={u.id} className="border-b border-white/5 hover:bg-white/[0.02]">
-                  <td className="py-3 px-2" style={{ color: '#E6E8F2' }}>{u.firstName} {u.lastName}</td>
-                  <td className="py-3 px-2" style={{ color: '#C2C7DC' }}>{u.email}</td>
+                <tr key={u.id} className="border-b border-gray-50 hover:bg-white/60 transition-colors">
+                  <td className="py-3 px-2 font-medium text-gray-900">{u.firstName} {u.lastName}</td>
+                  <td className="py-3 px-2 text-gray-600">{u.email}</td>
                   <td className="py-3 px-2">
                     <Badge variant={u.role === 'ADMIN' ? 'gold' : u.role === 'MANAGER' ? 'info' : 'default'}>
                       {t(`roles.${u.role}`)}
@@ -77,14 +77,12 @@ export default function AdminPage() {
                     </Badge>
                   </td>
                   <td className="py-3 px-2 text-right space-x-2">
-                    <button onClick={() => setEditing(u)} className="text-xs hover:text-[#3B82F6]" style={{ color: '#8B5CF6' }}>
+                    <button onClick={() => setEditing(u)} className="text-xs font-medium text-blue-600 hover:text-blue-700 transition-colors">
                       Modifier
                     </button>
                     {u.isActive && (
                       <button
-                        onClick={() => deactivateMut.mutate(u.id)}
-                        className="text-xs hover:text-[#FCA5A5]"
-                        style={{ color: '#F87171' }}
+                        className="text-xs font-medium text-red-500 hover:text-red-600 transition-colors"
                       >
                         Désactiver
                       </button>

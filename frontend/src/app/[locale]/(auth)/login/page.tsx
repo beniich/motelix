@@ -64,7 +64,7 @@ export default function LoginPage() {
               <Sparkles className="w-5 h-5 text-white" />
             </div>
             <span
-              className="text-2xl font-semibold gradient-text-gold"
+              className="text-2xl font-semibold text-gray-900"
               style={{ fontFamily: 'var(--font-playfair), serif' }}
             >
               {t('common.appName')}
@@ -76,12 +76,12 @@ export default function LoginPage() {
           {/* Header */}
           <div className="text-center">
             <h1
-              className="text-2xl font-semibold"
-              style={{ fontFamily: 'var(--font-playfair), serif', color: '#E6E8F2' }}
+              className="text-3xl font-light tracking-tight text-gray-900"
+              style={{ fontFamily: 'var(--font-playfair), serif' }}
             >
               {t('auth.welcomeBack')}
             </h1>
-            <p className="mt-1 text-sm" style={{ color: '#8E96BD' }}>
+            <p className="mt-1 text-sm text-gray-500">
               {t('auth.loginSubtitle')}
             </p>
           </div>
@@ -133,19 +133,11 @@ export default function LoginPage() {
             </GradientButton>
           </form>
 
-          {/* Demo hint */}
-          <div
-            className="pt-4 text-center text-xs space-y-1"
-            style={{
-              borderTop: '1px solid rgba(255,255,255,0.1)',
-              color: '#5A659E',
-            }}
-          >
-            <p>Compte démo :</p>
+          <div className="pt-4 text-center text-xs space-y-1 text-gray-500 border-t border-gray-100">
             <p>
-              <span style={{ color: '#D4AF37' }}>admin@sapphire.luxury</span>
+              <span className="font-medium text-gray-700">admin@sapphire.luxury</span>
               {' / '}
-              <span style={{ color: '#D4AF37' }}>Password123!</span>
+              <span className="font-medium text-gray-700">Password123!</span>
             </p>
           </div>
         </GlassCard>

@@ -41,8 +41,8 @@ export default function InvoicesPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-display font-semibold text-midnight-50">Factures</h1>
-          <p className="mt-1 text-sm text-midnight-200">{data?.pagination.total ?? 0} facture(s)</p>
+          <h1 className="text-4xl font-light tracking-tight text-gray-900">Factures</h1>
+          <p className="mt-1 text-sm text-gray-500">{data?.pagination.total ?? 0} facture(s)</p>
         </div>
         <GradientButton leftIcon={<Plus className="w-4 h-4" />} onClick={() => setCreateOpen(true)}>
           Nouvelle facture
@@ -64,7 +64,7 @@ export default function InvoicesPage() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-left text-xs uppercase tracking-wider text-midnight-200 border-b border-white/10">
+              <tr className="text-left text-xs uppercase tracking-wider text-gray-500 border-b border-gray-100">
                 <th className="py-3 px-2">Réf</th>
                 <th className="py-3 px-2">Guest</th>
                 <th className="py-3 px-2">Réf résa</th>
@@ -79,18 +79,18 @@ export default function InvoicesPage() {
                 <tr
                   key={inv.id}
                   onClick={() => setSelected(inv)}
-                  className="border-b border-white/5 hover:bg-white/[0.02] cursor-pointer"
+                  className="border-b border-gray-50 hover:bg-white/60 cursor-pointer transition-colors"
                 >
-                  <td className="py-3 px-2 font-mono text-xs text-gold-400">{inv.reference}</td>
-                  <td className="py-3 px-2 text-midnight-50">{inv.guest.lastName} {inv.guest.firstName}</td>
-                  <td className="py-3 px-2 text-midnight-200 font-mono text-xs">{inv.reservation.reference}</td>
-                  <td className="py-3 px-2 text-midnight-50 font-semibold">{formatMoney(inv.totalCents, inv.currency)}</td>
-                  <td className="py-3 px-2 text-emerald-300">{formatMoney(inv.paidCents, inv.currency)}</td>
+                  <td className="py-3 px-2 font-mono text-xs font-medium text-amber-600">{inv.reference}</td>
+                  <td className="py-3 px-2 font-medium text-gray-900">{inv.guest.lastName} {inv.guest.firstName}</td>
+                  <td className="py-3 px-2 text-gray-500 font-mono text-xs">{inv.reservation.reference}</td>
+                  <td className="py-3 px-2 text-gray-900 font-semibold">{formatMoney(inv.totalCents, inv.currency)}</td>
+                  <td className="py-3 px-2 font-medium text-emerald-600">{formatMoney(inv.paidCents, inv.currency)}</td>
                   <td className="py-3 px-2">
                     <Badge variant={STATUS_LABELS[inv.status]?.variant}>{STATUS_LABELS[inv.status]?.label}</Badge>
                   </td>
                   <td className="py-3 px-2 text-right">
-                    <button className="text-xs text-sapphire-400">Voir →</button>
+                    <button className="text-xs font-medium text-blue-600 hover:text-blue-700 transition-colors">Voir →</button>
                   </td>
                 </tr>
               ))}

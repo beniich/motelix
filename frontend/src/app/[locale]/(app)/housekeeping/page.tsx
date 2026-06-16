@@ -95,11 +95,11 @@ export default function HousekeepingListPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-display font-semibold text-white flex items-center gap-2">
-            <Brush className="w-8 h-8 text-[#D4AF37]" />
+          <h1 className="text-4xl font-light tracking-tight text-gray-900 flex items-center gap-2">
+            <Brush className="w-8 h-8 text-amber-500" />
             {t('housekeeping.title')}
           </h1>
-          <p className="text-sm text-[#8E96BD] mt-1">
+          <p className="text-sm text-gray-500 mt-1">
             {isStaff ? t('housekeeping.myTasks') : t('housekeeping.allTasks')}
           </p>
         </div>
@@ -119,48 +119,48 @@ export default function HousekeepingListPage() {
       {/* Stats Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <GlassCard className="p-4 flex items-center gap-4 relative overflow-hidden group hover:scale-[1.02] transition-transform duration-300">
-          <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
-            <ClipboardList className="w-5 h-5 text-[#8E96BD]" />
+          <div className="w-10 h-10 rounded-xl bg-white/70 border border-gray-200 flex items-center justify-center shrink-0">
+            <ClipboardList className="w-5 h-5 text-gray-500" />
           </div>
           <div>
-            <p className="text-xs text-[#8E96BD]">En Attente</p>
-            <h3 className="text-2xl font-semibold text-white mt-1">
+            <p className="text-xs text-gray-500">En Attente</p>
+            <h3 className="text-2xl font-semibold text-gray-900 mt-1">
               {statsLoading ? '...' : stats?.pending ?? 0}
             </h3>
           </div>
         </GlassCard>
 
         <GlassCard className="p-4 flex items-center gap-4 relative overflow-hidden group hover:scale-[1.02] transition-transform duration-300">
-          <div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center shrink-0">
-            <Clock className="w-5 h-5 text-blue-400" />
+          <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center shrink-0">
+            <Clock className="w-5 h-5 text-blue-500" />
           </div>
           <div>
-            <p className="text-xs text-[#8E96BD]">En Cours</p>
-            <h3 className="text-2xl font-semibold text-white mt-1">
+            <p className="text-xs text-gray-500">En Cours</p>
+            <h3 className="text-2xl font-semibold text-gray-900 mt-1">
               {statsLoading ? '...' : stats?.inProgress ?? 0}
             </h3>
           </div>
         </GlassCard>
 
         <GlassCard className="p-4 flex items-center gap-4 relative overflow-hidden group hover:scale-[1.02] transition-transform duration-300">
-          <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shrink-0">
-            <CheckCircle className="w-5 h-5 text-emerald-400" />
+          <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center shrink-0">
+            <CheckCircle className="w-5 h-5 text-emerald-500" />
           </div>
           <div>
-            <p className="text-xs text-[#8E96BD]">Fait Aujourd'hui</p>
-            <h3 className="text-2xl font-semibold text-white mt-1">
+            <p className="text-xs text-gray-500">Fait Aujourd'hui</p>
+            <h3 className="text-2xl font-semibold text-gray-900 mt-1">
               {statsLoading ? '...' : stats?.completedToday ?? 0}
             </h3>
           </div>
         </GlassCard>
 
         <GlassCard className="p-4 flex items-center gap-4 relative overflow-hidden group hover:scale-[1.02] transition-transform duration-300">
-          <div className="w-10 h-10 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center shrink-0">
-            <AlertTriangle className="w-5 h-5 text-red-400" />
+          <div className="w-10 h-10 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center shrink-0">
+            <AlertTriangle className="w-5 h-5 text-red-500" />
           </div>
           <div>
-            <p className="text-xs text-[#8E96BD]">En Retard</p>
-            <h3 className="text-2xl font-semibold text-white mt-1">
+            <p className="text-xs text-gray-500">En Retard</p>
+            <h3 className="text-2xl font-semibold text-gray-900 mt-1">
               {statsLoading ? '...' : stats?.overdue ?? 0}
             </h3>
           </div>
@@ -175,7 +175,7 @@ export default function HousekeepingListPage() {
               placeholder="Rechercher une chambre (ex: 101)..."
               value={searchRoom}
               onChange={(e) => setSearchRoom(e.target.value)}
-              leftIcon={<Search className="w-4 h-4 text-[#8E96BD]" />}
+              leftIcon={<Search className="w-4 h-4 text-gray-400" />}
             />
           </div>
           
@@ -213,12 +213,12 @@ export default function HousekeepingListPage() {
 
           {!isStaff && (
             <div className="flex items-center justify-end">
-              <label className="flex items-center gap-2 text-sm text-[#C2C7DC] cursor-pointer">
+              <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={showOnlyMine}
                   onChange={(e) => setShowOnlyMine(e.target.checked)}
-                  className="rounded border-white/10 bg-white/5 text-purple-600 focus:ring-purple-500 focus:ring-offset-[#0A0E27]"
+                  className="rounded border-gray-200 bg-white text-blue-600 focus:ring-blue-500 focus:ring-offset-white"
                 />
                 Voir uniquement mes tâches
               </label>
@@ -230,11 +230,11 @@ export default function HousekeepingListPage() {
       {/* Task List (Mobile-First Cards) */}
       <div className="space-y-3">
         {isLoading ? (
-          <GlassCard className="p-8 text-center text-[#8E96BD]">
+          <GlassCard className="p-8 text-center text-gray-500">
             {t('common.appName')}... {t('common.loading')}
           </GlassCard>
         ) : filteredTasks?.length === 0 ? (
-          <GlassCard className="p-8 text-center text-[#8E96BD]">
+          <GlassCard className="p-8 text-center text-gray-500">
             Aucune tâche trouvée
           </GlassCard>
         ) : (
@@ -243,30 +243,30 @@ export default function HousekeepingListPage() {
             
             return (
               <Link key={task.id} href={`/housekeeping/${task.id}`} className="block">
-                <GlassCard className="p-4 hover:bg-white/[0.03] transition-colors duration-200 border-l-4 border-l-transparent hover:border-l-[#D4AF37]">
+                <GlassCard className="p-4 hover:bg-white/60 transition-colors duration-200 border-l-4 border-l-transparent hover:border-l-blue-500">
                   <div className="flex items-center justify-between gap-4">
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <span className="text-lg font-mono font-semibold text-white">
+                        <span className="text-lg font-mono font-semibold text-gray-900">
                           Chambre {task.room.number}
                         </span>
-                        <span className="text-xs text-[#8E96BD] bg-white/5 px-2 py-0.5 rounded-full">
+                        <span className="text-xs text-gray-500 bg-white/70 px-2 py-0.5 rounded-full border border-gray-100">
                           Étage {task.room.floor} • {task.room.type}
                         </span>
                         {isTaskOverdue && (
-                          <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-red-500/20 text-red-400 border border-red-500/30 flex items-center gap-1">
+                          <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-red-50 text-red-600 border border-red-100 flex items-center gap-1">
                             <Clock className="w-3 h-3" /> En Retard
                           </span>
                         )}
                       </div>
                       
-                      <div className="flex items-center gap-2 mt-2 text-xs text-[#C2C7DC]">
+                      <div className="flex items-center gap-2 mt-2 text-xs text-gray-500">
                         <HousekeepingTypeBadge type={task.type} />
-                        <span className="text-[#8E96BD]">•</span>
+                        <span className="text-gray-300">•</span>
                         <span>Priorité {task.priority}</span>
                         {task.assignee && (
                           <>
-                            <span className="text-[#8E96BD]">•</span>
+                            <span className="text-gray-300">•</span>
                             <span className="truncate">
                               Assigné à: {task.assignee.firstName} {task.assignee.lastName[0]}.
                             </span>
@@ -277,12 +277,12 @@ export default function HousekeepingListPage() {
 
                     <div className="flex items-center gap-3 shrink-0">
                       <HousekeepingStatusBadge status={task.status} />
-                      <ChevronRight className="w-5 h-5 text-[#8E96BD]" />
+                      <ChevronRight className="w-5 h-5 text-gray-400" />
                     </div>
                   </div>
                   
                   {task.dueAt && (
-                    <div className="mt-2.5 flex items-center gap-1.5 text-xs text-[#8E96BD]">
+                    <div className="mt-2.5 flex items-center gap-1.5 text-xs text-gray-500">
                       <Clock className="w-3.5 h-3.5" />
                       <span>Échéance : {new Date(task.dueAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} ({new Date(task.dueAt).toLocaleDateString()})</span>
                     </div>

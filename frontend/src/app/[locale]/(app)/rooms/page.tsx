@@ -57,10 +57,10 @@ export default function RoomsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-display font-semibold text-midnight-50" style={{ color: '#E6E8F2' }}>
+          <h1 className="text-4xl font-light tracking-tight text-gray-900">
             {t('rooms.title')}
           </h1>
-          <p className="mt-1 text-sm text-midnight-200" style={{ color: '#8E96BD' }}>
+          <p className="mt-1 text-sm text-gray-500">
             {data?.pagination.total ?? 0} chambres
           </p>
         </div>
@@ -99,7 +99,7 @@ export default function RoomsPage() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-left text-xs uppercase tracking-wider border-b border-white/10" style={{ color: '#8E96BD' }}>
+              <tr className="text-left text-xs uppercase tracking-wider border-b border-gray-100 text-gray-500">
                 <th className="py-3 px-2">{t('rooms.number')}</th>
                 <th className="py-3 px-2">{t('rooms.floor')}</th>
                 <th className="py-3 px-2">{t('rooms.type')}</th>
@@ -112,21 +112,20 @@ export default function RoomsPage() {
               {isLoading ? (
                 <tr><td colSpan={6} className="py-8 text-center" style={{ color: '#8E96BD' }}>{t('common.loading')}</td></tr>
               ) : filtered?.length === 0 ? (
-                <tr><td colSpan={6} className="py-8 text-center" style={{ color: '#8E96BD' }}>Aucune chambre</td></tr>
+                <tr><td colSpan={6} className="py-8 text-center text-gray-400">Aucune chambre</td></tr>
               ) : (
                 filtered?.map((room) => (
-                  <tr key={room.id} className="border-b border-white/5 hover:bg-white/[0.02]">
-                    <td className="py-3 px-2 font-mono" style={{ color: '#E6E8F2' }}>{room.number}</td>
-                    <td className="py-3 px-2" style={{ color: '#C2C7DC' }}>{room.floor}</td>
-                    <td className="py-3 px-2" style={{ color: '#C2C7DC' }}>{room.type}</td>
-                    <td className="py-3 px-2 font-medium" style={{ color: '#D4AF37' }}>{room.price}€</td>
+                  <tr key={room.id} className="border-b border-gray-50 hover:bg-white/60 transition-colors">
+                    <td className="py-3 px-2 font-mono font-medium text-gray-900">{room.number}</td>
+                    <td className="py-3 px-2 text-gray-600">{room.floor}</td>
+                    <td className="py-3 px-2 text-gray-600">{room.type}</td>
+                    <td className="py-3 px-2 font-semibold text-amber-600">{room.price}€</td>
                     <td className="py-3 px-2"><RoomStatusBadge status={room.status} /></td>
                     {canEdit && (
                       <td className="py-3 px-2 text-right space-x-2">
                         <button
                           onClick={() => setEditing(room)}
-                          className="text-xs hover:text-[#3B82F6]"
-                          style={{ color: '#8B5CF6' }}
+                          className="text-xs font-medium text-blue-600 hover:text-blue-700 transition-colors"
                         >
                           {t('common.edit')}
                         </button>
@@ -137,8 +136,7 @@ export default function RoomsPage() {
                                 deleteMut.mutate(room.id);
                               }
                             }}
-                            className="text-xs hover:text-red-300"
-                            style={{ color: '#F87171' }}
+                            className="text-xs font-medium text-red-500 hover:text-red-600 transition-colors"
                           >
                             {t('common.delete')}
                           </button>
