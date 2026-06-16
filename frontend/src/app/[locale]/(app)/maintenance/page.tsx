@@ -1,182 +1,153 @@
 'use client';
 
-import { Settings, Droplet, Snowflake, Zap, AlertTriangle, CheckCircle2, Clock } from 'lucide-react';
-
-function WireframeSVG() {
-  return (
-    <div className="w-full h-[400px] flex items-center justify-center relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-50 to-white/50 border border-blue-100/50">
-      <svg viewBox="0 0 800 400" className="w-full h-full opacity-60" preserveAspectRatio="xMidYMid slice">
-        <defs>
-          <linearGradient id="pipe-blue" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.5" />
-            <stop offset="100%" stopColor="#2563eb" stopOpacity="0.8" />
-          </linearGradient>
-          <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#94a3b8" strokeWidth="0.5" opacity="0.3" />
-          </pattern>
-        </defs>
-        {/* Background Grid */}
-        <rect width="800" height="400" fill="url(#grid)" />
-        
-        <g stroke="#64748b" strokeWidth="1" fill="none">
-          {/* Main structure isometric lines */}
-          <path d="M 100,200 L 400,50 L 700,200 L 400,350 Z" />
-          <path d="M 100,200 L 100,300 L 400,450 L 700,300 L 700,200" />
-          <path d="M 400,350 L 400,450" />
-
-          {/* Internal walls */}
-          <path d="M 250,125 L 250,225 M 550,125 L 550,225 M 400,200 L 400,300" strokeDasharray="4 4" />
-          <path d="M 250,125 L 400,200 L 550,125" strokeDasharray="4 4" />
-        </g>
-
-        {/* HVAC Ducts (thick lines) */}
-        <g stroke="#3b82f6" strokeWidth="6" fill="none" opacity="0.7">
-          <path d="M 150,180 L 300,105 L 350,130 L 450,80 L 600,155" />
-          <path d="M 300,105 L 300,150 L 200,200" />
-          <path d="M 450,80 L 450,120 L 550,170" />
-        </g>
-
-        {/* Plumbing lines (medium lines) */}
-        <g stroke="#0ea5e9" strokeWidth="3" fill="none" opacity="0.6">
-          <path d="M 180,250 L 350,165 L 350,220 L 450,270 L 450,180 L 650,80" />
-        </g>
-
-        {/* Electrical lines (thin dashed lines) */}
-        <g stroke="#eab308" strokeWidth="1.5" fill="none" strokeDasharray="3 3">
-          <path d="M 200,120 L 400,20 L 600,120" />
-          <path d="M 400,20 L 400,150" />
-        </g>
-
-        {/* Mechanical Units */}
-        <g stroke="#475569" strokeWidth="1.5" fill="#f8fafc">
-          {/* Main HVAC Unit */}
-          <rect x="330" y="110" width="40" height="30" transform="skewY(26.5)" />
-          {/* Pump */}
-          <circle cx="200" cy="220" r="15" />
-          {/* Elevator shaft */}
-          <rect x="500" y="180" width="40" height="100" />
-          <line x1="520" y1="180" x2="520" y2="280" />
-        </g>
-      </svg>
-    </div>
-  );
-}
-
 export default function MaintenancePage() {
   return (
-    <div className="space-y-6 max-w-[1600px] mx-auto px-4 py-4 text-[#1a1a1a] font-sans">
+    <div className="space-y-6 max-w-[1500px] mx-auto px-4 py-4 text-slate-800 font-sans">
       <header className="flex justify-between items-end">
         <div>
-          <h1 className="text-4xl md:text-5xl font-light tracking-tight flex items-center gap-3">
-            Zafir 3D Maintenance
-          </h1>
-          <p className="text-[#5b6472] mt-1 text-sm">Zafir Command Center: Pôle Tech.</p>
+          <h1 className="text-4xl font-semibold mb-1">Zafir 3D Maintenance</h1>
+          <p className="text-lg text-slate-700">Zafir Command Center: Pôle Tech.</p>
         </div>
-        <p className="text-sm font-medium text-gray-600">October 26, 2024, 10:30 AM</p>
+        <p className="font-mono text-sm text-slate-600 bg-white/60 backdrop-blur-sm px-3 py-1 rounded-md border border-white/50 shadow-sm">October 26, 2024, 10:30 AM</p>
       </header>
 
+      {/* 3D Wireframe Blueprint */}
+      <section className="rounded-3xl overflow-hidden shadow-xl" style={{ background: 'rgba(255,255,255,0.55)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.6)', boxShadow: '0 10px 40px -10px rgba(0,0,0,0.08)' }}>
+        <div className="p-6 h-[420px] relative" style={{
+          backgroundImage: 'linear-gradient(rgba(0,82,204,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(0,82,204,0.06) 1px, transparent 1px)',
+          backgroundSize: '20px 20px',
+          backgroundColor: 'rgba(248,250,252,0.6)'
+        }}>
+          <svg viewBox="0 0 800 400" className="w-full h-full" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <linearGradient id="wireGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#0052cc" stopOpacity="0.85"/>
+                <stop offset="100%" stopColor="#0052cc" stopOpacity="0.55"/>
+              </linearGradient>
+            </defs>
+            <g stroke="url(#wireGrad)" strokeWidth="1.2" fill="none">
+              {/* Outer building box - floor & roof */}
+              <path d="M 100 280 L 700 280 L 750 240 L 150 240 Z" strokeWidth="1.5"/>
+              <path d="M 100 100 L 700 100 L 750 60 L 150 60 Z" strokeWidth="1.5"/>
+              {/* Walls */}
+              <line x1="100" y1="100" x2="100" y2="280"/>
+              <line x1="700" y1="100" x2="700" y2="280"/>
+              <line x1="150" y1="60" x2="150" y2="240"/>
+              <line x1="750" y1="60" x2="750" y2="240"/>
+              {/* Top edges */}
+              <line x1="100" y1="100" x2="150" y2="60"/>
+              <line x1="700" y1="100" x2="750" y2="60"/>
+              <line x1="100" y1="280" x2="150" y2="240"/>
+              <line x1="700" y1="280" x2="750" y2="240"/>
+              {/* Internal walls */}
+              <line x1="300" y1="100" x2="300" y2="280"/>
+              <line x1="500" y1="100" x2="500" y2="280"/>
+              <line x1="100" y1="190" x2="700" y2="190"/>
+              {/* HVAC Pipes */}
+              <g stroke="#0052cc" strokeWidth="2" strokeDasharray="3 2">
+                <path d="M 120 130 L 120 200 L 280 200 L 280 270 L 480 270 L 480 150 L 680 150"/>
+                <path d="M 150 80 L 150 180 L 320 180 L 320 250 L 520 250 L 520 120 L 720 120"/>
+              </g>
+              {/* Water tank pump A */}
+              <ellipse cx="180" cy="220" rx="20" ry="6"/>
+              <line x1="160" y1="220" x2="160" y2="200"/>
+              <line x1="200" y1="220" x2="200" y2="200"/>
+              <ellipse cx="180" cy="200" rx="20" ry="6"/>
+              {/* Tank 01 */}
+              <ellipse cx="380" cy="260" rx="25" ry="7"/>
+              <line x1="355" y1="260" x2="355" y2="240"/>
+              <line x1="405" y1="260" x2="405" y2="240"/>
+              <ellipse cx="380" cy="240" rx="25" ry="7"/>
+              {/* HVAC Units */}
+              <rect x="220" y="92" width="50" height="20"/>
+              <rect x="220" y="86" width="50" height="6"/>
+              <line x1="240" y1="86" x2="240" y2="92"/>
+              <line x1="250" y1="86" x2="250" y2="92"/>
+              <rect x="420" y="92" width="50" height="20"/>
+              <rect x="420" y="86" width="50" height="6"/>
+              <rect x="580" y="92" width="60" height="20"/>
+              <rect x="580" y="86" width="60" height="6"/>
+              {/* Electrical lines */}
+              <g stroke="#0052cc" strokeWidth="1" strokeDasharray="2 2" opacity="0.7">
+                <path d="M 250 130 L 250 80 L 600 80 L 600 130"/>
+                <path d="M 100 160 L 700 160" strokeDasharray="4 3"/>
+              </g>
+              {/* Elevator */}
+              <rect x="600" y="200" width="40" height="80"/>
+              <line x1="600" y1="220" x2="640" y2="220"/>
+              <line x1="600" y1="240" x2="640" y2="240"/>
+              <line x1="600" y1="260" x2="640" y2="260"/>
+              {/* Doors */}
+              <line x1="300" y1="160" x2="300" y2="180"/>
+              <line x1="500" y1="220" x2="500" y2="240"/>
+            </g>
+            {/* Annotations */}
+            <g fill="#0052cc" fontFamily="monospace" fontSize="8" opacity="0.7">
+              <text x="200" y="55">HVAC-01</text>
+              <text x="430" y="55">HVAC-02</text>
+              <text x="595" y="55">HVAC-03</text>
+              <text x="160" y="195">PUMP-A</text>
+              <text x="360" y="235">TANK-01</text>
+              <text x="610" y="195">ELEV</text>
+            </g>
+          </svg>
+        </div>
+      </section>
+
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        
-        {/* Left Column (Blueprint & Tasks) */}
-        <div className="lg:col-span-8 flex flex-col gap-6">
-          
-          {/* 3D Blueprint Container */}
-          <section className="rounded-3xl p-4 md:p-6" style={{ background: 'rgba(255,255,255,0.55)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.6)', boxShadow: '0 10px 40px -10px rgba(0,0,0,0.08)' }}>
-            <WireframeSVG />
-          </section>
-
-          {/* Industrial Task Lists */}
-          <section className="rounded-3xl p-6" style={{ background: 'rgba(255,255,255,0.55)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.6)', boxShadow: '0 10px 40px -10px rgba(0,0,0,0.08)' }}>
-            <h2 className="text-lg font-semibold text-gray-800 mb-4">Industrial Task Lists</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              
-              <div className="bg-white/70 backdrop-blur-md rounded-2xl p-4 shadow-sm border border-white/60">
-                <div className="flex items-start gap-3">
-                  <AlertTriangle className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
-                  <div>
-                    <p className="font-semibold text-gray-800 text-sm leading-tight">HVAC Filter<br/>Replacement</p>
-                    <p className="text-xs text-amber-600 font-medium mt-2">(Due: Today)</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white/70 backdrop-blur-md rounded-2xl p-4 shadow-sm border border-white/60">
-                <div className="flex items-start gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
-                  <div>
-                    <p className="font-semibold text-gray-800 text-sm leading-tight">Water Pump Check</p>
-                    <p className="text-xs text-emerald-600 font-medium mt-2">(Completed)</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white/70 backdrop-blur-md rounded-2xl p-4 shadow-sm border border-white/60">
-                <div className="flex items-start gap-3">
-                  <Clock className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" />
-                  <div>
-                    <p className="font-semibold text-gray-800 text-sm leading-tight">Elevator<br/>Maintenance</p>
-                    <p className="text-xs text-blue-600 font-medium mt-2">(Scheduled: Tomorrow)</p>
-                  </div>
-                </div>
-              </div>
-
+        {/* Task Lists */}
+        <section className="lg:col-span-8 rounded-3xl p-5" style={{ background: 'rgba(255,255,255,0.55)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.6)' }}>
+          <h3 className="text-xl font-medium mb-4">Industrial Task Lists</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="rounded-2xl p-4 flex flex-col justify-between h-28" style={{ background: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.5)', boxShadow: '0 4px 12px rgba(0,0,0,0.03)' }}>
+              <h4 className="font-medium text-slate-800 leading-tight">HVAC Filter<br/>Replacement</h4>
+              <span className="font-mono text-sm text-blue-600 mt-2 block">(Due: Today)</span>
             </div>
-          </section>
+            <div className="rounded-2xl p-4 flex flex-col justify-between h-28 opacity-75" style={{ background: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.5)', boxShadow: '0 4px 12px rgba(0,0,0,0.03)' }}>
+              <h4 className="font-medium text-slate-800 leading-tight">Water Pump Check</h4>
+              <span className="font-mono text-sm text-green-600 mt-2 block">(Completed)</span>
+            </div>
+            <div className="rounded-2xl p-4 flex flex-col justify-between h-28" style={{ background: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.5)', boxShadow: '0 4px 12px rgba(0,0,0,0.03)' }}>
+              <h4 className="font-medium text-slate-800 leading-tight">Elevator Maintenance</h4>
+              <span className="font-mono text-sm text-slate-500 mt-2 block">(Scheduled: Tomorrow)</span>
+            </div>
+          </div>
+        </section>
 
-        </div>
-
-        {/* Right Column (Status & Alerts) */}
+        {/* Right panel */}
         <div className="lg:col-span-4 flex flex-col gap-6">
-          
-          {/* System Health Status */}
-          <aside className="rounded-3xl p-6" style={{ background: 'rgba(255,255,255,0.55)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.6)', boxShadow: '0 10px 40px -10px rgba(0,0,0,0.08)' }}>
-            <h2 className="text-lg font-semibold text-gray-800 mb-4">System Health Status</h2>
-            <div className="space-y-4">
-              
-              <div className="flex items-center gap-3 p-3 bg-white/70 rounded-xl border border-white/50 shadow-sm">
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-blue-100">
-                  <Droplet className="w-4 h-4 text-blue-600" />
+          <section className="rounded-3xl p-5 flex-1" style={{ background: 'rgba(255,255,255,0.55)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.6)' }}>
+            <h3 className="text-xl font-medium mb-5">System Health Status</h3>
+            <div className="flex flex-col gap-3">
+              <div className="rounded-xl p-3 flex items-center gap-3" style={{ background: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.5)' }}>
+                <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600">
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
                 </div>
-                <span className="font-medium text-gray-800 text-sm">Plumbing: Optimal</span>
+                <span className="font-mono text-sm font-medium">Plumbing: Optimal</span>
               </div>
-
-              <div className="flex items-center gap-3 p-3 bg-white/70 rounded-xl border border-white/50 shadow-sm">
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-emerald-100">
-                  <Snowflake className="w-4 h-4 text-emerald-600" />
+              <div className="rounded-xl p-3 flex items-center gap-3" style={{ background: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.5)' }}>
+                <div className="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center text-green-600">
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
                 </div>
-                <span className="font-medium text-gray-800 text-sm">HVAC: 95% Efficiency</span>
+                <span className="font-mono text-sm font-medium">HVAC: 95% Efficiency</span>
               </div>
-
-              <div className="flex items-center gap-3 p-3 bg-white/70 rounded-xl border border-white/50 shadow-sm">
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-amber-100">
-                  <Zap className="w-4 h-4 text-amber-600" />
-             </div>
-                <span className="font-medium text-gray-800 text-sm">Electrical: Stable</span>
+              <div className="rounded-xl p-3 flex items-center gap-3" style={{ background: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.5)' }}>
+                <div className="w-10 h-10 rounded-lg bg-amber-100 flex items-center justify-center text-amber-600">
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                </div>
+                <span className="font-mono text-sm font-medium">Electrical: Stable</span>
               </div>
-
             </div>
-          </aside>
+          </section>
 
-          {/* Critical Alerts */}
-          <aside className="rounded-3xl p-6" style={{ background: 'rgba(255,255,255,0.55)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.6)', boxShadow: '0 10px 40px -10px rgba(0,0,0,0.08)' }}>
-            <h2 className="text-lg font-semibold text-gray-800 mb-4">Critical Alerts</h2>
-            <div className="space-y-3">
-              
-              <div className="p-3 bg-red-50/80 rounded-xl border border-red-100 shadow-sm flex items-start gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-red-500 mt-1.5 shrink-0" />
-                <span className="text-sm font-medium text-gray-800">Low Pressure in Water Zone 3</span>
-              </div>
-
-              <div className="p-3 bg-red-50/80 rounded-xl border border-red-100 shadow-sm flex items-start gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-red-500 mt-1.5 shrink-0" />
-                <span className="text-sm font-medium text-gray-800">HVAC Unit 4 Malfunction</span>
-              </div>
-
-            </div>
-          </aside>
-
+          <section className="rounded-3xl p-5" style={{ background: 'rgba(255,255,255,0.55)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.6)' }}>
+            <h3 className="text-xl font-medium mb-4">Critical Alerts</h3>
+            <ul className="flex flex-col gap-3">
+              <li className="font-mono text-sm bg-red-50/70 text-red-800 p-3 rounded-lg border border-red-100/60">Low Pressure in Water Zone 3</li>
+              <li className="font-mono text-sm bg-amber-50/70 text-amber-800 p-3 rounded-lg border border-amber-100/60">HVAC Unit 4 Malfunction</li>
+            </ul>
+          </section>
         </div>
-
       </div>
     </div>
   );
