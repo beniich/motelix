@@ -227,7 +227,7 @@ export default function DroneDashboard({ logs, onAddLog }: DroneDashboardProps) 
           // Progress along custom route
           let nextProgress = drone.routeProgress + (Math.random() * 3 + 1);
           let nextStatus = drone.status;
-          let nextBattery = Math.max(drone.battery - (Math.random() * 0.4), 1);
+          const nextBattery = Math.max(drone.battery - (Math.random() * 0.4), 1);
           let nextSpeed = drone.speed + Math.floor(Math.random() * 5 - 2);
           let nextAltitude = drone.altitude + Math.floor(Math.random() * 3 - 1);
 
