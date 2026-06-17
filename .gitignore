@@ -1,8 +1,52 @@
+# ===== Node =====
 node_modules/
-build/
 dist/
-coverage/
-.DS_Store
+.next/
+out/
+build/
+
+# ===== Env files (NEVER commit secrets) =====
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+# Keep .env.example (template) in git
+
+# ===== Database =====
+*.db
+*.sqlite
+*.sqlite3
+/backend/dev.db
+/backend/prod.db
+/backend/test.db
+
+# ===== Prisma =====
+/backend/prisma/migrations/
+
+# ===== Logs =====
 *.log
-.env*
-!.env.example
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ===== OS =====
+.DS_Store
+Thumbs.db
+*.swp
+
+# ===== IDE =====
+.vscode/settings.json
+.idea/
+
+# ===== Coverage =====
+coverage/
+.nyc_output/
+
+# ===== PWA =====
+public/sw.js
+public/workbox-*.js
+
+# ===== Uploads =====
+uploads/
+public/uploads/

@@ -1,21 +1,9 @@
 import { Router } from 'express';
-import { requireAuth } from '../domains/identity/auth/auth.middleware.js';
-import {
-  listGuests,
-  getGuest,
-  createGuest,
-  updateGuest,
-  deleteGuest,
-} from '../controllers/guests.controller.js';
+import guestDomainRouter from '../domains/hotel/guest/guest.routes.js';
 
 const router = Router();
 
-router.use(requireAuth);
-
-router.get('/', listGuests);
-router.get('/:id', getGuest);
-router.post('/', createGuest);
-router.patch('/:id', updateGuest);
-router.delete('/:id', deleteGuest);
+// Forward all requests to the domain router (PII-encrypted, RGPD-compliant)
+router.use('/', guestDomainRouter);
 
 export default router;

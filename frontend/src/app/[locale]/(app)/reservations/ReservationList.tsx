@@ -16,29 +16,29 @@ export default function ReservationList({ onEdit }: { onEdit: (res: Reservation)
   });
 
   if (isLoading) {
-    return <div className="p-8 text-center text-slate-400">Chargement des réservations...</div>;
+    return <div className="p-8 text-center text-gray-500">Chargement des réservations...</div>;
   }
 
   if (!data || data.items.length === 0) {
-    return <div className="p-8 text-center text-slate-400">Aucune réservation trouvée.</div>;
+    return <div className="p-8 text-center text-gray-500">Aucune réservation trouvée.</div>;
   }
 
   const getStatusColor = (status: string) => {
     switch(status) {
-      case 'CONFIRMED': return 'bg-blue-500/20 text-blue-400';
-      case 'CHECKED_IN': return 'bg-emerald-500/20 text-emerald-400';
-      case 'CHECKED_OUT': return 'bg-slate-500/20 text-slate-400';
-      case 'CANCELLED': return 'bg-rose-500/20 text-rose-400';
-      default: return 'bg-amber-500/20 text-amber-400'; // PENDING
+      case 'CONFIRMED': return 'bg-blue-100 text-blue-800';
+      case 'CHECKED_IN': return 'bg-emerald-100 text-emerald-800';
+      case 'CHECKED_OUT': return 'bg-gray-100 text-gray-800';
+      case 'CANCELLED': return 'bg-rose-100 text-rose-800';
+      default: return 'bg-amber-100 text-amber-800'; // PENDING
     }
   };
 
   const getPaymentColor = (status: string) => {
     switch(status) {
-      case 'PAID': return 'text-emerald-400';
-      case 'PARTIAL': return 'text-amber-400';
-      case 'REFUNDED': return 'text-slate-400';
-      default: return 'text-rose-400'; // PENDING
+      case 'PAID': return 'text-emerald-600';
+      case 'PARTIAL': return 'text-amber-600';
+      case 'REFUNDED': return 'text-gray-500';
+      default: return 'text-rose-600'; // PENDING
     }
   };
 
@@ -47,7 +47,7 @@ export default function ReservationList({ onEdit }: { onEdit: (res: Reservation)
       <div className="overflow-x-auto">
         <table className="w-full text-left text-sm">
           <thead>
-            <tr className="border-b border-white/10 text-slate-400">
+            <tr className="border-b border-gray-200 text-gray-500">
               <th className="py-4 px-4 font-medium">Client</th>
               <th className="py-4 px-4 font-medium">Chambre</th>
               <th className="py-4 px-4 font-medium">Arrivée</th>
@@ -60,20 +60,20 @@ export default function ReservationList({ onEdit }: { onEdit: (res: Reservation)
           </thead>
           <tbody>
             {data.items.map((res) => (
-              <tr key={res.id} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
+              <tr key={res.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
                 <td className="py-3 px-4">
-                  <div className="font-medium text-white">{res.guest?.firstName} {res.guest?.lastName}</div>
-                  <div className="text-xs text-slate-500">{res.guest?.email}</div>
+                  <div className="font-medium text-gray-900">{res.guest?.firstName} {res.guest?.lastName}</div>
+                  <div className="text-xs text-gray-500">{res.guest?.email}</div>
                 </td>
                 <td className="py-3 px-4">
-                  <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-slate-800 text-[#D4AF37] font-semibold text-xs border border-[#D4AF37]/20">
+                  <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-amber-50 text-amber-600 font-semibold text-xs border border-amber-200">
                     {res.room?.number}
                   </span>
                 </td>
-                <td className="py-3 px-4 text-slate-300">
+                <td className="py-3 px-4 text-gray-700">
                   {format(new Date(res.checkIn), 'dd MMM yyyy', { locale: fr })}
                 </td>
-                <td className="py-3 px-4 text-slate-300">
+                <td className="py-3 px-4 text-gray-700">
                   {format(new Date(res.checkOut), 'dd MMM yyyy', { locale: fr })}
                 </td>
                 <td className="py-3 px-4">
@@ -84,16 +84,16 @@ export default function ReservationList({ onEdit }: { onEdit: (res: Reservation)
                 <td className="py-3 px-4">
                   <div className="flex items-center gap-1.5">
                     <CreditCard size={14} className={getPaymentColor(res.paymentStatus)} />
-                    <span className="text-xs text-slate-400">{res.paymentStatus}</span>
+                    <span className="text-xs text-gray-500">{res.paymentStatus}</span>
                   </div>
                 </td>
-                <td className="py-3 px-4 text-right font-medium text-white">
+                <td className="py-3 px-4 text-right font-medium text-gray-900">
                   {res.totalPrice.toFixed(2)} €
                 </td>
                 <td className="py-3 px-4 text-right">
                   <button 
                     onClick={() => onEdit(res)}
-                    className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-white/10 transition-colors"
+                    className="p-1.5 text-gray-500 hover:text-gray-900 rounded-lg hover:bg-gray-100 transition-colors"
                   >
                     <MoreVertical size={16} />
                   </button>
@@ -106,21 +106,21 @@ export default function ReservationList({ onEdit }: { onEdit: (res: Reservation)
 
       {/* Pagination */}
       <div className="flex items-center justify-between mt-6 px-4">
-        <span className="text-sm text-slate-400">
+        <span className="text-sm text-gray-500">
           Page {data.pagination.page} sur {data.pagination.totalPages}
         </span>
         <div className="flex gap-2">
           <button
             onClick={() => setPage(p => p - 1)}
             disabled={!data.pagination.hasPrev}
-            className="px-3 py-1.5 rounded-lg text-sm bg-white/5 text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/10"
+            className="px-3 py-1.5 rounded-lg text-sm bg-gray-100 text-gray-900 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-200"
           >
             Précédent
           </button>
           <button
             onClick={() => setPage(p => p + 1)}
             disabled={!data.pagination.hasNext}
-            className="px-3 py-1.5 rounded-lg text-sm bg-white/5 text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/10"
+            className="px-3 py-1.5 rounded-lg text-sm bg-gray-100 text-gray-900 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-200"
           >
             Suivant
           </button>

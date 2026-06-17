@@ -125,10 +125,10 @@ export default function MembershipsPage() {
     <div className="space-y-6 max-w-5xl mx-auto px-4 py-4">
       {/* Header */}
       <header>
-        <h1 className="text-4xl md:text-5xl font-light tracking-tight text-white">
+        <h1 className="text-4xl md:text-5xl font-light tracking-tight text-gray-900">
           Zafir Club Memberships
         </h1>
-        <p className="text-sm text-[#8E96BD] mt-1">
+        <p className="text-sm text-gray-500 mt-1">
           {new Date().toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
         </p>
       </header>
@@ -219,25 +219,25 @@ export default function MembershipsPage() {
       <section
         className="rounded-3xl p-6 md:p-8"
         style={{
-          background: 'rgba(255,255,255,0.08)',
+          background: 'rgba(255,255,255,0.6)',
           backdropFilter: 'blur(24px)',
-          border: '1px solid rgba(255,255,255,0.12)',
-          boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
+          border: '1px solid rgba(255,255,255,0.5)',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.04)',
         }}
       >
-        <h3 className="text-xl font-semibold text-white mb-6">Club Member List</h3>
+        <h3 className="text-xl font-semibold text-gray-900 mb-6">Club Member List</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {members.map((m) => (
             <div
               key={m.name}
-              className="p-4 rounded-2xl shadow-sm"
+              className="p-4 rounded-2xl shadow-sm transition-transform hover:-translate-y-1"
               style={{
-                background: 'rgba(255,255,255,0.07)',
-                border: '1px solid rgba(255,255,255,0.12)',
+                background: 'rgba(255,255,255,0.9)',
+                border: '1px solid rgba(0,0,0,0.04)',
               }}
             >
               <div className="flex justify-between items-start mb-2">
-                <h4 className="font-medium text-white text-base">{m.name}</h4>
+                <h4 className="font-medium text-gray-900 text-base">{m.name}</h4>
                 <span
                   className="inline-flex items-center gap-1 text-xs font-bold px-3 py-1 rounded-full shadow-inner"
                   style={{
@@ -250,8 +250,8 @@ export default function MembershipsPage() {
                   {m.tier}
                 </span>
               </div>
-              <p className="text-sm text-[#8E96BD] mb-4">Joined {m.joined}</p>
-              <p className="text-sm text-[#C2C7DC]">
+              <p className="text-sm text-gray-500 mb-4">Joined {m.joined}</p>
+              <p className="text-sm text-gray-600">
                 Status: <span className={`font-medium ${m.statusColor}`}>{m.status}</span>
               </p>
             </div>

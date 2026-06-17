@@ -4,57 +4,76 @@ import { z } from 'zod';
 import { prisma } from '../../../infrastructure/database/prisma.client.js';
 import { signAccessToken } from './jwt.js';
 import { setAuthCookie, clearAuthCookie } from '../../../utils/cookies.js';
+import { logAudit } from '../../audit/audit.service.js';
+import { asyncHandler } from '../../../shared/errors/asyncHandler.js';
+import { ApiError } from '../../../shared/errors/errorHandler.js';
 
 const loginSchema = z.object({
-  email: z.string().email(),
+  email: z.string().email().transform((e) => e.toLowerCase()),
   password: z.string().min(1),
 });
 
-export async function login(req: Request, res: Response) {
-  const parsed = loginSchema.safeParse(req.body);
-  if (!parsed.success) {
-    return res.status(400).json({ error: 'Identifiants invalides' });
-  }
-
-  const { email, password } = parsed.data;
-
+export const login = asyncHandler(async (req: Request, res: Response) => {
+  const { email, password } = loginSchema.parse(req.body);
+  
   const user = await prisma.user.findUnique({
-    where: { email: email.toLowerCase() },
-    select: {
-      id: true,
-      email: true,
-      firstName: true,
-      lastName: true,
-      passwordHash: true,
-      role: true,
-      hotelId: true,
-      isActive: true,
-    },
+    where: { email },
+    include: { hotel: { select: { id: true, name: true } } },
   });
-
-  // Message générique pour éviter l'énumération d'utilisateurs
-  const invalidCreds = { error: 'Email ou mot de passe incorrect' };
-
+  
+  // 🔒 Log tentative échouée (user not found)
   if (!user || !user.isActive) {
-    return res.status(401).json(invalidCreds);
+    await logAudit({
+      actor: email, // on log l'email tenté
+      action: 'user.login_failed',
+      resource: 'user',
+      metadata: { 
+        reason: !user ? 'user_not_found' : 'user_inactive',
+        email, 
+        ip: req.ip,
+      },
+    }, req);
+    return res.status(401).json({ error: 'Email ou mot de passe incorrect' });
   }
-
+  
   const valid = await bcrypt.compare(password, user.passwordHash);
+  
+  // 🔒 Log tentative échouée (bad password)
   if (!valid) {
-    return res.status(401).json(invalidCreds);
+    await logAudit({
+      actor: user.id,
+      action: 'user.login_failed',
+      resource: 'user',
+      resourceId: user.id,
+      metadata: { reason: 'invalid_password', email, ip: req.ip },
+    }, req);
+    return res.status(401).json({ error: 'Email ou mot de passe incorrect' });
   }
-
+  
   const token = signAccessToken({
     userId: user.id,
     email: user.email,
     role: user.role,
     hotelId: user.hotelId,
   });
-
+  
   setAuthCookie(res, token);
-
+  
+  // 🔒 Log succès
+  await logAudit({
+    actor: user.id,
+    action: 'user.login',
+    resource: 'user',
+    resourceId: user.id,
+    metadata: { 
+      method: 'password', 
+      ip: req.ip,
+      userAgent: req.get('user-agent'),
+    },
+  }, req);
+  
   return res.json({
-    accessToken: token,
+    accessToken: token, // backward compat for mobile
     user: {
       id: user.id,
       email: user.email,
@@ -62,81 +81,86 @@ export async function login(req: Request, res: Response) {
       lastName: user.lastName,
       role: user.role,
       hotelId: user.hotelId,
+      hotel: user.hotel,
     },
   });
-}
+});
 
-export async function logout(_req: Request, res: Response) {
+export const logout = asyncHandler(async (req: Request, res: Response) => {
+  // 🔒 Log logout AVANT de clear le cookie
+  if (req.user) {
+    await logAudit({
+      actor: req.user.userId,
+      action: 'user.logout',
+      resource: 'user',
+      resourceId: req.user.userId,
+      metadata: { ip: req.ip },
+    }, req);
+  }
+  
   clearAuthCookie(res);
   return res.json({ ok: true });
-}
+});
 
-export async function me(req: Request, res: Response) {
-  // requireAuth a déjà vérifié le token
+export const me = asyncHandler(async (req: Request, res: Response) => {
+  if (!req.user) throw new ApiError(401, 'Not authenticated');
+  
   const user = await prisma.user.findUnique({
-    where: { id: req.user!.userId },
-    select: {
-      id: true,
-      email: true,
-      firstName: true,
-      lastName: true,
-      role: true,
-      hotelId: true,
-      hotel: { select: { id: true, name: true } },
-    },
+    where: { id: req.user.userId },
+    include: { hotel: { select: { id: true, name: true } } },
   });
+  
+  if (!user) throw new ApiError(404, 'User not found');
+  
+  res.json({ user });
+});
 
-  if (!user) {
-    return res.status(404).json({ error: 'Utilisateur introuvable' });
-  }
-
-  return res.json({ user });
-}
-
-// Endpoint dédié mobile — renvoie le JWT dans le body (pas en cookie httpOnly)
-// Les apps mobiles ne peuvent pas accéder aux cookies httpOnly (sandbox iOS/Android)
-export async function loginMobile(req: Request, res: Response) {
-  const parsed = loginSchema.safeParse(req.body);
-  if (!parsed.success) {
-    return res.status(400).json({ error: 'Identifiants invalides' });
-  }
-
-  const { email, password } = parsed.data;
-
+// Endpoint dédié mobile
+export const loginMobile = asyncHandler(async (req: Request, res: Response) => {
+  const { email, password } = loginSchema.parse(req.body);
+  
   const user = await prisma.user.findUnique({
-    where: { email: email.toLowerCase() },
-    select: {
-      id: true,
-      email: true,
-      firstName: true,
-      lastName: true,
-      passwordHash: true,
-      role: true,
-      hotelId: true,
-      isActive: true,
-      hotel: { select: { id: true, name: true } },
-    },
+    where: { email },
+    include: { hotel: { select: { id: true, name: true } } },
   });
-
-  const invalidCreds = { error: 'Email ou mot de passe incorrect' };
-
+  
   if (!user || !user.isActive) {
-    return res.status(401).json(invalidCreds);
+    await logAudit({
+      actor: email,
+      action: 'user.login_failed',
+      resource: 'user',
+      metadata: { reason: 'mobile_user_not_found', email, ip: req.ip },
+    }, req);
+    return res.status(401).json({ error: 'Email ou mot de passe incorrect' });
   }
-
+  
   const valid = await bcrypt.compare(password, user.passwordHash);
   if (!valid) {
-    return res.status(401).json(invalidCreds);
+    await logAudit({
+      actor: user.id,
+      action: 'user.login_failed',
+      resource: 'user',
+      resourceId: user.id,
+      metadata: { reason: 'mobile_invalid_password', email, ip: req.ip },
+    }, req);
+    return res.status(401).json({ error: 'Email ou mot de passe incorrect' });
   }
-
-  const { passwordHash: _, ...userWithoutHash } = user;
+  
   const token = signAccessToken({
     userId: user.id,
     email: user.email,
     role: user.role,
     hotelId: user.hotelId,
   });
-
-  // Renvoie le token dans le body pour stockage sécurisé côté mobile
+  
+  await logAudit({
+    actor: user.id,
+    action: 'user.login_mobile',
+    resource: 'user',
+    resourceId: user.id,
+    metadata: { method: 'password', ip: req.ip, userAgent: req.get('user-agent') },
+  }, req);
+  
+  const { passwordHash: _, ...userWithoutHash } = user;
   return res.json({ token, user: userWithoutHash });
-}
+});

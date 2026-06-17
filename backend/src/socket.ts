@@ -96,6 +96,15 @@ export const socketEvents = {
   taskDeleted: (io: SocketServer, hotelId: string, taskId: string) => {
     io.to(`hotel:${hotelId}`).emit('task:deleted', { id: taskId });
   },
+  minibarItemCreated: (io: SocketServer, hotelId: string, item: unknown) => {
+    io.to(`hotel:${hotelId}`).emit('minibar:created', item);
+  },
+  minibarItemUpdated: (io: SocketServer, hotelId: string, item: unknown) => {
+    io.to(`hotel:${hotelId}`).emit('minibar:updated', item);
+  },
+  minibarItemDeleted: (io: SocketServer, hotelId: string, itemId: string) => {
+    io.to(`hotel:${hotelId}`).emit('minibar:deleted', { id: itemId });
+  },
   notify: (io: SocketServer, hotelId: string, payload: { type: string; title: string; message: string; level: 'info' | 'success' | 'warning' | 'error' }) => {
     io.to(`hotel:${hotelId}`).emit('notification', payload);
   },

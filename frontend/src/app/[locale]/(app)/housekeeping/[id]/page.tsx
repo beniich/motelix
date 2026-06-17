@@ -104,7 +104,7 @@ export default function HousekeepingDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="max-w-2xl mx-auto px-4 py-8 text-center text-[#8E96BD]">
+      <div className="max-w-2xl mx-auto px-4 py-8 text-center text-gray-500">
         {t('common.appName')}... {t('common.loading')}
       </div>
     );
@@ -112,7 +112,7 @@ export default function HousekeepingDetailPage() {
 
   if (!task) {
     return (
-      <div className="max-w-2xl mx-auto px-4 py-8 text-center text-[#8E96BD]">
+      <div className="max-w-2xl mx-auto px-4 py-8 text-center text-gray-500">
         Tâche introuvable
       </div>
     );
@@ -179,7 +179,7 @@ export default function HousekeepingDetailPage() {
   return (
     <div className="space-y-6 max-w-2xl mx-auto px-4 py-4 mb-10">
       {/* Back button */}
-      <Link href="/housekeeping" className="inline-flex items-center gap-1.5 text-sm text-[#8E96BD] hover:text-white transition-colors duration-200">
+      <Link href="/housekeeping" className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors duration-200">
         <ChevronLeft className="w-4 h-4" />
         Retour à la liste
       </Link>
@@ -189,13 +189,13 @@ export default function HousekeepingDetailPage() {
         <div className="flex items-start justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 flex-wrap">
-              <h1 className="text-2xl font-display font-semibold text-white">
+              <h1 className="text-2xl font-display font-semibold text-gray-900">
                 Chambre {task.room.number}
               </h1>
               <HousekeepingStatusBadge status={task.status} />
             </div>
             
-            <div className="flex items-center gap-2 mt-2 text-xs text-[#8E96BD]">
+            <div className="flex items-center gap-2 mt-2 text-xs text-gray-500">
               <HousekeepingTypeBadge type={task.type} />
               <span>•</span>
               <span>Priorité {task.priority}</span>
@@ -206,16 +206,16 @@ export default function HousekeepingDetailPage() {
         </div>
 
         {task.dueAt && (
-          <div className="mt-4 flex items-center gap-1.5 text-xs text-[#8E96BD] bg-white/5 p-2.5 rounded-lg border border-white/5">
+          <div className="mt-4 flex items-center gap-1.5 text-xs text-gray-500 bg-gray-50 p-2.5 rounded-lg border border-gray-100">
             <Clock className="w-4 h-4 text-[#D4AF37]" />
             <span>
-              À faire avant le : <strong className="text-[#E6E8F2]">{new Date(task.dueAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</strong> ({new Date(task.dueAt).toLocaleDateString()})
+              À faire avant le : <strong className="text-gray-900">{new Date(task.dueAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</strong> ({new Date(task.dueAt).toLocaleDateString()})
             </span>
           </div>
         )}
 
         {task.reservation && (
-          <div className="mt-3 text-xs text-[#C2C7DC]">
+          <div className="mt-3 text-xs text-gray-600">
             <strong>Réservation :</strong> Ref {task.reservation.reference}
             {task.reservation.guest && ` — ${task.reservation.guest.firstName} ${task.reservation.guest.lastName}`}
           </div>
@@ -225,7 +225,7 @@ export default function HousekeepingDetailPage() {
       {/* Checklist section */}
       {checklistKeys.length > 0 && (
         <GlassCard className="p-5">
-          <h2 className="text-lg font-semibold text-white flex items-center gap-2 border-b border-white/10 pb-2.5 mb-4">
+          <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2 border-b border-gray-200 pb-2.5 mb-4">
             <ClipboardCheck className="w-5 h-5 text-[#D4AF37]" />
             Checklist de nettoyage
           </h2>
@@ -237,7 +237,7 @@ export default function HousekeepingDetailPage() {
                 className={`flex items-center gap-3 p-3 rounded-xl border transition-all duration-200 cursor-pointer ${
                   checklist[key]
                     ? 'bg-emerald-500/5 border-emerald-500/20 text-emerald-300'
-                    : 'bg-white/5 border-white/5 text-[#C2C7DC] hover:bg-white/[0.08]'
+                    : 'bg-gray-50 border-gray-100 text-gray-600 hover:bg-gray-100'
                 } ${task.status !== 'IN_PROGRESS' ? 'opacity-85 pointer-events-none' : ''}`}
               >
                 <input
@@ -245,7 +245,7 @@ export default function HousekeepingDetailPage() {
                   checked={checklist[key]}
                   onChange={() => handleCheckboxChange(key)}
                   disabled={task.status !== 'IN_PROGRESS'}
-                  className="rounded border-white/15 bg-white/5 text-emerald-500 focus:ring-emerald-500 focus:ring-offset-[#0A0E27]"
+                  className="rounded border-gray-200 bg-gray-50 text-emerald-500 focus:ring-emerald-500 focus:ring-offset-white"
                 />
                 <span className="text-sm font-medium">
                   {/* Human-readable label */}
@@ -261,7 +261,7 @@ export default function HousekeepingDetailPage() {
 
       {/* Photographic evidence section */}
       <GlassCard className="p-5">
-        <h2 className="text-lg font-semibold text-white flex items-center gap-2 border-b border-white/10 pb-2.5 mb-4">
+        <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2 border-b border-gray-200 pb-2.5 mb-4">
           <Camera className="w-5 h-5 text-[#D4AF37]" />
           Preuves photo & État des lieux
         </h2>
@@ -269,10 +269,10 @@ export default function HousekeepingDetailPage() {
         {/* Upload field */}
         {task.status === 'IN_PROGRESS' && (
           <div className="mb-4">
-            <label className="flex flex-col items-center justify-center border-2 border-dashed border-white/10 hover:border-white/20 bg-white/5 hover:bg-white/[0.08] rounded-xl p-5 cursor-pointer transition-all duration-200">
-              <Camera className="w-8 h-8 text-[#8E96BD] mb-2" />
-              <span className="text-sm font-semibold text-white">Prendre / Choisir une photo</span>
-              <span className="text-xs text-[#8E96BD] mt-1">Les photos sont enregistrées en temps réel</span>
+            <label className="flex flex-col items-center justify-center border-2 border-dashed border-gray-200 hover:border-white/20 bg-gray-50 hover:bg-gray-100 rounded-xl p-5 cursor-pointer transition-all duration-200">
+              <Camera className="w-8 h-8 text-gray-500 mb-2" />
+              <span className="text-sm font-semibold text-gray-900">Prendre / Choisir une photo</span>
+              <span className="text-xs text-gray-500 mt-1">Les photos sont enregistrées en temps réel</span>
               <input
                 type="file"
                 accept="image/*"
@@ -292,20 +292,20 @@ export default function HousekeepingDetailPage() {
 
         {/* Photo Gallery */}
         {task.photos.length === 0 ? (
-          <div className="text-center py-6 text-xs text-[#8E96BD]">
+          <div className="text-center py-6 text-xs text-gray-500">
             <ImageIcon className="w-8 h-8 mx-auto mb-2 opacity-50" />
             Aucune photo ajoutée pour le moment
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-3">
             {task.photos.map((p) => (
-              <div key={p.id} className="relative aspect-video rounded-lg overflow-hidden border border-white/10 bg-black">
+              <div key={p.id} className="relative aspect-video rounded-lg overflow-hidden border border-gray-200 bg-black">
                 <img
                   src={p.url}
                   alt="Preuve"
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute bottom-0 left-0 right-0 bg-black/60 p-1.5 text-[10px] text-white truncate">
+                <div className="absolute bottom-0 left-0 right-0 bg-black/60 p-1.5 text-[10px] text-gray-900 truncate">
                   {new Date(p.takenAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </div>
               </div>
@@ -317,7 +317,7 @@ export default function HousekeepingDetailPage() {
       {/* Staff actions & notes (for IN_PROGRESS status) */}
       {task.status === 'IN_PROGRESS' && (
         <GlassCard className="p-5 space-y-4">
-          <h2 className="text-lg font-semibold text-white border-b border-white/10 pb-2.5 mb-2">
+          <h2 className="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2.5 mb-2">
             Rapport du personnel
           </h2>
 
@@ -335,7 +335,7 @@ export default function HousekeepingDetailPage() {
                 type="checkbox"
                 checked={issueReported}
                 onChange={(e) => setIssueReported(e.target.checked)}
-                className="rounded border-red-400/20 bg-white/5 text-red-500 focus:ring-red-500 focus:ring-offset-[#0A0E27]"
+                className="rounded border-red-400/20 bg-gray-50 text-red-500 focus:ring-red-500 focus:ring-offset-white"
               />
               ⚠️ Signaler un problème / dégât
             </label>
@@ -381,7 +381,7 @@ export default function HousekeepingDetailPage() {
       {/* Supervisor Inspection (for COMPLETED tasks) */}
       {task.status === 'COMPLETED' && (
         <GlassCard className="p-5 space-y-4 border border-[#D4AF37]/20">
-          <h2 className="text-lg font-semibold text-white flex items-center gap-2 border-b border-white/10 pb-2.5 mb-2">
+          <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2 border-b border-gray-200 pb-2.5 mb-2">
             <Sparkles className="w-5 h-5 text-[#D4AF37]" />
             Inspection Qualité (Superviseur)
           </h2>
@@ -413,7 +413,7 @@ export default function HousekeepingDetailPage() {
               </div>
             </>
           ) : (
-            <p className="text-sm text-[#8E96BD] text-center py-2">
+            <p className="text-sm text-gray-500 text-center py-2">
               En attente d'inspection par un superviseur ou manager.
             </p>
           )}
@@ -427,12 +427,12 @@ export default function HousekeepingDetailPage() {
             <Check className="w-5 h-5" /> Tâche validée avec succès
           </h3>
           {task.inspectedBy && (
-            <p className="text-xs text-[#C2C7DC]">
+            <p className="text-xs text-gray-600">
               Inspecté par : {task.inspectedBy.firstName} {task.inspectedBy.lastName} le {new Date(task.inspectedAt!).toLocaleString()}
             </p>
           )}
           {task.inspectorNotes && (
-            <p className="text-sm text-[#8E96BD] italic">
+            <p className="text-sm text-gray-500 italic">
               "{task.inspectorNotes}"
             </p>
           )}

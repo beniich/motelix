@@ -51,8 +51,8 @@ function StatCard({
         <Icon className="w-5 h-5 text-white" />
       </div>
       <div>
-        <p className="text-2xl font-bold text-white">{value}</p>
-        <p className="text-sm mt-0.5" style={{ color: '#8E96BD' }}>
+        <p className="text-2xl font-bold text-gray-900">{value}</p>
+        <p className="text-sm mt-0.5 text-gray-500">
           {label}
         </p>
       </div>
@@ -72,7 +72,7 @@ export default function SuperDashboardPage() {
 
   if (isLoading || !data) {
     return (
-      <div className="flex items-center justify-center h-64 text-slate-400">
+      <div className="flex items-center justify-center h-64 text-gray-500">
         Chargement du tableau de bord…
       </div>
     );
@@ -88,10 +88,11 @@ export default function SuperDashboardPage() {
 
   const tooltipStyle = {
     contentStyle: {
-      background: '#0A0E27',
-      border: '1px solid rgba(212,175,55,0.3)',
+      background: '#ffffff',
+      border: '1px solid rgba(0,0,0,0.08)',
       borderRadius: 8,
-      color: '#E6E8F2',
+      boxShadow: '0 4px 16px rgba(0,0,0,0.08)',
+      color: '#1a1a1a',
     },
   };
 
@@ -100,8 +101,8 @@ export default function SuperDashboardPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white">Vue d&apos;ensemble groupe</h1>
-          <p className="mt-1 text-sm" style={{ color: '#8E96BD' }}>
+          <h1 className="text-3xl font-bold text-gray-900">Vue d&apos;ensemble groupe</h1>
+          <p className="mt-1 text-sm text-gray-500">
             {data.hotelCount} hôtel(s) — {data.userCount} utilisateurs actifs
           </p>
         </div>
@@ -150,19 +151,19 @@ export default function SuperDashboardPage() {
       {chartData.length > 0 && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <GlassCard className="p-6">
-            <h2 className="text-sm font-semibold text-white mb-4">Réservations par hôtel</h2>
+            <h2 className="text-sm font-semibold text-gray-900 mb-4">Réservations par hôtel</h2>
             <div className="h-56">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={chartData} layout="vertical">
                   <CartesianGrid
                     strokeDasharray="3 3"
-                    stroke="rgba(255,255,255,0.05)"
+                    stroke="rgba(0,0,0,0.06)"
                   />
-                  <XAxis type="number" stroke="#8E96BD" fontSize={11} />
+                  <XAxis type="number" stroke="#6b7280" fontSize={11} />
                   <YAxis
                     type="category"
                     dataKey="name"
-                    stroke="#8E96BD"
+                    stroke="#6b7280"
                     fontSize={11}
                     width={90}
                   />
@@ -184,19 +185,19 @@ export default function SuperDashboardPage() {
           </GlassCard>
 
           <GlassCard className="p-6">
-            <h2 className="text-sm font-semibold text-white mb-4">Revenu par hôtel (30j)</h2>
+            <h2 className="text-sm font-semibold text-gray-900 mb-4">Revenu par hôtel (30j)</h2>
             <div className="h-56">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={chartData} layout="vertical">
                   <CartesianGrid
                     strokeDasharray="3 3"
-                    stroke="rgba(255,255,255,0.05)"
+                    stroke="rgba(0,0,0,0.06)"
                   />
-                  <XAxis type="number" stroke="#8E96BD" fontSize={11} />
+                  <XAxis type="number" stroke="#6b7280" fontSize={11} />
                   <YAxis
                     type="category"
                     dataKey="name"
-                    stroke="#8E96BD"
+                    stroke="#6b7280"
                     fontSize={11}
                     width={90}
                   />
@@ -220,7 +221,7 @@ export default function SuperDashboardPage() {
 
       {/* Hotel list */}
       <GlassCard className="p-6">
-        <h2 className="text-sm font-semibold text-white mb-4">Hôtels du groupe</h2>
+        <h2 className="text-sm font-semibold text-gray-900 mb-4">Hôtels du groupe</h2>
         <div className="space-y-2">
           {data.hotels.map((hotel) => {
             const stat = data.reservationsByHotel.find((r) => r.hotelId === hotel.id);
@@ -231,8 +232,7 @@ export default function SuperDashboardPage() {
                   setCurrentHotel(hotel);
                   router.push('/dashboard');
                 }}
-                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 transition-colors text-left"
-                style={{ border: '1px solid rgba(255,255,255,0.06)' }}
+                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors text-left border border-gray-100"
               >
                 <div
                   className="p-2 rounded-lg shrink-0"
@@ -241,27 +241,27 @@ export default function SuperDashboardPage() {
                   <Building2 className="w-4 h-4 text-white" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-medium text-white truncate">{hotel.name}</p>
-                  <p className="text-xs" style={{ color: '#8E96BD' }}>
+                  <p className="font-medium text-gray-900 truncate">{hotel.name}</p>
+                  <p className="text-xs text-gray-500">
                     {hotel.city}, {hotel.country} &nbsp;·&nbsp; {'⭐'.repeat(hotel.stars)}
                   </p>
                 </div>
                 <div className="text-right shrink-0">
-                  <p className="text-sm font-semibold" style={{ color: '#D4AF37' }}>
+                  <p className="text-sm font-semibold text-amber-600">
                     {(stat?._sum.totalPrice ?? 0).toLocaleString('fr-FR')} €
                   </p>
-                  <p className="text-xs" style={{ color: '#8E96BD' }}>
+                  <p className="text-xs text-gray-500">
                     {stat?._count.id ?? 0} résas
                   </p>
                 </div>
-                <ChevronRight className="w-4 h-4 shrink-0" style={{ color: '#8E96BD' }} />
+                <ChevronRight className="w-4 h-4 shrink-0 text-gray-400" />
               </button>
             );
           })}
           {data.hotels.length === 0 && (
-            <p className="text-center py-8 text-sm" style={{ color: '#8E96BD' }}>
+            <p className="text-center py-8 text-sm text-gray-500">
               Aucun hôtel configuré.{' '}
-              <Link href="/super/hotels" style={{ color: '#D4AF37' }}>
+              <Link href="/super/hotels" className="text-blue-600 hover:text-blue-700">
                 Créer le premier →
               </Link>
             </p>

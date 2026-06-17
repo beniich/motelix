@@ -15,16 +15,17 @@ export function LocaleSwitcher() {
 
   return (
     <div className="flex items-center gap-1 glass rounded-lg p-1">
-      <Globe className="w-4 h-4 ml-1" style={{ color: '#8E96BD' }} />
+      <Globe className="w-4 h-4 ml-1 text-gray-400" />
       {(['fr', 'en'] as const).map((l) => (
         <button
           key={l}
           onClick={() => switchTo(l)}
-          className="px-2.5 py-1 text-xs font-medium rounded-md transition-all"
-          style={
-            locale === l
-              ? { background: 'linear-gradient(135deg, #D4AF37, #F5E8B8)', color: '#0A0E27' }
-              : { color: '#8E96BD' }
+          className={
+            `px-2.5 py-1 text-xs font-medium rounded-md transition-all ${
+              locale === l
+                ? 'bg-gradient-to-br from-amber-400 to-amber-200 text-gray-900'
+                : 'text-gray-500 hover:text-gray-900 hover:bg-gray-100'
+            }`
           }
         >
           {l.toUpperCase()}

@@ -37,19 +37,19 @@ export function InvoiceDetailModal({ invoice, onClose }: { invoice: Invoice | nu
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-      <div className="bg-midnight-900 border border-white/10 rounded-2xl w-full max-w-3xl overflow-hidden flex flex-col max-h-[90vh]">
+      <div className="bg-white border border-gray-200 rounded-2xl w-full max-w-3xl overflow-hidden flex flex-col max-h-[90vh]">
         
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-white/10">
+        <div className="flex items-center justify-between p-6 border-b border-gray-100">
           <div>
-            <h2 className="text-xl font-display font-semibold text-midnight-50">
+            <h2 className="text-xl font-display font-semibold text-gray-900">
               Facture {invoice.reference}
             </h2>
-            <p className="text-sm text-midnight-200 mt-1">
+            <p className="text-sm text-gray-500 mt-1">
               Pour {invoice.guest.firstName} {invoice.guest.lastName}
             </p>
           </div>
-          <button onClick={onClose} className="p-2 text-midnight-200 hover:text-white rounded-lg hover:bg-white/5">
+          <button onClick={onClose} className="p-2 text-gray-500 hover:text-gray-900 rounded-lg hover:bg-gray-100">
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -58,26 +58,26 @@ export function InvoiceDetailModal({ invoice, onClose }: { invoice: Invoice | nu
         <div className="p-6 overflow-y-auto flex-1 space-y-6">
           <div className="flex gap-4">
             <GlassCard className="flex-1 p-4">
-              <div className="text-xs text-midnight-200 uppercase tracking-wider mb-1">Montant Total</div>
-              <div className="text-2xl font-bold text-gold-400">{formatMoney(invoice.totalCents, invoice.currency)}</div>
-              <div className="text-sm text-midnight-200 mt-1">Dont {formatMoney(invoice.taxCents, invoice.currency)} de TVA</div>
+              <div className="text-xs text-gray-500 uppercase tracking-wider mb-1">Montant Total</div>
+              <div className="text-2xl font-bold text-amber-500">{formatMoney(invoice.totalCents, invoice.currency)}</div>
+              <div className="text-sm text-gray-500 mt-1">Dont {formatMoney(invoice.taxCents, invoice.currency)} de TVA</div>
             </GlassCard>
             
             <GlassCard className="flex-1 p-4">
-              <div className="text-xs text-midnight-200 uppercase tracking-wider mb-1">Reste à payer</div>
-              <div className="text-2xl font-bold text-emerald-400">{formatMoney(invoice.totalCents - invoice.paidCents, invoice.currency)}</div>
-              <div className="text-sm text-midnight-200 mt-1">Déjà payé : {formatMoney(invoice.paidCents, invoice.currency)}</div>
+              <div className="text-xs text-gray-500 uppercase tracking-wider mb-1">Reste à payer</div>
+              <div className="text-2xl font-bold text-emerald-600">{formatMoney(invoice.totalCents - invoice.paidCents, invoice.currency)}</div>
+              <div className="text-sm text-gray-500 mt-1">Déjà payé : {formatMoney(invoice.paidCents, invoice.currency)}</div>
             </GlassCard>
             
             <GlassCard className="flex-1 p-4">
-              <div className="text-xs text-midnight-200 uppercase tracking-wider mb-1">Statut</div>
+              <div className="text-xs text-gray-500 uppercase tracking-wider mb-1">Statut</div>
               <div className="mt-2">
                 <Badge variant={invoice.status === 'PAID' ? 'success' : invoice.status === 'ISSUED' ? 'info' : 'default'}>
                   {invoice.status}
                 </Badge>
               </div>
               {invoice.dueAt && (
-                <div className="text-sm text-midnight-200 mt-2">
+                <div className="text-sm text-gray-500 mt-2">
                   Échéance : {format(new Date(invoice.dueAt), 'dd MMM yyyy', { locale })}
                 </div>
               )}
@@ -85,24 +85,24 @@ export function InvoiceDetailModal({ invoice, onClose }: { invoice: Invoice | nu
           </div>
 
           <div>
-            <h3 className="text-sm font-semibold text-midnight-50 mb-3">Détail des lignes</h3>
-            <div className="border border-white/10 rounded-xl overflow-hidden">
+            <h3 className="text-sm font-semibold text-gray-900 mb-3">Détail des lignes</h3>
+            <div className="border border-gray-100 rounded-xl overflow-hidden">
               <table className="w-full text-sm">
-                <thead className="bg-white/5 border-b border-white/10">
-                  <tr className="text-left text-midnight-200">
+                <thead className="bg-gray-50 border-b border-gray-100">
+                  <tr className="text-left text-gray-500">
                     <th className="py-2 px-4 font-medium">Description</th>
                     <th className="py-2 px-4 font-medium text-right">Qté</th>
                     <th className="py-2 px-4 font-medium text-right">Prix unit.</th>
                     <th className="py-2 px-4 font-medium text-right">Total HT</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-white/5">
+                <tbody className="divide-y divide-gray-100">
                   {invoice.lineItems?.map((li: any) => (
                     <tr key={li.id}>
-                      <td className="py-3 px-4 text-midnight-50">{li.description}</td>
-                      <td className="py-3 px-4 text-midnight-50 text-right">{li.quantity}</td>
-                      <td className="py-3 px-4 text-midnight-50 text-right">{formatMoney(li.unitPriceCents, invoice.currency)}</td>
-                      <td className="py-3 px-4 text-midnight-50 text-right font-medium">{formatMoney(li.totalCents, invoice.currency)}</td>
+                      <td className="py-3 px-4 text-gray-900">{li.description}</td>
+                      <td className="py-3 px-4 text-gray-900 text-right">{li.quantity}</td>
+                      <td className="py-3 px-4 text-gray-900 text-right">{formatMoney(li.unitPriceCents, invoice.currency)}</td>
+                      <td className="py-3 px-4 text-gray-900 text-right font-medium">{formatMoney(li.totalCents, invoice.currency)}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -112,7 +112,7 @@ export function InvoiceDetailModal({ invoice, onClose }: { invoice: Invoice | nu
         </div>
 
         {/* Footer Actions */}
-        <div className="p-6 border-t border-white/10 bg-white/[0.02] flex items-center justify-between gap-4">
+        <div className="p-6 border-t border-gray-100 bg-gray-50 flex items-center justify-between gap-4">
           <div className="flex gap-3">
             {invoice.status === 'DRAFT' && (
               <GradientButton
@@ -126,9 +126,9 @@ export function InvoiceDetailModal({ invoice, onClose }: { invoice: Invoice | nu
             
             <button
               onClick={() => window.open(invoicesApi.pdfUrl(invoice.id), '_blank')}
-              className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-midnight-50 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl transition-colors"
+              className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 rounded-xl transition-colors"
             >
-              <FileDown className="w-4 h-4 text-sapphire-400" />
+              <FileDown className="w-4 h-4 text-blue-600" />
               Télécharger PDF
             </button>
           </div>

@@ -41,17 +41,17 @@ export function CreateInvoiceModal({ open, onClose, onCreated }: { open: boolean
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-      <div className="bg-midnight-900 border border-white/10 rounded-2xl w-full max-w-md overflow-hidden">
-        <div className="flex items-center justify-between p-6 border-b border-white/10">
-          <h2 className="text-xl font-display font-semibold text-midnight-50">Nouvelle Facture</h2>
-          <button onClick={onClose} className="p-2 text-midnight-200 hover:text-white rounded-lg hover:bg-white/5">
+      <div className="bg-white border border-gray-200 rounded-2xl w-full max-w-md overflow-hidden">
+        <div className="flex items-center justify-between p-6 border-b border-gray-100">
+          <h2 className="text-xl font-display font-semibold text-gray-900">Nouvelle Facture</h2>
+          <button onClick={onClose} className="p-2 text-gray-500 hover:text-gray-900 rounded-lg hover:bg-gray-100">
             <X className="w-5 h-5" />
           </button>
         </div>
 
         <div className="p-6 space-y-6">
           <div className="space-y-2">
-            <label className="text-sm font-medium text-midnight-200">Réservation à facturer</label>
+            <label className="text-sm font-medium text-gray-600">Réservation à facturer</label>
             <Select
               value={reservationId}
               onChange={(e) => setReservationId(e.target.value)}
@@ -63,14 +63,14 @@ export function CreateInvoiceModal({ open, onClose, onCreated }: { open: boolean
                 }))
               ]}
             />
-            <p className="text-xs text-midnight-200 mt-1">Seules les réservations sans facture apparaissent ici.</p>
+            <p className="text-xs text-gray-500 mt-1">Seules les réservations sans facture apparaissent ici.</p>
           </div>
 
           <div className="pt-4 flex justify-end gap-3">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-sm font-medium text-midnight-200 hover:text-white transition-colors"
+              className="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors"
             >
               Annuler
             </button>

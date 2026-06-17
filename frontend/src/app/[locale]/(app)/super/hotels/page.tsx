@@ -83,22 +83,22 @@ function HotelModal({
   });
 
   const fieldCls =
-    'w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-[#D4AF37] transition-colors';
+    'w-full bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-gray-900 text-sm focus:outline-none focus:border-amber-500 transition-colors';
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
       <div
         className="w-full max-w-lg rounded-2xl overflow-hidden flex flex-col max-h-[90vh]"
         style={{
-          background: '#0A0E27',
+          background: '#ffffff',
           border: '1px solid rgba(212,175,55,0.3)',
-          boxShadow: '0 25px 60px rgba(0,0,0,0.6)',
+          boxShadow: '0 25px 60px rgba(0,0,0,0.1)',
         }}
       >
         {/* Header */}
         <div
           className="px-6 py-4 flex items-center gap-3"
-          style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}
+          style={{ borderBottom: '1px solid rgba(0,0,0,0.08)' }}
         >
           <div
             className="p-2 rounded-xl"
@@ -106,7 +106,7 @@ function HotelModal({
           >
             <Building2 className="w-4 h-4 text-white" />
           </div>
-          <h2 className="text-lg font-semibold text-white">
+          <h2 className="text-lg font-semibold text-gray-900">
             {isEditing ? `Modifier : ${hotel!.name}` : 'Nouvel hôtel'}
           </h2>
         </div>
@@ -165,7 +165,7 @@ function HotelModal({
                 value={form.stars}
                 onChange={(e) => setForm({ ...form, stars: Number(e.target.value) })}
                 className={fieldCls}
-                style={{ background: 'rgb(15 23 42)' }}
+                style={{ background: '#ffffff' }}
               >
                 {[3, 4, 5].map((s) => (
                   <option key={s} value={s}>
@@ -180,7 +180,7 @@ function HotelModal({
           {!isEditing && (
             <div
               className="pt-4 space-y-3"
-              style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}
+              style={{ borderTop: '1px solid rgba(0,0,0,0.08)' }}
             >
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
@@ -189,15 +189,15 @@ function HotelModal({
                   onChange={(e) => setForm({ ...form, createAdmin: e.target.checked })}
                   className="rounded"
                 />
-                <span className="text-sm text-slate-300">
+                <span className="text-sm text-gray-600">
                   Créer un admin local en même temps
                 </span>
               </label>
 
               {form.createAdmin && (
-                <div className="grid grid-cols-2 gap-3 p-4 rounded-xl bg-slate-900/60 border border-white/10">
+                <div className="grid grid-cols-2 gap-3 p-4 rounded-xl bg-gray-50 border border-gray-200">
                   <div className="space-y-1.5">
-                    <label className="text-xs text-slate-400">Prénom</label>
+                    <label className="text-xs text-gray-500">Prénom</label>
                     <input
                       value={form.adminFirstName}
                       onChange={(e) => setForm({ ...form, adminFirstName: e.target.value })}
@@ -205,7 +205,7 @@ function HotelModal({
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs text-slate-400">Nom</label>
+                    <label className="text-xs text-gray-500">Nom</label>
                     <input
                       value={form.adminLastName}
                       onChange={(e) => setForm({ ...form, adminLastName: e.target.value })}
@@ -213,7 +213,7 @@ function HotelModal({
                     />
                   </div>
                   <div className="col-span-2 space-y-1.5">
-                    <label className="text-xs text-slate-400">Email admin</label>
+                    <label className="text-xs text-gray-500">Email admin</label>
                     <input
                       type="email"
                       value={form.adminEmail}
@@ -222,7 +222,7 @@ function HotelModal({
                     />
                   </div>
                   <div className="col-span-2 space-y-1.5">
-                    <label className="text-xs text-slate-400">Mot de passe (min 8)</label>
+                    <label className="text-xs text-gray-500">Mot de passe (min 8)</label>
                     <input
                       type="password"
                       minLength={8}
@@ -240,11 +240,11 @@ function HotelModal({
         {/* Footer */}
         <div
           className="px-6 py-4 flex justify-end gap-3"
-          style={{ borderTop: '1px solid rgba(255,255,255,0.08)', background: 'rgba(0,0,0,0.2)' }}
+          style={{ borderTop: '1px solid rgba(0,0,0,0.08)', background: '#f9fafb' }}
         >
           <button
             onClick={onClose}
-            className="px-5 py-2 rounded-xl text-sm text-slate-400 hover:text-white hover:bg-white/5 transition-colors"
+            className="px-5 py-2 rounded-xl text-sm text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors"
           >
             Annuler
           </button>
@@ -293,8 +293,8 @@ export default function SuperHotelsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white">Hôtels du groupe</h1>
-          <p className="mt-1 text-sm" style={{ color: '#8E96BD' }}>
+          <h1 className="text-3xl font-bold text-gray-900">Hôtels du groupe</h1>
+          <p className="mt-1 text-sm text-gray-500">
             {isLoading ? '…' : `${data?.length ?? 0} hôtel(s) enregistré(s)`}
           </p>
         </div>
@@ -313,7 +313,7 @@ export default function SuperHotelsPage() {
 
       {/* Hotel grid */}
       {isLoading ? (
-        <div className="text-center py-16 text-slate-400">Chargement…</div>
+        <div className="text-center py-16 text-gray-500">Chargement…</div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {data?.map((hotel) => (
@@ -329,9 +329,8 @@ export default function SuperHotelsPage() {
                 <div className="flex items-center gap-1">
                   <button
                     onClick={() => setModalHotel(hotel)}
-                    className="p-1.5 rounded-lg hover:bg-white/10 transition-colors"
+                    className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors text-gray-500"
                     title="Modifier"
-                    style={{ color: '#8E96BD' }}
                   >
                     <Edit2 className="w-3.5 h-3.5" />
                   </button>
@@ -349,8 +348,8 @@ export default function SuperHotelsPage() {
                 </div>
               </div>
 
-              <h3 className="text-base font-semibold text-white">{hotel.name}</h3>
-              <p className="text-xs mt-0.5 mb-1" style={{ color: '#8E96BD' }}>
+              <h3 className="text-base font-semibold text-gray-900">{hotel.name}</h3>
+              <p className="text-xs mt-0.5 mb-1 text-gray-500">
                 {hotel.city}, {hotel.country}
               </p>
               <p className="text-sm mb-3">{'⭐'.repeat(hotel.stars)}</p>
@@ -358,7 +357,7 @@ export default function SuperHotelsPage() {
               {/* Stats row */}
               <div
                 className="grid grid-cols-3 gap-2 py-3 mt-auto"
-                style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}
+                style={{ borderTop: '1px solid rgba(0,0,0,0.08)' }}
               >
                 {[
                   { icon: BedDouble, label: 'Chambres', val: hotel._count?.rooms ?? 0 },
@@ -366,8 +365,8 @@ export default function SuperHotelsPage() {
                   { icon: CalendarDays, label: 'Résas', val: hotel._count?.reservations ?? 0 },
                 ].map(({ icon: Icon, label, val }) => (
                   <div key={label} className="text-center">
-                    <p className="text-lg font-bold text-white">{val}</p>
-                    <p className="text-[10px] uppercase tracking-wider" style={{ color: '#8E96BD' }}>
+                    <p className="text-lg font-bold text-gray-900">{val}</p>
+                    <p className="text-[10px] uppercase tracking-wider text-gray-500">
                       {label}
                     </p>
                   </div>
@@ -380,7 +379,7 @@ export default function SuperHotelsPage() {
                   setCurrentHotel(hotel);
                   router.push('/dashboard');
                 }}
-                className="mt-3 flex items-center justify-center gap-1.5 w-full py-2 rounded-xl text-xs font-medium transition-colors hover:bg-white/5"
+                className="mt-3 flex items-center justify-center gap-1.5 w-full py-2 rounded-xl text-xs font-medium transition-colors hover:bg-amber-50"
                 style={{ color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)' }}
               >
                 Piloter cet hôtel
@@ -391,7 +390,7 @@ export default function SuperHotelsPage() {
 
           {/* Empty state */}
           {!isLoading && (!data || data.length === 0) && (
-            <div className="col-span-3 text-center py-16 text-slate-400">
+            <div className="col-span-3 text-center py-16 text-gray-500">
               Aucun hôtel configuré. Cliquez sur &quot;Nouvel hôtel&quot; pour commencer.
             </div>
           )}

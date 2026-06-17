@@ -45,14 +45,14 @@ export default function ReservationsPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-white">Réservations</h1>
+        <h1 className="text-3xl font-bold text-gray-900">Réservations</h1>
         
         <div className="flex items-center gap-4">
-          <div className="flex p-1 rounded-xl bg-white/5 border border-white/10">
+          <div className="flex p-1 rounded-xl bg-gray-100 border border-gray-200">
             <button
               onClick={() => setView('calendar')}
               className={`p-2 rounded-lg transition-all ${
-                view === 'calendar' ? 'bg-white/10 text-white shadow-sm' : 'text-slate-400 hover:text-slate-300'
+                view === 'calendar' ? 'bg-white text-gray-900 shadow-sm border border-gray-200' : 'text-gray-500 hover:text-gray-900'
               }`}
             >
               <CalendarIcon size={18} />
@@ -60,7 +60,7 @@ export default function ReservationsPage() {
             <button
               onClick={() => setView('list')}
               className={`p-2 rounded-lg transition-all ${
-                view === 'list' ? 'bg-white/10 text-white shadow-sm' : 'text-slate-400 hover:text-slate-300'
+                view === 'list' ? 'bg-white text-gray-900 shadow-sm border border-gray-200' : 'text-gray-500 hover:text-gray-900'
               }`}
             >
               <ListIcon size={18} />
@@ -70,7 +70,7 @@ export default function ReservationsPage() {
           <button
             onClick={openNewReservation}
             className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all hover:scale-105 active:scale-95"
-            style={{ background: 'linear-gradient(135deg, #D4AF37 0%, #B8860B 100%)', color: '#0A0E27' }}
+            style={{ background: 'linear-gradient(135deg, #D4AF37 0%, #B8860B 100%)', color: '#ffffff' }}
           >
             <Plus size={16} />
             Nouvelle réservation

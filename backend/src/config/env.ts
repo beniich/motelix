@@ -21,6 +21,7 @@ const envSchema = z.object({
   STORAGE_PUBLIC_URL: z.string().optional(),
   CHANNEL_MOCK_MODE: z.string().default('false'),
   SENTRY_DSN: z.string().optional(),
+  PII_ENCRYPTION_SALT: z.string().min(8).default('sapphire-pii-salt-v1'),
   SLACK_ALERT_WEBHOOK_URL: z.string().url().optional(),
   RESEND_API_KEY: z.string().optional(),
   APP_URL: z.string().url().default('https://app.sapphire.luxury'),

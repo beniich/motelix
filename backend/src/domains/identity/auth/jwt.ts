@@ -10,7 +10,7 @@ export type JwtPayload = {
 
 export function signAccessToken(payload: JwtPayload): string {
   const options: SignOptions = {
-    expiresIn: env.JWT_EXPIRES_IN as SignOptions['expiresIn'],
+    expiresIn: '12h', // ISO 27001 compliance
     issuer: 'sapphire-backend',
   };
   return jwt.sign(payload, env.JWT_SECRET, options);

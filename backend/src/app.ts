@@ -24,6 +24,7 @@ import billingRoutes from './routes/billing.routes.js';
 import v1Routes from './routes/v1.routes.js';
 import tasksRoutes from './routes/tasks.routes.js';
 import roomServiceRoutes from './routes/room-service.routes.js';
+import minibarRoutes from './routes/minibar.routes.js';
 import auditRoutes from './domains/audit/audit.routes.js';
 export function createApp() {
   const app = express();
@@ -61,9 +62,26 @@ export function createApp() {
   app.use(express.json({ limit: '1mb' }));
   app.use(cookieParser());
 
+  // ISO 27001 Cache Headers
+  app.use((req, res, next) => {
+    // Empêche le cache des endpoints API sensibles
+    if (req.path.startsWith('/api/')) {
+      res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+      res.setHeader('Pragma', 'no-cache');
+      res.setHeader('Expires', '0');
+      res.setHeader('Surrogate-Control', 'no-store');
+    }
+    next();
+  });
+
   // Healthcheck
   app.get('/api/health', (_req, res) => {
-    res.json({ status: 'ok', env: env.NODE_ENV });
+    res.json({
+      status: 'ok',
+      env: env.NODE_ENV,
+      timestamp: new Date().toISOString(),
+      version: process.env.npm_package_version ?? '1.0.0',
+    });
   });
 
   // Routes
@@ -84,6 +102,7 @@ export function createApp() {
   app.use('/api/v1', v1Routes);
   app.use('/api/tasks', tasksRoutes);
   app.use('/api/room-service', roomServiceRoutes);
+  app.use('/api/minibar', minibarRoutes);
   app.use('/api/audit', auditRoutes);
 
   if (env.STRIPE_MOCK_MODE === 'true') {

@@ -2,6 +2,7 @@ import type { Request, Response } from 'express';
 import { prisma } from '../infrastructure/database/prisma.client.js';
 import { asyncHandler } from '../shared/errors/asyncHandler.js';
 import { requireSuperAdmin } from '../domains/identity/auth/auth.middleware.js';
+import { logAudit } from '../domains/audit/audit.service.js';
 import { z } from 'zod';
 import bcrypt from 'bcrypt';
 import { subDays, startOfDay } from 'date-fns';
@@ -136,6 +137,16 @@ export const createHotel = [
     });
 
     res.status(201).json({ hotel: result });
+
+    // 🔒 Audit création hôtel
+    await logAudit({
+      actor: req.user!.userId,
+      action: 'hotel.created',
+      resource: 'hotel',
+      resourceId: result.id,
+      after: { id: result.id, name: result.name, city: result.city },
+      metadata: { hasInitialAdmin: !!initialAdmin },
+    }, req);
   }),
 ];
 
@@ -162,6 +173,16 @@ export const updateHotel = [
       where: { id: req.params.id },
       data: parsed.data,
     });
+
+    // 🔒 Audit update hôtel
+    await logAudit({
+      actor: req.user!.userId,
+      action: 'hotel.updated',
+      resource: 'hotel',
+      resourceId: req.params.id,
+      before: { name: hotel.name, stars: hotel.stars },
+      after: { name: updated.name, stars: updated.stars },
+    }, req);
 
     res.json({ hotel: updated });
   }),
@@ -192,6 +213,16 @@ export const archiveHotel = [
       where: { hotelId: hotel.id },
       data: { isActive: false },
     });
+
+    // 🔒 Audit archivage hôtel
+    await logAudit({
+      actor: req.user!.userId,
+      action: 'hotel.archived',
+      resource: 'hotel',
+      resourceId: hotel.id,
+      before: { name: hotel.name, city: hotel.city },
+      metadata: { reason: 'super_admin_archive' },
+    }, req);
 
     res.json({ ok: true, message: `Hôtel ${hotel.name} archivé avec succès` });
   }),

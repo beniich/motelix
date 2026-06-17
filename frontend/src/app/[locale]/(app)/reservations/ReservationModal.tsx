@@ -85,12 +85,12 @@ export default function ReservationModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-      <div className="w-full max-w-2xl bg-[#0A0E27] border border-[#D4AF37]/30 rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
-        <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
-          <h2 className="text-xl font-semibold text-white">
+      <div className="w-full max-w-2xl bg-white border border-gray-200 rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+          <h2 className="text-xl font-semibold text-gray-900">
             {isEditing ? 'Modifier la réservation' : 'Nouvelle réservation'}
           </h2>
-          <button onClick={onClose} className="text-slate-400 hover:text-white transition-colors">
+          <button onClick={onClose} className="text-gray-500 hover:text-gray-900 transition-colors">
             <X size={20} />
           </button>
         </div>
@@ -105,13 +105,13 @@ export default function ReservationModal({
           <form id="reservation-form" onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-300">Client</label>
+                <label className="text-sm font-medium text-gray-600">Client</label>
                 <select
                   disabled={isEditing} // Ne pas changer le client d'une résa existante
                   required
                   value={formData.guestId}
                   onChange={e => setFormData({ ...formData, guestId: e.target.value })}
-                  className="w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-[#D4AF37] disabled:opacity-50"
+                  className="w-full bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-gray-900 focus:outline-none focus:border-amber-500 disabled:opacity-50"
                 >
                   <option value="">Sélectionner un client</option>
                   {guests.map(g => (
@@ -120,13 +120,13 @@ export default function ReservationModal({
                 </select>
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-300">Chambre</label>
+                <label className="text-sm font-medium text-gray-600">Chambre</label>
                 <select
                   disabled={isEditing}
                   required
                   value={formData.roomId}
                   onChange={e => setFormData({ ...formData, roomId: e.target.value })}
-                  className="w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-[#D4AF37] disabled:opacity-50"
+                  className="w-full bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-gray-900 focus:outline-none focus:border-amber-500 disabled:opacity-50"
                 >
                   <option value="">Sélectionner une chambre</option>
                   {rooms.map(r => (
@@ -138,30 +138,30 @@ export default function ReservationModal({
 
             <div className="grid grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-300">Date d'arrivée</label>
+                <label className="text-sm font-medium text-gray-600">Date d'arrivée</label>
                 <div className="relative">
-                  <Calendar className="absolute left-3 top-3 text-slate-400" size={16} />
+                  <Calendar className="absolute left-3 top-3 text-gray-400" size={16} />
                   <input
                     disabled={isEditing}
                     type="date"
                     required
                     value={formData.checkIn}
                     onChange={e => setFormData({ ...formData, checkIn: e.target.value })}
-                    className="w-full bg-slate-900 border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-white focus:outline-none focus:border-[#D4AF37] disabled:opacity-50 [color-scheme:dark]"
+                    className="w-full bg-white border border-gray-200 rounded-xl pl-10 pr-4 py-2.5 text-gray-900 focus:outline-none focus:border-amber-500 disabled:opacity-50"
                   />
                 </div>
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-300">Date de départ</label>
+                <label className="text-sm font-medium text-gray-600">Date de départ</label>
                 <div className="relative">
-                  <Calendar className="absolute left-3 top-3 text-slate-400" size={16} />
+                  <Calendar className="absolute left-3 top-3 text-gray-400" size={16} />
                   <input
                     disabled={isEditing}
                     type="date"
                     required
                     value={formData.checkOut}
                     onChange={e => setFormData({ ...formData, checkOut: e.target.value })}
-                    className="w-full bg-slate-900 border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-white focus:outline-none focus:border-[#D4AF37] disabled:opacity-50 [color-scheme:dark]"
+                    className="w-full bg-white border border-gray-200 rounded-xl pl-10 pr-4 py-2.5 text-gray-900 focus:outline-none focus:border-amber-500 disabled:opacity-50"
                   />
                 </div>
               </div>
@@ -169,11 +169,11 @@ export default function ReservationModal({
 
             <div className="grid grid-cols-3 gap-6">
               <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-300">Canal de résa.</label>
+                <label className="text-sm font-medium text-gray-600">Canal de résa.</label>
                 <select
                   value={formData.source}
                   onChange={e => setFormData({ ...formData, source: e.target.value })}
-                  className="w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-[#D4AF37]"
+                  className="w-full bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-gray-900 focus:outline-none focus:border-amber-500"
                 >
                   <option value="DIRECT">Direct</option>
                   <option value="BOOKING">Booking.com</option>
@@ -183,42 +183,42 @@ export default function ReservationModal({
                 </select>
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-300">Extras (€)</label>
+                <label className="text-sm font-medium text-gray-600">Extras (€)</label>
                 <input
                   type="number"
                   min="0"
                   value={formData.extras}
                   onChange={e => setFormData({ ...formData, extras: e.target.value })}
-                  className="w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-[#D4AF37]"
+                  className="w-full bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-gray-900 focus:outline-none focus:border-amber-500"
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-300">Remise (€)</label>
+                <label className="text-sm font-medium text-gray-600">Remise (€)</label>
                 <input
                   type="number"
                   min="0"
                   value={formData.discount}
                   onChange={e => setFormData({ ...formData, discount: e.target.value })}
-                  className="w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-[#D4AF37]"
+                  className="w-full bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-gray-900 focus:outline-none focus:border-amber-500"
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium text-slate-300">Notes (internes)</label>
+              <label className="text-sm font-medium text-gray-600">Notes (internes)</label>
               <textarea
                 rows={3}
                 value={formData.notes}
                 onChange={e => setFormData({ ...formData, notes: e.target.value })}
-                className="w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#D4AF37] resize-none"
+                className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-gray-900 focus:outline-none focus:border-amber-500 resize-none"
                 placeholder="Ex: Arrivée tardive prévue..."
               />
             </div>
           </form>
 
           {isEditing && (
-            <div className="mt-8 pt-6 border-t border-white/10">
-              <h3 className="text-sm font-medium text-slate-400 mb-4">Actions de statut</h3>
+            <div className="mt-8 pt-6 border-t border-gray-100">
+              <h3 className="text-sm font-medium text-gray-500 mb-4">Actions de statut</h3>
               <div className="flex flex-wrap gap-3">
                 {reservation.status === 'PENDING' && (
                   <button
@@ -269,11 +269,11 @@ export default function ReservationModal({
           )}
         </div>
 
-        <div className="p-6 border-t border-white/10 flex justify-end gap-3 bg-black/20">
+        <div className="p-6 border-t border-gray-100 flex justify-end gap-3 bg-gray-50">
           <button
             type="button"
             onClick={onClose}
-            className="px-6 py-2.5 rounded-xl text-white font-medium hover:bg-white/5 transition-colors"
+            className="px-6 py-2.5 rounded-xl text-gray-600 font-medium hover:bg-gray-100 hover:text-gray-900 transition-colors"
           >
             Fermer
           </button>

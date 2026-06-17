@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { requireAuth, requireRole } from '../domains/identity/auth/auth.middleware.js';
 import * as ctrl from '../domains/hotel/room/room.controller.js';
+import { auditMiddleware } from '../domains/audit/auto-audit.middleware.js';
 
 const router = Router();
 

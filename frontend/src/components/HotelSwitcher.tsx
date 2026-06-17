@@ -30,8 +30,7 @@ export function HotelSwitcher() {
     <div className="relative mb-3">
       <button
         onClick={() => setOpen(!open)}
-        className="w-full flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-white/5 transition-colors text-sm"
-        style={{ border: '1px solid rgba(255,255,255,0.1)' }}
+        className="w-full flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-gray-100 transition-colors text-sm border border-gray-200"
       >
         <div
           className="p-1.5 rounded-lg flex items-center justify-center"
@@ -44,16 +43,15 @@ export function HotelSwitcher() {
           )}
         </div>
         <div className="flex-1 text-left min-w-0">
-          <p className="text-[10px] uppercase tracking-wider" style={{ color: '#8E96BD' }}>
+          <p className="text-[10px] uppercase tracking-wider text-gray-500">
             {currentHotel ? 'Hôtel actif' : 'Vue super-admin'}
           </p>
-          <p className="text-sm font-medium truncate" style={{ color: '#E6E8F2' }}>
+          <p className="text-sm font-medium truncate text-gray-900">
             {currentHotel ? currentHotel.name : 'Tous les hôtels'}
           </p>
         </div>
         <ChevronDown
-          className={clsx('w-4 h-4 shrink-0 transition-transform duration-200', open && 'rotate-180')}
-          style={{ color: '#8E96BD' }}
+          className={clsx('w-4 h-4 shrink-0 transition-transform duration-200 text-gray-400', open && 'rotate-180')}
         />
       </button>
 
@@ -61,46 +59,41 @@ export function HotelSwitcher() {
         <>
           <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
           <div
-            className="absolute top-full left-0 right-0 mt-1 z-50 rounded-xl overflow-hidden shadow-2xl"
-            style={{
-              background: 'rgba(10,14,39,0.98)',
-              border: '1px solid rgba(212,175,55,0.3)',
-              backdropFilter: 'blur(20px)',
-            }}
+            className="absolute top-full left-0 right-0 mt-1 z-50 rounded-xl overflow-hidden shadow-2xl border border-gray-200 bg-white/95 backdrop-blur-md"
           >
             {/* All hotels option */}
             <button
               onClick={() => { setCurrentHotel(null); setOpen(false); }}
-              className="w-full flex items-center gap-2 px-3 py-2.5 text-left hover:bg-white/5 transition-colors text-sm"
+              className="w-full flex items-center gap-2 px-3 py-2.5 text-left hover:bg-gray-100 transition-colors text-sm"
             >
-              <Globe className="w-4 h-4 shrink-0" style={{ color: '#D4AF37' }} />
-              <span className="flex-1" style={{ color: '#E6E8F2' }}>Tous les hôtels</span>
-              {!currentHotel && <Check className="w-4 h-4" style={{ color: '#D4AF37' }} />}
+              <Globe className="w-4 h-4 shrink-0 text-amber-500" />
+              <span className="flex-1 text-gray-900">Tous les hôtels</span>
+              {!currentHotel && <Check className="w-4 h-4 text-amber-500" />}
             </button>
 
-            <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }} />
+            <div className="border-t border-gray-100" />
 
             <div className="max-h-60 overflow-y-auto">
               {hotels.map((h) => (
                 <button
                   key={h.id}
                   onClick={() => { setCurrentHotel(h); setOpen(false); }}
-                  className="w-full flex items-center gap-2 px-3 py-2.5 text-left hover:bg-white/5 transition-colors text-sm"
+                  className="w-full flex items-center gap-2 px-3 py-2.5 text-left hover:bg-gray-100 transition-colors text-sm"
                 >
-                  <Building2 className="w-4 h-4 shrink-0" style={{ color: '#8E96BD' }} />
+                  <Building2 className="w-4 h-4 shrink-0 text-gray-400" />
                   <div className="flex-1 min-w-0">
-                    <p className="truncate" style={{ color: '#E6E8F2' }}>{h.name}</p>
-                    <p className="text-xs" style={{ color: '#8E96BD' }}>
+                    <p className="truncate text-gray-900">{h.name}</p>
+                    <p className="text-xs text-gray-500">
                       {h.city}, {h.country}
                     </p>
                   </div>
                   {currentHotel?.id === h.id && (
-                    <Check className="w-4 h-4 shrink-0" style={{ color: '#D4AF37' }} />
+                    <Check className="w-4 h-4 shrink-0 text-amber-500" />
                   )}
                 </button>
               ))}
               {hotels.length === 0 && (
-                <p className="px-3 py-3 text-xs text-center" style={{ color: '#8E96BD' }}>
+                <p className="px-3 py-3 text-xs text-center text-gray-500">
                   Aucun hôtel chargé
                 </p>
               )}

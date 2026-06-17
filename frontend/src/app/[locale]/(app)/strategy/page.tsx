@@ -94,13 +94,13 @@ export default function StrategyDashboard() {
                   <stop offset="100%" stopColor="#8B5CF6" stopOpacity={0} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
-              <XAxis dataKey="date" stroke="#8E96BD" fontSize={10} />
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.06)" />
+              <XAxis dataKey="date" stroke="#6b7280" fontSize={10} />
               <YAxis yAxisId="left" stroke="#D4AF37" fontSize={10} tickFormatter={(v) => `${v}€`} />
               <YAxis yAxisId="right" orientation="right" stroke="#8B5CF6" fontSize={10} domain={[0, 100]} tickFormatter={(v) => `${v}%`} />
               <Tooltip
-                contentStyle={{ background: '#0A0E1A', border: '1px solid #000', borderRadius: 8 }}
-                labelStyle={{ color: '#F8F7F2' }}
+                contentStyle={{ background: '#ffffff', border: '1px solid #e5e7eb', borderRadius: 8 }}
+                labelStyle={{ color: '#111827' }}
                 formatter={(value: any, name: string) => {
                   if (name === 'Occupation') return [`${value.toFixed(0)}%`, name];
                   return [`${value}€`, name];
@@ -121,10 +121,10 @@ export default function StrategyDashboard() {
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={metrics.byRoomType} layout="vertical">
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
-                <XAxis type="number" stroke="#8E96BD" fontSize={11} />
-                <YAxis type="category" dataKey="type" stroke="#8E96BD" fontSize={11} width={100} />
-                <Tooltip contentStyle={{ background: '#0A0E1A', border: '1px solid #000', borderRadius: 8 }} formatter={(v: number) => `${Math.round(v)}€`} />
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.06)" />
+                <XAxis type="number" stroke="#6b7280" fontSize={11} />
+                <YAxis type="category" dataKey="type" stroke="#6b7280" fontSize={11} width={100} />
+                <Tooltip contentStyle={{ background: '#ffffff', border: '1px solid #e5e7eb', borderRadius: 8 }} formatter={(v: number) => `${Math.round(v)}€`} />
                 <Bar dataKey="revpar" radius={[0, 4, 4, 0]}>
                   {metrics.byRoomType.map((_, i) => (
                     <Cell key={i} fill="url(#goldBarG)" />
@@ -171,11 +171,11 @@ export default function StrategyDashboard() {
           <div className="h-48">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={forecast.forecast.map(f => ({ date: format(parseISO(f.date), 'd MMM', { locale: frLocale }), occupancy: f.occupancyRate * 100, confidence: f.confidence * 100 }))}>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
-                <XAxis dataKey="date" stroke="#8E96BD" fontSize={9} interval={3} />
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.06)" />
+                <XAxis dataKey="date" stroke="#6b7280" fontSize={9} interval={3} />
                 <YAxis yAxisId="left" stroke="#8B5CF6" fontSize={10} domain={[0, 100]} tickFormatter={(v) => `${v}%`} />
                 <YAxis yAxisId="right" orientation="right" stroke="#10B981" fontSize={10} domain={[0, 100]} tickFormatter={(v) => `${v}%`} />
-                <Tooltip contentStyle={{ background: '#0A0E1A', border: '1px solid #000', borderRadius: 8 }} formatter={(v: number) => `${v.toFixed(0)}%`} />
+                <Tooltip contentStyle={{ background: '#ffffff', border: '1px solid #e5e7eb', borderRadius: 8 }} formatter={(v: number) => `${v.toFixed(0)}%`} />
                 <Line yAxisId="left" type="monotone" dataKey="occupancy" stroke="#8B5CF6" strokeWidth={2} dot={false} name="Occupation prévue" />
                 <Line yAxisId="right" type="monotone" dataKey="confidence" stroke="#10B981" strokeWidth={1} strokeDasharray="3 3" dot={false} name="Confiance" />
               </LineChart>

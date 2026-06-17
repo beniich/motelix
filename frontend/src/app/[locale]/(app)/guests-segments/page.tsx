@@ -118,7 +118,7 @@ export default function GuestSegmentsPage() {
                 const Icon = SEGMENT_ICONS[g.segment] || Users;
                 return (
                   <tr key={g.guestId} className="border-b border-gray-50 hover:bg-white/60 transition-colors">
-                    <td className="px-4 py-3 font-medium text-midnight-50">
+                    <td className="px-4 py-3 font-medium text-gray-900">
                       {g.firstName} {g.lastName}
                     </td>
                     <td className="px-4 py-3">

@@ -44,38 +44,38 @@ export default function CalendarView({ currentDate, onDateChange, rooms, events,
     <div className="flex flex-col h-[600px]">
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xl font-semibold text-white capitalize">
+        <h2 className="text-xl font-semibold text-gray-900 capitalize">
           {format(currentDate, 'MMMM yyyy', { locale: fr })}
         </h2>
         <div className="flex items-center gap-2">
-          <button onClick={prevMonth} className="p-2 hover:bg-white/10 rounded-lg text-slate-400 hover:text-white transition-colors">
+          <button onClick={prevMonth} className="p-2 hover:bg-gray-100 rounded-lg text-gray-500 hover:text-gray-900 transition-colors">
             <ChevronLeft size={20} />
           </button>
-          <button onClick={nextMonth} className="p-2 hover:bg-white/10 rounded-lg text-slate-400 hover:text-white transition-colors">
+          <button onClick={nextMonth} className="p-2 hover:bg-gray-100 rounded-lg text-gray-500 hover:text-gray-900 transition-colors">
             <ChevronRight size={20} />
           </button>
         </div>
       </div>
 
       {/* Grid container with independent scrolling */}
-      <div className="flex-1 overflow-auto border border-white/10 rounded-xl bg-slate-900/50 scrollbar-thin">
+      <div className="flex-1 overflow-auto border border-gray-200 rounded-xl bg-white scrollbar-thin">
         <div className="min-w-max">
           {/* Header row (Days) */}
-          <div className="flex border-b border-white/10 sticky top-0 bg-slate-900 z-20">
+          <div className="flex border-b border-gray-200 sticky top-0 bg-white z-20">
             {/* Corner block */}
-            <div className="w-32 shrink-0 border-r border-white/10 p-3 bg-slate-900 sticky left-0 z-30">
-              <span className="text-xs font-semibold text-slate-400 uppercase">Chambres</span>
+            <div className="w-32 shrink-0 border-r border-gray-200 p-3 bg-white sticky left-0 z-30">
+              <span className="text-xs font-semibold text-gray-500 uppercase">Chambres</span>
             </div>
             {/* Days block */}
             <div className="flex flex-1">
               {days.map(day => {
                 const isToday = isSameDay(day, new Date());
                 return (
-                  <div key={day.toISOString()} className={`w-12 shrink-0 border-r border-white/10 flex flex-col items-center justify-center py-2 ${isToday ? 'bg-[#D4AF37]/10' : ''}`}>
-                    <span className={`text-[10px] uppercase ${isToday ? 'text-[#D4AF37]' : 'text-slate-500'}`}>
+                  <div key={day.toISOString()} className={`w-12 shrink-0 border-r border-gray-100 flex flex-col items-center justify-center py-2 ${isToday ? 'bg-amber-50' : ''}`}>
+                    <span className={`text-[10px] uppercase ${isToday ? 'text-amber-600' : 'text-gray-500'}`}>
                       {format(day, 'E', { locale: fr })}
                     </span>
-                    <span className={`text-sm font-semibold ${isToday ? 'text-[#D4AF37]' : 'text-slate-300'}`}>
+                    <span className={`text-sm font-semibold ${isToday ? 'text-amber-600' : 'text-gray-700'}`}>
                       {format(day, 'd')}
                     </span>
                   </div>
@@ -87,17 +87,17 @@ export default function CalendarView({ currentDate, onDateChange, rooms, events,
           {/* Rooms rows */}
           <div className="flex flex-col relative pb-4">
             {sortedRooms.map(room => (
-              <div key={room.id} className="flex border-b border-white/5 group hover:bg-white/[0.02]">
+              <div key={room.id} className="flex border-b border-gray-100 group hover:bg-gray-50">
                 {/* Room column */}
-                <div className="w-32 shrink-0 border-r border-white/10 p-3 bg-slate-900 group-hover:bg-slate-800/80 sticky left-0 z-10 flex flex-col justify-center">
-                  <span className="text-sm font-bold text-white">{room.number}</span>
-                  <span className="text-xs text-slate-500">{room.type}</span>
+                <div className="w-32 shrink-0 border-r border-gray-200 p-3 bg-white group-hover:bg-gray-50 sticky left-0 z-10 flex flex-col justify-center">
+                  <span className="text-sm font-bold text-gray-900">{room.number}</span>
+                  <span className="text-xs text-gray-500">{room.type}</span>
                 </div>
                 
                 {/* Days cells (background) */}
                 <div className="flex flex-1 relative">
                   {days.map(day => (
-                    <div key={day.toISOString()} className={`w-12 shrink-0 border-r border-white/5 ${isSameDay(day, new Date()) ? 'bg-[#D4AF37]/5' : ''}`} />
+                    <div key={day.toISOString()} className={`w-12 shrink-0 border-r border-gray-100 ${isSameDay(day, new Date()) ? 'bg-amber-50' : ''}`} />
                   ))}
                   
                   {/* Events layer for this room */}
@@ -120,10 +120,10 @@ export default function CalendarView({ currentDate, onDateChange, rooms, events,
                     const left = renderStartIdx * 48;
 
                     // Déterminer la couleur selon le statut
-                    let bgClass = 'bg-slate-700 border-slate-500 text-slate-200';
-                    if (event.status === 'CONFIRMED') bgClass = 'bg-blue-900/60 border-blue-500/50 text-blue-200';
-                    if (event.status === 'CHECKED_IN') bgClass = 'bg-emerald-900/60 border-emerald-500/50 text-emerald-200';
-                    if (event.status === 'PENDING') bgClass = 'bg-amber-900/60 border-amber-500/50 text-amber-200';
+                    let bgClass = 'bg-gray-100 border-gray-300 text-gray-700';
+                    if (event.status === 'CONFIRMED') bgClass = 'bg-blue-100 border-blue-300 text-blue-800';
+                    if (event.status === 'CHECKED_IN') bgClass = 'bg-emerald-100 border-emerald-300 text-emerald-800';
+                    if (event.status === 'PENDING') bgClass = 'bg-amber-100 border-amber-300 text-amber-800';
 
                     return (
                       <div

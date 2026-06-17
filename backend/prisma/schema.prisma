@@ -218,6 +218,7 @@ model Guest {
   nationality    String?
   documentType   String? // PASSPORT | ID_CARD | DRIVING_LICENSE
   documentNumber String?
+  documentNumberHash String? @unique
 
   preferences    String? // texte libre: allergies, chambre préférée…
   vip            Boolean @default(false)

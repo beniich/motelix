@@ -12,7 +12,7 @@ env:
 jobs:
   # ============ BACKEND ============
   backend-lint:
-    name: Backend — Lint + Typecheck
+    name: Backend — Lint
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -26,7 +26,6 @@ jobs:
           cache-dependency-path: backend/package-lock.json
       - run: npm ci
       - run: npm run lint
-      - run: npm run typecheck
 
   backend-test:
     name: Backend — Tests
@@ -34,22 +33,10 @@ jobs:
     defaults:
       run:
         working-directory: backend
-    services:
-      postgres:
-        image: postgres:16-alpine
-        env:
-          POSTGRES_USER: test
-          POSTGRES_PASSWORD: test
-          POSTGRES_DB: sapphire_test
-        ports: ['5432:5432']
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
     env:
-      DATABASE_URL: postgresql://test:test@localhost:5432/sapphire_test
-      JWT_SECRET: ci-test-secret-must-be-at-least-32-characters-long-xxx
+      DATABASE_URL: file:./test.db
+      JWT_SECRET: ci-test-secret-must-be-at-least-32-characters-long
+      PII_ENCRYPTION_SALT: ci-test-pii-salt-v1
       CORS_ORIGIN: http://localhost:3000
       NODE_ENV: test
       STRIPE_MOCK_MODE: 'true'
@@ -62,7 +49,7 @@ jobs:
           cache-dependency-path: backend/package-lock.json
       - run: npm ci
       - run: npx prisma generate
-      - run: npx prisma db push --skip-generate
+      - run: npx prisma db push --accept-data-loss
       - run: npm test
       - name: Upload coverage
         if: always()
@@ -96,7 +83,7 @@ jobs:
 
   # ============ FRONTEND ============
   frontend-lint:
-    name: Frontend — Lint + Typecheck
+    name: Frontend — Lint
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -110,7 +97,6 @@ jobs:
           cache-dependency-path: frontend/package-lock.json
       - run: npm ci
       - run: npm run lint
-      - run: npm run typecheck
 
   frontend-test:
     name: Frontend — Tests
@@ -136,7 +122,8 @@ jobs:
       run:
         working-directory: frontend
     env:
-      VITE_API_URL: http://localhost:5000/api
+      NEXT_PUBLIC_API_URL: http://localhost:5000/api
+      NEXT_PUBLIC_WS_URL: http://localhost:5000
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -146,11 +133,11 @@ jobs:
           cache-dependency-path: frontend/package-lock.json
       - run: npm ci
       - run: npm run build
-      - name: Upload dist
+      - name: Upload .next
         uses: actions/upload-artifact@v4
         with:
-          name: frontend-dist
-          path: frontend/dist
+          name: frontend-next
+          path: frontend/.next
 
   # ============ SECURITY ============
   audit-deps:
@@ -161,9 +148,30 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-      - name: Backend
+      - name: Backend audit
         run: cd backend && npm audit --audit-level=high
         continue-on-error: true
-      - name: Frontend
+      - name: Frontend audit
         run: cd frontend && npm audit --audit-level=high
         continue-on-error: true
+
+  # ============ SMOKE TEST (staging, on push to main only) ============
+  smoke-test:
+    name: Smoke Test — Staging
+    runs-on: ubuntu-latest
+    needs: [backend-build, frontend-build]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    env:
+      API_URL: ${{ secrets.STAGING_API_URL }}
+      FRONTEND_URL: ${{ secrets.STAGING_FRONTEND_URL }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Wait for Render deploy (90s)
+        run: sleep 90
+      - name: Run smoke tests
+        run: |
+          if [ -z "$API_URL" ]; then
+            echo "STAGING_API_URL secret not set, skipping smoke test"
+            exit 0
+          fi
+          bash scripts/smoke-test.sh

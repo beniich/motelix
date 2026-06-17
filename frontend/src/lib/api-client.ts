@@ -466,3 +466,69 @@ export const channelsApi = {
   fullSync: () =>
     api.post<{ push: SyncResult; pull: SyncResult }>('/api/channels/sync/full').then((r) => r.data),
 };
+
+// ─────────────────────────────────────────
+// Audit & Forensic Ledger
+// ─────────────────────────────────────────
+
+export interface AuditEvent {
+  id: string;
+  timestamp: string;
+  actor: string;
+  action: string;
+  resource: string;
+  resourceId: string;
+  hash: string;
+  previousHash: string;
+}
+
+export interface AuditListParams {
+  page?: number;
+  limit?: number;
+  actor?: string;
+  resource?: string;
+  from?: string;
+  to?: string;
+}
+
+export interface AuditVerifyResult {
+  valid: boolean;
+  totalEvents: number;
+  brokenAt?: { id: string; timestamp: string; reason: string };
+  checkedAt: string;
+}
+
+export const auditApi = {
+  list: async (params: AuditListParams = {}) => {
+    const { data } = await api.get<{
+      items: AuditEvent[];
+      pagination: {
+        total: number;
+        page: number;
+        totalPages: number;
+      };
+    }>('/api/audit', { params: { ...params, pageSize: params.limit } });
+    return {
+      events: data.items,
+      total: data.pagination.total,
+      page: data.pagination.page,
+      totalPages: data.pagination.totalPages,
+    };
+  },
+
+  verify: async () => {
+    const { data } = await api.get<AuditVerifyResult>('/api/audit/verify');
+    return data;
+  },
+
+  exportCsv: async () => {
+    const response = await api.get('/api/audit/export', { responseType: 'blob' });
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `audit-ledger-${Date.now()}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  },
+};

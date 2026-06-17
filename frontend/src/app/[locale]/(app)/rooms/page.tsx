@@ -110,7 +110,7 @@ export default function RoomsPage() {
             </thead>
             <tbody>
               {isLoading ? (
-                <tr><td colSpan={6} className="py-8 text-center" style={{ color: '#8E96BD' }}>{t('common.loading')}</td></tr>
+                <tr><td colSpan={6} className="py-8 text-center text-gray-500">{t('common.loading')}</td></tr>
               ) : filtered?.length === 0 ? (
                 <tr><td colSpan={6} className="py-8 text-center text-gray-400">Aucune chambre</td></tr>
               ) : (
