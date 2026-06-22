@@ -1,4 +1,3 @@
-import * as pdfmake from 'pdfmake';
 import type { TDocumentDefinitions, Margins, TableCell } from 'pdfmake/interfaces';
 import { format } from 'date-fns';
 import { fr, enUS } from 'date-fns/locale';
@@ -12,14 +11,25 @@ const fonts = {
   },
 };
 
-const pdfMake = require('pdfmake');
 let printer: any;
 try {
-  const PdfPrinterClass = pdfMake.default || pdfMake;
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const pdfMakeModule = require('pdfmake');
+  const PdfPrinterClass =
+    pdfMakeModule?.default?.default ??
+    pdfMakeModule?.default ??
+    pdfMakeModule;
+  if (typeof PdfPrinterClass !== 'function') throw new Error('Not a constructor');
   printer = new PdfPrinterClass(fonts);
+  console.log('✅ PdfPrinter (invoice) initialisé');
 } catch (e) {
-  console.warn('Could not instantiate PdfPrinter in invoice service', e);
-  printer = { createPdfKitDocument: () => ({ on: () => {}, end: () => {} }) };
+  console.warn('⚠️  PdfPrinter (invoice) non disponible:', (e as Error).message);
+  printer = {
+    createPdfKitDocument: () => ({
+      on: (_: any, cb?: () => void) => { if (_ === 'end' && cb) setTimeout(cb, 0); },
+      end: () => {},
+    }),
+  };
 }
 
 const COLORS = {

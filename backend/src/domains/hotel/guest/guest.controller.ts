@@ -29,7 +29,7 @@ export const create = [
   asyncHandler(async (req: Request, res: Response) => {
     const data = createSchema.parse(req.body);
     const hotelId = req.user!.hotelId;
-    const guest = await createGuest(hotelId, data, req);
+    const guest = await createGuest(hotelId, data as any, req);
     res.status(201).json({ guest: maskGuestPII(guest) });
   }),
 ];

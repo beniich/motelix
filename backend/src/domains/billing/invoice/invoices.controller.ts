@@ -47,7 +47,8 @@ export const listInvoices = asyncHandler(async (req: Request, res: Response) => 
   const hotelId = resolveHotelScope(req);
   if (!hotelId) throw new ApiError(400, 'hotelId requis');
   
-  const { status, guestId, ...pagination } = listSchema.parse(req.query);
+  const { status, guestId, ...paginationRaw } = listSchema.parse(req.query);
+  const pagination = paginationRaw as { page: number; pageSize: number };
   
   const where = {
     hotelId,
@@ -97,7 +98,7 @@ export const createInvoice = asyncHandler(async (req: Request, res: Response) =>
   const data = createSchema.parse(req.body);
   
   try {
-    const invoice = await createInvoiceFromReservation({ ...data, hotelId });
+    const invoice = await createInvoiceFromReservation({ ...data, hotelId } as any);
     
     // We mock the audit function or skip if it's not defined
     if ('audit' in req && typeof (req as any).audit === 'function') {
@@ -164,7 +165,7 @@ export const recordPayment = asyncHandler(async (req: Request, res: Response) =>
   const { invoice, payment } = await recordManualPayment(
     req.params.id,
     hotelId,
-    data,
+    data as any,
     req.user!.userId
   );
   

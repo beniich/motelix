@@ -19,13 +19,17 @@ const signupSchema = z.object({
 });
 
 export const signup = asyncHandler(async (req: Request, res: Response) => {
-  const parsed = signupSchema.safeParse(req.body);
-  if (!parsed.success) return res.status(400).json({ error: parsed.error.flatten() });
+  let data: ReturnType<typeof signupSchema.parse>;
+  try {
+    data = signupSchema.parse(req.body);
+  } catch (e: any) {
+    return res.status(400).json({ error: e.flatten?.() ?? e.message });
+  }
 
-  const existing = await prisma.affiliate.findUnique({ where: { email: parsed.data.email.toLowerCase() } });
+  const existing = await prisma.affiliate.findUnique({ where: { email: data.email.toLowerCase() } });
   if (existing) return res.status(409).json({ error: 'Email already in use' });
 
-  const affiliate = await affiliateService.createAffiliate(parsed.data);
+  const affiliate = await affiliateService.createAffiliate(data as any);
   res.status(201).json({ message: 'Affiliate created', id: affiliate.id });
 });
 

@@ -27,9 +27,28 @@ export const segmentationApi = {
 };
 
 // Types partagés
-export type Role = 'SUPER_ADMIN' | 'ADMIN' | 'MANAGER' | 'STAFF';
+export type Role = 'SUPER_ADMIN' | 'ADMIN' | 'MANAGER' | 'STAFF' | 'GUEST';
 export type RoomStatus = 'AVAILABLE' | 'OCCUPIED' | 'CLEANING' | 'MAINTENANCE';
 export type TaskStatus = 'PENDING' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED';
+
+export type Hotel = {
+  id: string;
+  name: string;
+  slug: string;
+  description: string | null;
+  address: string;
+  city: string;
+  postalCode: string | null;
+  country: string;
+  phone: string | null;
+  email: string;
+  stars: number;
+  category: string | null;
+  isActive: boolean;
+  trialEndsAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
 
 export type User = {
   id: string;
@@ -76,6 +95,9 @@ export type Paginated<T> = {
     hasPrev: boolean;
   };
 };
+
+/** Alias de Paginated<T> pour compatibilité avec les hooks */
+export type PaginatedResponse<T> = Paginated<T>;
 
 // ---------- Rooms ----------
 export const roomsApi = {

@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
 }
 
 // ─────────────────────────────────────────
@@ -72,14 +72,23 @@ enum PaymentMethod {
 // ─────────────────────────────────────────
 
 model Hotel {
-  id        String   @id @default(cuid())
-  name      String
-  address   String
-  city      String
-  country   String
-  stars     Int      @default(5)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique @default("")
+  description String?
+  address     String
+  city        String
+  postalCode  String?
+  country     String
+  phone       String?
+  email       String   @default("")
+  stars       Int      @default(5)
+  category    String?
+  settings    Json?
+  isActive    Boolean  @default(true)
+  trialEndsAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   users        User[]
   rooms        Room[]
@@ -103,17 +112,21 @@ model Hotel {
 }
 
 model User {
-  id           String   @id @default(cuid())
-  email        String   @unique
-  passwordHash String
-  firstName    String
-  lastName     String
-  role         Role     @default(STAFF)
-  hotelId      String
-  hotel        Hotel    @relation(fields: [hotelId], references: [id])
-  isActive     Boolean  @default(true)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id               String    @id @default(cuid())
+  email            String    @unique
+  passwordHash     String
+  firstName        String
+  lastName         String
+  phone            String?
+  role             Role      @default(STAFF)
+  hotelId          String
+  hotel            Hotel     @relation(fields: [hotelId], references: [id])
+  isActive         Boolean   @default(true)
+  lastLoginAt      DateTime?
+  emailVerifiedAt  DateTime?
+  twoFactorEnabled Boolean   @default(false)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
 
   assignedTasks         Task[]        @relation("AssignedTasks")
   confirmedReservations Reservation[] @relation("ConfirmedBy")
@@ -134,6 +147,7 @@ model Room {
   status    RoomStatus @default(AVAILABLE)
   hotelId   String
   hotel     Hotel      @relation(fields: [hotelId], references: [id])
+  isActive  Boolean    @default(true)
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
 
@@ -222,6 +236,7 @@ model Guest {
 
   preferences    String? // texte libre: allergies, chambre préférée…
   vip            Boolean @default(false)
+  isAnonymized   Boolean @default(false)
 
   hotelId        String
   hotel          Hotel   @relation(fields: [hotelId], references: [id])
@@ -263,6 +278,7 @@ model Reservation {
   // Tarification
   pricePerNight Float
   totalPrice    Float         // pricePerNight × nights + extras − remise
+  totalCents    Int   @default(0)
   discount      Float @default(0) // valeur absolue (€)
   extras        Float @default(0) // services additionnels (€)
 

@@ -1,107 +1,131 @@
 'use client';
 
 import { useState } from 'react';
-import { useTranslations } from 'next-intl';
-import { Plus, FileText, Euro, Eye, CreditCard } from 'lucide-react';
+import { Plus, BarChart2, List, Search } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
-import { usePaginatedQuery } from '@/hooks/usePaginatedQuery';
-import { invoicesApi, type Invoice, formatMoney } from '@/lib/api-client';
+import { invoicesApi, type Invoice } from '@/lib/api-client';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { GradientButton } from '@/components/ui/GradientButton';
-import { Badge } from '@/components/ui/Badge';
 import { Select } from '@/components/ui/Select';
 import { Pagination } from '@/components/ui/Pagination';
 import { InvoiceDetailModal } from '@/components/invoices/InvoiceDetailModal';
 import { CreateInvoiceModal } from '@/components/invoices/CreateInvoiceModal';
+import { InvoicesTable } from '@/components/invoices/InvoicesTable';
+import { BillingStats } from '@/components/invoices/BillingStats';
+import { RevenueChart } from '@/components/invoices/RevenueChart';
+import { usePaginatedQuery } from '@/hooks/usePaginatedQuery';
 
-const STATUS_LABELS: Record<string, { label: string; variant: any }> = {
-  DRAFT:          { label: 'Brouillon',         variant: 'default' },
-  ISSUED:         { label: 'Émise',             variant: 'info' },
-  PAID:           { label: 'Payée',             variant: 'success' },
-  PARTIALLY_PAID: { label: 'Partiellement',     variant: 'warning' },
-  OVERDUE:        { label: 'En retard',         variant: 'danger' },
-  CANCELLED:      { label: 'Annulée',           variant: 'default' },
-  REFUNDED:       { label: 'Remboursée',        variant: 'info' },
-};
+const STATUS_OPTIONS = [
+  { value: '',               label: 'Tous statuts' },
+  { value: 'ISSUED',         label: 'Émises' },
+  { value: 'PARTIALLY_PAID', label: 'Partiellement payées' },
+  { value: 'PAID',           label: 'Payées' },
+  { value: 'OVERDUE',        label: 'En retard' },
+  { value: 'CANCELLED',      label: 'Annulées' },
+  { value: 'REFUNDED',       label: 'Remboursées' },
+];
 
 export default function InvoicesPage() {
-  const [statusFilter, setStatusFilter] = useState<string>('');
+  const [statusFilter, setStatusFilter] = useState('');
+  const [view, setView]         = useState<'list' | 'analytics'>('list');
   const [selected, setSelected] = useState<Invoice | null>(null);
   const [createOpen, setCreateOpen] = useState(false);
-  
+
   const { data, page, setPage } = usePaginatedQuery<Invoice>(
     'invoices',
-    (params) => invoicesApi.list({
-      ...params,
-      ...(statusFilter ? { status: statusFilter as any } : {}),
-    })
+    (params) =>
+      invoicesApi.list({
+        ...params,
+        ...(params.status ? { status: params.status as Invoice['status'] } : {}),
+      }),
+    statusFilter ? { status: statusFilter } : {},
   );
-  
+
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-4xl font-light tracking-tight text-gray-900">Factures</h1>
+          <h1 className="text-4xl font-light tracking-tight text-gray-900">Facturation</h1>
           <p className="mt-1 text-sm text-gray-500">{data?.pagination.total ?? 0} facture(s)</p>
         </div>
-        <GradientButton leftIcon={<Plus className="w-4 h-4" />} onClick={() => setCreateOpen(true)}>
-          Nouvelle facture
-        </GradientButton>
+        <div className="flex items-center gap-3">
+          {/* View toggle */}
+          <div
+            className="flex rounded-xl overflow-hidden border border-gray-200 bg-white text-sm"
+            role="group"
+          >
+            {([ 
+              { id: 'list',      icon: List,      label: 'Liste' },
+              { id: 'analytics', icon: BarChart2, label: 'Analytics' },
+            ] as const).map(({ id, icon: Icon, label }) => (
+              <button
+                key={id}
+                onClick={() => setView(id)}
+                className={`flex items-center gap-1.5 px-4 py-2 transition-colors ${
+                  view === id
+                    ? 'bg-gray-900 text-white'
+                    : 'text-gray-600 hover:bg-gray-50'
+                }`}
+              >
+                <Icon className="w-3.5 h-3.5" />
+                {label}
+              </button>
+            ))}
+          </div>
+          <GradientButton leftIcon={<Plus className="w-4 h-4" />} onClick={() => setCreateOpen(true)}>
+            Nouvelle facture
+          </GradientButton>
+        </div>
       </div>
-      
-      <GlassCard>
-        <div className="mb-4 max-w-xs">
-          <Select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            options={[
-              { value: '', label: 'Tous statuts' },
-              ...Object.entries(STATUS_LABELS).map(([k, v]) => ({ value: k, label: v.label })),
-            ]}
-          />
-        </div>
-        
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="text-left text-xs uppercase tracking-wider text-gray-500 border-b border-gray-100">
-                <th className="py-3 px-2">Réf</th>
-                <th className="py-3 px-2">Guest</th>
-                <th className="py-3 px-2">Réf résa</th>
-                <th className="py-3 px-2">Total</th>
-                <th className="py-3 px-2">Payé</th>
-                <th className="py-3 px-2">Statut</th>
-                <th className="py-3 px-2"></th>
-              </tr>
-            </thead>
-            <tbody>
-              {data?.items.map((inv) => (
-                <tr
-                  key={inv.id}
-                  onClick={() => setSelected(inv)}
-                  className="border-b border-gray-50 hover:bg-white/60 cursor-pointer transition-colors"
-                >
-                  <td className="py-3 px-2 font-mono text-xs font-medium text-amber-600">{inv.reference}</td>
-                  <td className="py-3 px-2 font-medium text-gray-900">{inv.guest.lastName} {inv.guest.firstName}</td>
-                  <td className="py-3 px-2 text-gray-500 font-mono text-xs">{inv.reservation.reference}</td>
-                  <td className="py-3 px-2 text-gray-900 font-semibold">{formatMoney(inv.totalCents, inv.currency)}</td>
-                  <td className="py-3 px-2 font-medium text-emerald-600">{formatMoney(inv.paidCents, inv.currency)}</td>
-                  <td className="py-3 px-2">
-                    <Badge variant={STATUS_LABELS[inv.status]?.variant}>{STATUS_LABELS[inv.status]?.label}</Badge>
-                  </td>
-                  <td className="py-3 px-2 text-right">
-                    <button className="text-xs font-medium text-blue-600 hover:text-blue-700 transition-colors">Voir →</button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        {data && <Pagination page={data.pagination.page} totalPages={data.pagination.totalPages} onPageChange={setPage} />}
-      </GlassCard>
-      
+
+      {/* KPI Stats – always visible */}
+      <BillingStats />
+
+      {view === 'list' ? (
+        <GlassCard>
+          {/* Filters */}
+          <div className="flex flex-col sm:flex-row gap-3 mb-5">
+            <div className="flex-1 relative">
+              <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Référence, client…"
+                className="w-full pl-9 pr-4 py-2 rounded-xl border border-gray-200 text-sm bg-white/70 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                disabled // search handled by backend via param; add debounce later
+              />
+            </div>
+            <div className="sm:w-56">
+              <Select
+                value={statusFilter}
+                onChange={(e) => { setStatusFilter(e.target.value); setPage(1); }}
+                options={STATUS_OPTIONS}
+              />
+            </div>
+          </div>
+
+          <InvoicesTable invoices={data?.items ?? []} />
+
+          {data && (
+            <div className="mt-5">
+              <Pagination
+                page={data.pagination.page}
+                totalPages={data.pagination.totalPages}
+                onPageChange={setPage}
+              />
+            </div>
+          )}
+        </GlassCard>
+      ) : (
+        <RevenueChart />
+      )}
+
       <InvoiceDetailModal invoice={selected} onClose={() => setSelected(null)} />
-      <CreateInvoiceModal open={createOpen} onClose={() => setCreateOpen(false)} onCreated={(i) => { setSelected(i); setCreateOpen(false); }} />
+      <CreateInvoiceModal
+        open={createOpen}
+        onClose={() => setCreateOpen(false)}
+        onCreated={(i) => { setSelected(i); setCreateOpen(false); }}
+      />
     </div>
   );
 }

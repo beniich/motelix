@@ -25,6 +25,12 @@ const envSchema = z.object({
   SLACK_ALERT_WEBHOOK_URL: z.string().url().optional(),
   RESEND_API_KEY: z.string().optional(),
   APP_URL: z.string().url().default('https://app.sapphire.luxury'),
+  BCRYPT_COST: z.coerce.number().default(10),
+  AUTH_RATE_LIMIT_MAX: z.coerce.number().default(5),
+  RATE_LIMIT_WINDOW_MS: z.coerce.number().default(15 * 60 * 1000),
+  RATE_LIMIT_MAX: z.coerce.number().default(100),
+  FRONTEND_URL: z.string().default('http://localhost:3000'),
+  SMTP_FROM: z.string().default('Sapphire <noreply@sapphire.luxury>'),
 });
 
 const parsed = envSchema.safeParse(process.env);

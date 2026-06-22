@@ -5,7 +5,8 @@
   "workspaces": [
     "backend",
     "frontend",
-    "mobile"
+    "mobile",
+    "apps/xw"
   ],
   "type": "module",
   "scripts": {
@@ -13,11 +14,13 @@
     "vercel-build": "npm run build:frontend",
     "build:backend": "npm run build --workspace backend",
     "build:frontend": "npm run build --workspace frontend",
+    "build:xw": "npm run build --workspace apps/xw",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present",
     "dev:backend": "npm run dev --workspace backend",
     "dev:frontend": "npm run dev --workspace frontend",
+    "dev:xw": "npm run dev --workspace apps/xw",
     "archive": "bash scripts/archive.sh"
   },
   "dependencies": {

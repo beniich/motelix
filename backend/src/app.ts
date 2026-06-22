@@ -26,6 +26,9 @@ import tasksRoutes from './routes/tasks.routes.js';
 import roomServiceRoutes from './routes/room-service.routes.js';
 import minibarRoutes from './routes/minibar.routes.js';
 import auditRoutes from './domains/audit/audit.routes.js';
+import { hotelRouter } from './domains/hotel/hotel.routes.js';
+import { userRouter } from './domains/user/user.routes.js';
+
 export function createApp() {
   const app = express();
 
@@ -104,6 +107,8 @@ export function createApp() {
   app.use('/api/room-service', roomServiceRoutes);
   app.use('/api/minibar', minibarRoutes);
   app.use('/api/audit', auditRoutes);
+  app.use('/api/hotels', hotelRouter);
+  app.use('/api/users', userRouter);
 
   if (env.STRIPE_MOCK_MODE === 'true') {
     app.use('/mock-stripe', mockStripeRoutes);

@@ -1,442 +1,257 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useTranslations } from 'next-intl';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { Link } from '@/i18n/routing';
-import {
-  ChevronLeft,
-  Camera,
-  Check,
-  X,
-  Clock,
-  Sparkles,
-  ClipboardCheck,
-  Image as ImageIcon
-} from 'lucide-react';
-import { useAuth } from '@/lib/auth';
-import { housekeepingApi } from '@/lib/api-client';
-import { GlassCard } from '@/components/ui/GlassCard';
-import { GradientButton } from '@/components/ui/GradientButton';
-import { GlassInput } from '@/components/ui/GlassInput';
-import {
-  HousekeepingStatusBadge,
-  HousekeepingTypeBadge
-} from '@/components/ui/StatusBadge';
+import Link from 'next/link';
+import { ArrowLeft, Play, CheckCircle2, Camera, AlertTriangle, UploadCloud } from 'lucide-react';
+import { housekeepingApi, type HousekeepingTask } from '@/lib/api-client';
 import { toApiError } from '@/lib/api';
+import { GlassCard } from '@/components/ui/GlassCard';
+import { HousekeepingStatusBadge } from '@/components/housekeeping/HousekeepingStatusBadge';
 
-export default function HousekeepingDetailPage() {
-  const { id } = useParams() as { id: string };
-  const t = useTranslations();
-  const { user } = useAuth();
-  const qc = useQueryClient();
+export default function HousekeepingTaskPage() {
+  const { id } = useParams<{ id: string }>();
   const router = useRouter();
-
-  const isManagerOrAdmin = user?.role === 'MANAGER' || user?.role === 'ADMIN' || user?.role === 'SUPER_ADMIN';
-
-  // Fetch task detail
-  const { data: task, isLoading } = useQuery({
-    queryKey: ['housekeeping-task', id],
-    queryFn: () => housekeepingApi.get(id),
-  });
-
-  // Checklist state (key-value booleans)
-  const [checklist, setChecklist] = useState<Record<string, boolean>>({});
-  const [staffNotes, setStaffNotes] = useState('');
+  
+  const [task, setTask] = useState<HousekeepingTask | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [actioning, setActioning] = useState(false);
   const [issueReported, setIssueReported] = useState(false);
-  const [issueDescription, setIssueDescription] = useState('');
+  const [issueDesc, setIssueDesc] = useState('');
+  
+  // Minimal static checklist for demo purposes (can be dynamic via task.checklist)
+  const [checklist, setChecklist] = useState<Record<string, boolean>>({
+    bed: false,
+    bathroom: false,
+    vacuum: false,
+    trash: false,
+    supplies: false,
+  });
 
-  // Inspector state
-  const [inspectorNotes, setInspectorNotes] = useState('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false);
 
-  // Initializing state when task loads
-  useEffect(() => {
-    if (task) {
-      if (task.checklist) {
-        try {
-          setChecklist(JSON.parse(task.checklist));
-        } catch {
-          setChecklist({});
-        }
+  const loadTask = async () => {
+    try {
+      setLoading(true);
+      const data = await housekeepingApi.get(id);
+      setTask(data);
+      if (data.checklist) {
+        try { setChecklist(JSON.parse(data.checklist)); } catch {}
       }
-      setStaffNotes(task.staffNotes || '');
-      setIssueReported(task.issueReported || false);
-      setIssueDescription(task.issueDescription || '');
+      setIssueReported(data.issueReported);
+      setIssueDesc(data.issueDescription || '');
+    } catch (e) {
+      setError(toApiError(e).message);
+    } finally {
+      setLoading(false);
     }
-  }, [task]);
-
-  const startMut = useMutation({
-    mutationFn: () => housekeepingApi.start(id),
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ['housekeeping-task', id] });
-      qc.invalidateQueries({ queryKey: ['housekeeping-tasks'] });
-      qc.invalidateQueries({ queryKey: ['housekeeping', 'stats'] });
-    },
-  });
-
-  const completeMut = useMutation({
-    mutationFn: (payload: { checklist: Record<string, boolean>; notes?: string; issueReported?: boolean; issueDescription?: string }) =>
-      housekeepingApi.complete(id, payload),
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ['housekeeping-task', id] });
-      qc.invalidateQueries({ queryKey: ['housekeeping-tasks'] });
-      qc.invalidateQueries({ queryKey: ['housekeeping', 'stats'] });
-    },
-  });
-
-  const inspectMut = useMutation({
-    mutationFn: (payload: { approved: boolean; notes?: string }) =>
-      housekeepingApi.inspect(id, payload),
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ['housekeeping-task', id] });
-      qc.invalidateQueries({ queryKey: ['housekeeping-tasks'] });
-      qc.invalidateQueries({ queryKey: ['housekeeping', 'stats'] });
-    },
-  });
-
-  const uploadPhotoMut = useMutation({
-    mutationFn: (file: File) => housekeepingApi.uploadPhoto(id, file),
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ['housekeeping-task', id] });
-    },
-  });
-
-  if (isLoading) {
-    return (
-      <div className="max-w-2xl mx-auto px-4 py-8 text-center text-gray-500">
-        {t('common.appName')}... {t('common.loading')}
-      </div>
-    );
-  }
-
-  if (!task) {
-    return (
-      <div className="max-w-2xl mx-auto px-4 py-8 text-center text-gray-500">
-        Tâche introuvable
-      </div>
-    );
-  }
-
-  const handleCheckboxChange = (key: string) => {
-    if (task.status !== 'IN_PROGRESS') return;
-    setChecklist((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
-  const handleStart = () => {
-    startMut.mutate(undefined, {
-      onError: (err) => alert(toApiError(err).message),
-    });
+  useEffect(() => { loadTask(); }, [id]);
+
+  const handleStart = async () => {
+    setActioning(true);
+    try {
+      await housekeepingApi.start(id);
+      await loadTask();
+    } catch (e) {
+      alert(toApiError(e).message);
+    } finally {
+      setActioning(false);
+    }
   };
 
-  const handleComplete = () => {
-    // Check if everything is checked (unless issue is reported)
-    const allChecked = Object.values(checklist).every(Boolean);
-    if (!allChecked && !issueReported) {
-      alert("Veuillez cocher tous les éléments de la checklist avant de terminer la tâche.");
-      return;
-    }
-
-    completeMut.mutate(
-      {
+  const handleComplete = async () => {
+    setActioning(true);
+    try {
+      await housekeepingApi.complete(id, {
         checklist,
-        notes: staffNotes,
         issueReported,
-        issueDescription: issueReported ? issueDescription : undefined,
-      },
-      {
-        onError: (err) => alert(toApiError(err).message),
-      }
-    );
-  };
-
-  const handleInspect = (approved: boolean) => {
-    inspectMut.mutate(
-      {
-        approved,
-        notes: inspectorNotes,
-      },
-      {
-        onSuccess: () => {
-          router.push('/housekeeping');
-        },
-        onError: (err) => alert(toApiError(err).message),
-      }
-    );
-  };
-
-  const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      uploadPhotoMut.mutate(file, {
-        onError: (err) => alert(toApiError(err).message),
+        issueDescription: issueReported ? issueDesc : undefined,
       });
+      await loadTask();
+    } catch (e) {
+      alert(toApiError(e).message);
+    } finally {
+      setActioning(false);
     }
   };
 
-  const checklistKeys = Object.keys(checklist);
+  const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    
+    setUploading(true);
+    try {
+      await housekeepingApi.uploadPhoto(id, file);
+      await loadTask(); // Reload to show the new photo
+    } catch (e) {
+      alert(toApiError(e).message);
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  if (error || !task) {
+    return (
+      <div className="text-center py-20 text-red-500">
+        <p className="font-medium">{error || 'Tâche introuvable'}</p>
+        <Link href="/housekeeping" className="text-sm text-blue-600 hover:underline">← Retour</Link>
+      </div>
+    );
+  }
+
+  const allChecked = Object.values(checklist).every(Boolean);
 
   return (
-    <div className="space-y-6 max-w-2xl mx-auto px-4 py-4 mb-10">
-      {/* Back button */}
-      <Link href="/housekeeping" className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors duration-200">
-        <ChevronLeft className="w-4 h-4" />
-        Retour à la liste
-      </Link>
-
-      {/* Task info card */}
-      <GlassCard className="p-5">
-        <div className="flex items-start justify-between gap-4">
+    <div className="max-w-xl mx-auto space-y-6 pb-24">
+      {/* App-like Header */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <Link href="/housekeeping" className="p-2 -ml-2 rounded-xl text-gray-500 hover:text-gray-900 transition-colors">
+            <ArrowLeft className="w-6 h-6" />
+          </Link>
           <div>
-            <div className="flex items-center gap-2 flex-wrap">
-              <h1 className="text-2xl font-display font-semibold text-gray-900">
-                Chambre {task.room.number}
-              </h1>
-              <HousekeepingStatusBadge status={task.status} />
+            <h1 className="text-2xl font-bold text-gray-900">Chambre {task.room.number}</h1>
+            <p className="text-sm text-gray-500">{task.room.type} • {task.type}</p>
+          </div>
+        </div>
+        <HousekeepingStatusBadge status={task.status} />
+      </div>
+
+      {/* Main Action Area */}
+      {task.status === 'PENDING' && (
+        <button
+          onClick={handleStart}
+          disabled={actioning}
+          className="w-full flex items-center justify-center gap-3 py-4 rounded-2xl bg-blue-600 text-white font-semibold text-lg hover:bg-blue-700 active:scale-[0.98] transition-all disabled:opacity-50"
+        >
+          <Play className="w-6 h-6" />
+          Commencer le nettoyage
+        </button>
+      )}
+
+      {['IN_PROGRESS', 'COMPLETED', 'INSPECTED'].includes(task.status) && (
+        <div className="space-y-6">
+          <GlassCard>
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">Checklist</h2>
+            <div className="space-y-3">
+              {[
+                { key: 'bed', label: 'Lits faits & draps changés' },
+                { key: 'bathroom', label: 'Salle de bain nettoyée' },
+                { key: 'vacuum', label: 'Aspirateur passé' },
+                { key: 'trash', label: 'Poubelles vidées' },
+                { key: 'supplies', label: 'Produits d\'accueil réassortis' },
+              ].map((item) => (
+                <label key={item.key} className="flex items-center gap-3 p-3 rounded-xl border border-gray-100 bg-gray-50/50 hover:bg-gray-100 transition-colors cursor-pointer">
+                  <input
+                    type="checkbox"
+                    disabled={task.status !== 'IN_PROGRESS'}
+                    checked={checklist[item.key]}
+                    onChange={(e) => setChecklist(prev => ({ ...prev, [item.key]: e.target.checked }))}
+                    className="w-5 h-5 rounded text-blue-600 focus:ring-blue-500"
+                  />
+                  <span className={`text-sm font-medium ${checklist[item.key] ? 'text-gray-500 line-through' : 'text-gray-900'}`}>
+                    {item.label}
+                  </span>
+                </label>
+              ))}
+            </div>
+          </GlassCard>
+
+          <GlassCard>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold text-gray-900">Photos (Preuves)</h2>
+              {task.status === 'IN_PROGRESS' && (
+                <button
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={uploading}
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-blue-50 text-blue-700 text-sm font-medium hover:bg-blue-100"
+                >
+                  {uploading ? <UploadCloud className="w-4 h-4 animate-bounce" /> : <Camera className="w-4 h-4" />}
+                  Ajouter
+                </button>
+              )}
             </div>
             
-            <div className="flex items-center gap-2 mt-2 text-xs text-gray-500">
-              <HousekeepingTypeBadge type={task.type} />
-              <span>•</span>
-              <span>Priorité {task.priority}</span>
-              <span>•</span>
-              <span>Étage {task.room.floor} ({task.room.type})</span>
-            </div>
-          </div>
-        </div>
+            <input
+              type="file"
+              accept="image/*"
+              capture="environment"
+              className="hidden"
+              ref={fileInputRef}
+              onChange={handlePhotoUpload}
+            />
 
-        {task.dueAt && (
-          <div className="mt-4 flex items-center gap-1.5 text-xs text-gray-500 bg-gray-50 p-2.5 rounded-lg border border-gray-100">
-            <Clock className="w-4 h-4 text-[#D4AF37]" />
-            <span>
-              À faire avant le : <strong className="text-gray-900">{new Date(task.dueAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</strong> ({new Date(task.dueAt).toLocaleDateString()})
-            </span>
-          </div>
-        )}
-
-        {task.reservation && (
-          <div className="mt-3 text-xs text-gray-600">
-            <strong>Réservation :</strong> Ref {task.reservation.reference}
-            {task.reservation.guest && ` — ${task.reservation.guest.firstName} ${task.reservation.guest.lastName}`}
-          </div>
-        )}
-      </GlassCard>
-
-      {/* Checklist section */}
-      {checklistKeys.length > 0 && (
-        <GlassCard className="p-5">
-          <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2 border-b border-gray-200 pb-2.5 mb-4">
-            <ClipboardCheck className="w-5 h-5 text-[#D4AF37]" />
-            Checklist de nettoyage
-          </h2>
-
-          <div className="space-y-3">
-            {checklistKeys.map((key) => (
-              <label
-                key={key}
-                className={`flex items-center gap-3 p-3 rounded-xl border transition-all duration-200 cursor-pointer ${
-                  checklist[key]
-                    ? 'bg-emerald-500/5 border-emerald-500/20 text-emerald-300'
-                    : 'bg-gray-50 border-gray-100 text-gray-600 hover:bg-gray-100'
-                } ${task.status !== 'IN_PROGRESS' ? 'opacity-85 pointer-events-none' : ''}`}
-              >
-                <input
-                  type="checkbox"
-                  checked={checklist[key]}
-                  onChange={() => handleCheckboxChange(key)}
-                  disabled={task.status !== 'IN_PROGRESS'}
-                  className="rounded border-gray-200 bg-gray-50 text-emerald-500 focus:ring-emerald-500 focus:ring-offset-white"
-                />
-                <span className="text-sm font-medium">
-                  {/* Human-readable label */}
-                  {key
-                    .replace(/_/g, ' ')
-                    .replace(/\b\w/g, (c) => c.toUpperCase())}
-                </span>
-              </label>
-            ))}
-          </div>
-        </GlassCard>
-      )}
-
-      {/* Photographic evidence section */}
-      <GlassCard className="p-5">
-        <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2 border-b border-gray-200 pb-2.5 mb-4">
-          <Camera className="w-5 h-5 text-[#D4AF37]" />
-          Preuves photo & État des lieux
-        </h2>
-
-        {/* Upload field */}
-        {task.status === 'IN_PROGRESS' && (
-          <div className="mb-4">
-            <label className="flex flex-col items-center justify-center border-2 border-dashed border-gray-200 hover:border-white/20 bg-gray-50 hover:bg-gray-100 rounded-xl p-5 cursor-pointer transition-all duration-200">
-              <Camera className="w-8 h-8 text-gray-500 mb-2" />
-              <span className="text-sm font-semibold text-gray-900">Prendre / Choisir une photo</span>
-              <span className="text-xs text-gray-500 mt-1">Les photos sont enregistrées en temps réel</span>
-              <input
-                type="file"
-                accept="image/*"
-                capture="environment"
-                onChange={handlePhotoUpload}
-                disabled={uploadPhotoMut.isPending}
-                className="hidden"
-              />
-            </label>
-            {uploadPhotoMut.isPending && (
-              <p className="text-xs text-[#D4AF37] mt-2 text-center animate-pulse">
-                Téléversement de la photo en cours...
-              </p>
-            )}
-          </div>
-        )}
-
-        {/* Photo Gallery */}
-        {task.photos.length === 0 ? (
-          <div className="text-center py-6 text-xs text-gray-500">
-            <ImageIcon className="w-8 h-8 mx-auto mb-2 opacity-50" />
-            Aucune photo ajoutée pour le moment
-          </div>
-        ) : (
-          <div className="grid grid-cols-2 gap-3">
-            {task.photos.map((p) => (
-              <div key={p.id} className="relative aspect-video rounded-lg overflow-hidden border border-gray-200 bg-black">
-                <img
-                  src={p.url}
-                  alt="Preuve"
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute bottom-0 left-0 right-0 bg-black/60 p-1.5 text-[10px] text-gray-900 truncate">
-                  {new Date(p.takenAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                </div>
+            {task.photos?.length > 0 ? (
+              <div className="grid grid-cols-3 gap-2">
+                {task.photos.map(p => (
+                  <div key={p.id} className="aspect-square bg-gray-100 rounded-xl overflow-hidden relative">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={p.url} alt="Preuve" className="w-full h-full object-cover" />
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-        )}
-      </GlassCard>
+            ) : (
+              <p className="text-sm text-gray-400 italic">Aucune photo ajoutée.</p>
+            )}
+          </GlassCard>
 
-      {/* Staff actions & notes (for IN_PROGRESS status) */}
-      {task.status === 'IN_PROGRESS' && (
-        <GlassCard className="p-5 space-y-4">
-          <h2 className="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2.5 mb-2">
-            Rapport du personnel
-          </h2>
-
-          <GlassInput
-            label="Notes du personnel (facultatif)"
-            value={staffNotes}
-            onChange={(e) => setStaffNotes(e.target.value)}
-            placeholder="Ex: Tache de café sur le tapis nettoyée, reste un peu humide..."
-          />
-
-          {/* Issue reporting */}
-          <div className="bg-red-500/5 border border-red-500/10 p-4 rounded-xl space-y-3">
-            <label className="flex items-center gap-2 text-sm text-red-300 font-semibold cursor-pointer">
+          <GlassCard>
+            <label className="flex items-center gap-3 cursor-pointer">
               <input
                 type="checkbox"
+                disabled={task.status !== 'IN_PROGRESS'}
                 checked={issueReported}
                 onChange={(e) => setIssueReported(e.target.checked)}
-                className="rounded border-red-400/20 bg-gray-50 text-red-500 focus:ring-red-500 focus:ring-offset-white"
+                className="w-5 h-5 rounded text-red-600 focus:ring-red-500"
               />
-              ⚠️ Signaler un problème / dégât
+              <span className="font-medium text-red-600 flex items-center gap-1.5">
+                <AlertTriangle className="w-4 h-4" />
+                Signaler un problème
+              </span>
             </label>
-
+            
             {issueReported && (
-              <GlassInput
-                label="Description du problème"
-                value={issueDescription}
-                onChange={(e) => setIssueDescription(e.target.value)}
-                placeholder="Ex: Robinet de douche qui fuit, ampoule grillée..."
-                required
+              <textarea
+                disabled={task.status !== 'IN_PROGRESS'}
+                value={issueDesc}
+                onChange={(e) => setIssueDesc(e.target.value)}
+                placeholder="Ex: Ampoule grillée, moquette tachée..."
+                className="mt-3 w-full rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-400 resize-none"
+                rows={3}
               />
             )}
-          </div>
+          </GlassCard>
 
-          <div className="flex gap-3 pt-2">
-            <GradientButton
+          {task.status === 'IN_PROGRESS' && (
+            <button
               onClick={handleComplete}
-              variant="primary"
-              className="flex-1"
-              isLoading={completeMut.isPending}
+              disabled={actioning || !allChecked}
+              className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-emerald-600 text-white font-semibold text-lg hover:bg-emerald-700 active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {issueReported ? "Signaler et Repasser en Attente" : "Terminer et Soumettre pour Inspection"}
-            </GradientButton>
-          </div>
-        </GlassCard>
-      )}
+              <CheckCircle2 className="w-6 h-6" />
+              Marquer comme terminé
+            </button>
+          )}
 
-      {/* Workflow controls for PENDING/REJECTED */}
-      {(task.status === 'PENDING' || task.status === 'REJECTED') && (
-        <div className="flex gap-4">
-          <GradientButton
-            onClick={handleStart}
-            variant="primary"
-            className="w-full py-4 text-base font-semibold"
-            isLoading={startMut.isPending}
-          >
-            Démarrer le Nettoyage
-          </GradientButton>
+          {task.status === 'COMPLETED' && (
+            <div className="bg-emerald-50 text-emerald-700 p-4 rounded-2xl border border-emerald-200 text-center text-sm font-medium">
+              ✅ Chambre nettoyée avec succès. En attente d'inspection.
+            </div>
+          )}
         </div>
-      )}
-
-      {/* Supervisor Inspection (for COMPLETED tasks) */}
-      {task.status === 'COMPLETED' && (
-        <GlassCard className="p-5 space-y-4 border border-[#D4AF37]/20">
-          <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2 border-b border-gray-200 pb-2.5 mb-2">
-            <Sparkles className="w-5 h-5 text-[#D4AF37]" />
-            Inspection Qualité (Superviseur)
-          </h2>
-
-          {isManagerOrAdmin ? (
-            <>
-              <GlassInput
-                label="Notes d'inspection (facultatif)"
-                value={inspectorNotes}
-                onChange={(e) => setInspectorNotes(e.target.value)}
-                placeholder="Ex: Parfait, lit bien tendu, rien à redire..."
-              />
-              
-              <div className="flex gap-3 pt-2">
-                <button
-                  onClick={() => handleInspect(false)}
-                  disabled={inspectMut.isPending}
-                  className="flex-1 py-3 px-4 rounded-xl border border-red-500/20 bg-red-500/10 hover:bg-red-500/15 text-red-300 text-sm font-semibold transition-colors duration-200 flex items-center justify-center gap-1.5"
-                >
-                  <X className="w-4 h-4" /> Rejeter (À refaire)
-                </button>
-                <button
-                  onClick={() => handleInspect(true)}
-                  disabled={inspectMut.isPending}
-                  className="flex-1 py-3 px-4 rounded-xl border border-emerald-500/20 bg-emerald-500/10 hover:bg-emerald-500/15 text-emerald-300 text-sm font-semibold transition-colors duration-200 flex items-center justify-center gap-1.5"
-                >
-                  <Check className="w-4 h-4" /> Valider & Rendre Prête
-                </button>
-              </div>
-            </>
-          ) : (
-            <p className="text-sm text-gray-500 text-center py-2">
-              En attente d'inspection par un superviseur ou manager.
-            </p>
-          )}
-        </GlassCard>
-      )}
-
-      {/* Inspected summary card */}
-      {task.status === 'INSPECTED' && (
-        <GlassCard className="p-5 border border-emerald-500/10 bg-emerald-500/[0.02] space-y-3">
-          <h3 className="font-semibold text-emerald-300 flex items-center gap-1.5">
-            <Check className="w-5 h-5" /> Tâche validée avec succès
-          </h3>
-          {task.inspectedBy && (
-            <p className="text-xs text-gray-600">
-              Inspecté par : {task.inspectedBy.firstName} {task.inspectedBy.lastName} le {new Date(task.inspectedAt!).toLocaleString()}
-            </p>
-          )}
-          {task.inspectorNotes && (
-            <p className="text-sm text-gray-500 italic">
-              "{task.inspectorNotes}"
-            </p>
-          )}
-        </GlassCard>
       )}
     </div>
   );

@@ -64,3 +64,22 @@ export function resolveHotelScope(req: Request): string | null {
   const queryHotelId = req.query.hotelId as string | undefined;
   return queryHotelId ?? null;
 }
+
+export function attachUser(req: Request, res: Response, next: NextFunction) {
+  let token = req.cookies?.[COOKIE_NAME];
+
+  if (!token && req.headers.authorization?.startsWith('Bearer ')) {
+    token = req.headers.authorization.split(' ')[1];
+  }
+
+  if (token) {
+    try {
+      const payload = verifyAccessToken(token);
+      req.user = payload;
+      req.tenantScope = payload.role === 'SUPER_ADMIN' ? null : payload.hotelId;
+    } catch {
+      // Ignorer l'erreur ou ne rien faire si invalide, attachUser ne bloque pas
+    }
+  }
+  next();
+}

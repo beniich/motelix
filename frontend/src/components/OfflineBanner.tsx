@@ -44,7 +44,7 @@ export function OfflineBanner() {
           setTimeout(() => setJustCameOnline(false), 3000);
         });
     }
-  }, [online]);
+  }, [online, pendingCount]);
 
   // Don't show anything if online and no pending ops
   if (online && !justCameOnline) return null;

@@ -41,13 +41,13 @@ export const createLead = asyncHandler(async (req: Request, res: Response) => {
   
   const lead = await prisma.lead.create({
     data: {
-      ...data,
+      ...(data as any),
       score,
-      ip: req.ip,
+      ip: req.ip ?? null,
       userAgent: req.get('user-agent') ?? null,
-      utmSource: req.query.utm_source as string,
-      utmMedium: req.query.utm_medium as string,
-      utmCampaign: req.query.utm_campaign as string,
+      utmSource: (req.query.utm_source as string) ?? null,
+      utmMedium: (req.query.utm_medium as string) ?? null,
+      utmCampaign: (req.query.utm_campaign as string) ?? null,
     },
   });
   

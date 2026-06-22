@@ -15,15 +15,27 @@ const fonts = {
   },
 };
 
-const pdfMake = require('pdfmake');
 let printer: any;
 try {
-  const PdfPrinterClass = pdfMake.default || pdfMake;
+  // pdfmake exports differently depending on bundler/Node version
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const pdfMakeModule = require('pdfmake');
+  const PdfPrinterClass =
+    pdfMakeModule?.default?.default ??
+    pdfMakeModule?.default ??
+    pdfMakeModule;
+  if (typeof PdfPrinterClass !== 'function') throw new Error('Not a constructor');
   printer = new PdfPrinterClass(fonts);
+  console.log('✅ PdfPrinter initialisé');
 } catch (e) {
-  console.warn('Could not instantiate PdfPrinter', e);
-  // mock pour que le serveur démarre
-  printer = { createPdfKitDocument: () => ({ pipe: () => {}, end: () => {} }) };
+  console.warn('⚠️  PdfPrinter non disponible – génération PDF désactivée:', (e as Error).message);
+  // Mock fonctionnel : envoie un PDF vide au lieu de crasher
+  printer = {
+    createPdfKitDocument: () => ({
+      pipe: (dest: any) => { dest.end(Buffer.from('%PDF-1.4\n%%EOF\n')); },
+      end: () => {},
+    }),
+  };
 }
 
 const COLORS = {

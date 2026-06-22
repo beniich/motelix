@@ -30,7 +30,8 @@ const listSchema = z.object({
 
 export const listTasks = asyncHandler(async (req: Request, res: Response) => {
   const hotelId = await getTenantIdOrThrow(req);
-  const { status, type, assigneeId, roomId, overdue, ...pagination } = listSchema.parse(req.query);
+  const { status, type, assigneeId, roomId, overdue, ...paginationRaw } = listSchema.parse(req.query);
+  const pagination = paginationRaw as { page: number; pageSize: number };
   
   const where: Prisma.HousekeepingTaskWhereInput = {
     hotelId,
@@ -115,7 +116,7 @@ export const inspectTaskHandler = asyncHandler(async (req: Request, res: Respons
     approved: z.boolean(),
     notes: z.string().max(1000).optional(),
   }).parse(req.body);
-  const task = await inspectTask(req.params.id, hotelId, req.user!.userId, payload);
+  const task = await inspectTask(req.params.id, hotelId, req.user!.userId, payload as any);
   
   if ('audit' in req && typeof (req as any).audit === 'function') {
     await (req as any).audit({

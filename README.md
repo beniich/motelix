@@ -1,47 +1,159 @@
-# Aetheon Opulence — Luxury Hotel Operational Command Center
-Welcome to **Aetheon Opulence**, an enterprise-luxury operational command terminal designed for high-performance cyber-compliance and boutique property management.
+# 🏨 Sapphire PMS
 
-This production-grade, full-fidelity application integrates real-time telemetry simulations with military-grade digital security frameworks to deliver an elite web experience.
+**Property Management System moderne pour hôtels 4-5★**
 
----
-
-## 💎 Project Objectives & Roadmap Architecture
-
-Following professional software engineering practices, this application has transitioned from a high-fidelity visual mockup to an interactive, fully functional software product. Below is the implemented architecture:
-
-| Objective | Implemented Solution | Architecture & Mechanism |
-| :--- | :--- | :--- |
-| **Unified Navigation & Routing** | **Hash-Based Dynamic URIs** | Synchronizes system tabs (`lobby`, `valet`, `academy`, etc.) with `window.location.hash` parameters. Supports bookmarking, deep-linking, and browser back/forward flows smoothly. |
-| **Persistent Context Engine** | **Lightweight Re-active Store** | Employs high-fidelity reactive hooks tied to browser-backed `localStorage` engines to preserve the active visual theme, user authentication credentials, completed training progress, and core alert parameters. |
-| **Real-Time Telemetry Simulation** | **Asynchronous Server Stream** | Emulates a persistent WebSocket/API connection, periodically writing server-side event logs, parking sensor states, solar energy Sell-back telemetry, and active drone locations to the diagnostics deck. |
-| **Role-Based Access Control (RBAC)** | **Clearance Gate Signatures** | Enforces cryptographic clearances. Separates terminal personnel into **Alex Chen** (Operator) and **Lord Alexander** (Manager/Proprietor). Restricted screens (e.g. Strategic Intelligence) require manager authentication. |
-| **Elite Staff Academy Portal** | **Modular Training Suite** | Features an interactive assessment playground replicating professional courses, progressive radial rings, digital key credentials, and live audit certificate ledger generation. |
+[![CI](https://github.com/your-org/sapphire/workflows/CI/badge.svg)](https://github.com/your-org/sapphire/actions)
+[![License](https://img.shields.io/badge/license-Proprietary-blue.svg)]()
 
 ---
 
-## 🎨 Typography & Identity Tokens
+## ✨ Features
 
-Structured purely with Tailwind CSS and premium Google Fonts pairings:
-- **Display Headings (Serif):** `Playfair Display` for an elegant, high-profile boutique editorial appearance.
-- **Body & Controls (Sans):** `Inter` for exceptional text readability and high numerical clarity.
-- **Telemetry System Logs (Mono):** `Fira Code` to mimic high-performance cryptographic terminal screens.
-
----
-
-## 📑 Core Directory & File Ecosystem
-
-This codebase is split into modular, highly-cohesive React components:
-- `src/App.tsx` (Terminal core shell, auth-guard wrappers, global states, and sidebar modules navigation).
-- `src/components/AcademyDashboard.tsx` (**Elite Staff Academy** module: hosts the interactive progressive rings, certificate walls, webinar calendars, assessment managers, and event logging emitters).
-- `src/components/OverviewLanding.tsx` (Lobby core directory mapping cyber-solutions).
-- `src/components/PoolDashboard.tsx` (Spa, wellness, and luxury hospitality analytics).
-- `src/index.css` (Tailwind core declarations, global light/dark theme variables, scrollbar curves, and neon glowing presets).
+- 🏨 **Multi-tenancy** : Plusieurs hôtels sur une seule instance
+- 📅 **Réservations** : Anti-overbooking, check-in/out automatisé
+- 🧹 **Housekeeping** : PWA mobile-first pour les équipes
+- 👥 **CRM complet** : VIP, loyalty, RGPD-compliant
+- 💳 **Billing** : Stripe intégré, factures PDF, refunds
+- 🔒 **Sécurité** : AES-256-GCM, JWT, audit chain SHA-256
+- 📱 **PWA installable** : Fonctionne offline
+- 🌐 **i18n ready** : Français + Anglais
 
 ---
 
-## 💻 Micro-Assessment & Simulation Playground
-To test the interactive systems in the preview environment:
-1. **Toggle visual themes** using the `Clair` / `Sombre` button in the header bar.
-2. **Click on the current username avatar** on the main console to instantly shift security clearance between Operator and Manager, instantly altering RBAC states.
-3. Access the **Strategic Intelligence** screen to see the restricted verification shield. Authenticating here immediately elevates permissions in real-time.
-4. Open the **Elite Staff Academy** dashboard, select a module, and start the assessment. Correct answers will immediately complete of the progress indicator from 85% to 100%, write a verification ledger log, add an enterprise alert, and unlock the physical certificate on the certification wall!
+## 🏗️ Architecture
+
+```
+┌──────────────────────────────────────────────┐
+│           Next.js 14 Frontend                │
+│     (Mantine v7 + PWA + TypeScript)          │
+└──────────────────┬───────────────────────────┘
+                   │ HTTP/JSON
+┌──────────────────▼───────────────────────────┐
+│         Express Backend (TypeScript)         │
+│   8 domains DDD · Prisma ORM · Stripe       │
+└──────────────────┬───────────────────────────┘
+                   │
+        ┌──────────┴──────────┐
+        │                     │
+┌───────▼─────┐      ┌────────▼────────┐
+│ PostgreSQL  │      │   Stripe API    │
+└─────────────┘      └─────────────────┘
+```
+
+---
+
+## 🚀 Quick Start (Local Dev)
+
+```bash
+# 1. Clone
+git clone https://github.com/your-org/sapphire.git
+cd sapphire
+
+# 2. Backend
+cd backend
+cp .env.example .env
+npm install
+npm run db:push
+npm run db:seed
+npm run dev  # → http://localhost:5000
+
+# 3. Frontend (new terminal)
+cd ../frontend
+cp .env.example .env.local
+npm install
+npm run dev  # → http://localhost:3000
+
+# 4. Login
+# admin@sapphire.luxury / Password123!
+```
+
+---
+
+## 🐳 Docker (Production)
+
+```bash
+# 1. Configure environment
+cp .env.example .env
+# Edit .env with real secrets
+
+# 2. Start everything
+docker-compose up -d
+
+# 3. Run migrations
+docker-compose exec backend npx prisma migrate deploy
+docker-compose exec backend npx tsx prisma/seed.ts
+
+# 4. Access
+# Frontend: http://localhost:3000
+# Backend:  http://localhost:5000
+# Nginx:    http://localhost:80
+```
+
+---
+
+## 🧪 Tests
+
+```bash
+# Backend unit tests
+cd backend
+npm test
+
+# E2E tests (Playwright)
+cd e2e
+npm install
+npm run install-browsers
+npm test
+```
+
+---
+
+## 📦 Modules
+
+### Backend (Sprint 1-7)
+- **Auth** : Login, JWT, cookies HttpOnly, rate-limit
+- **Users** : RBAC, invitations, audit
+- **Hotel** : Multi-tenant, settings
+- **Rooms** : CRUD, types, statuts
+- **Guests** : CRM, PII encryption, RGPD
+- **Reservations** : Anti-overbooking Serializable
+- **Housekeeping** : Workflow, checklists, photos
+- **Billing** : Stripe, refunds, invoices
+- **Channel Manager** : OTA sync (mock + ready)
+- **Audit** : SHA-256 chained forensic ledger
+
+### Frontend (Sprint 11-16)
+- **Dashboard** : KPIs temps réel
+- **Rooms** : Vue table + grille, bulk actions
+- **Reservations** : Wizard 4 étapes, calendrier mensuel
+- **Guests** : CRM avec export RGPD
+- **Housekeeping PWA** : Mobile-first offline
+- **Billing** : Stripe Elements, PDFs
+- **Settings** : Hotel + Users + Audit
+
+---
+
+## 🔒 Sécurité
+
+- ✅ **JWT** 12h sessions, refresh tokens ready
+- ✅ **AES-256-GCM** pour PII (tel, passport, allergies)
+- ✅ **bcrypt** cost 12 pour passwords
+- ✅ **Rate limiting** : 5 tentatives login / 15min
+- ✅ **Audit chain** : SHA-256 hash chaîné (RGPD Art. 30)
+- ✅ **Helmet** : Headers de sécurité
+- ✅ **CORS** : Whitelist origins
+- ✅ **SQL Injection** : Prisma parameterized queries
+- ✅ **CSRF** : SameSite cookies
+
+---
+
+## 📜 Licence
+
+Proprietary © 2025 Sapphire PMS
+
+---
+
+## 📞 Support
+
+- 📧 support@sapphire.luxury
+- 📚 [Documentation](./docs/)
+- 🐛 [Issues](https://github.com/your-org/sapphire/issues)

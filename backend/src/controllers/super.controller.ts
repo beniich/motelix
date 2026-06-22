@@ -111,13 +111,17 @@ const createHotelSchema = z.object({
 export const createHotel = [
   requireSuperAdmin,
   asyncHandler(async (req: Request, res: Response) => {
-    const parsed = createHotelSchema.safeParse(req.body);
-    if (!parsed.success) return res.status(400).json({ error: parsed.error.flatten() });
+    let parsed: ReturnType<typeof createHotelSchema.parse>;
+    try {
+      parsed = createHotelSchema.parse(req.body);
+    } catch (e: any) {
+      return res.status(400).json({ error: e.flatten?.() ?? e.message });
+    }
 
-    const { initialAdmin, ...hotelData } = parsed.data;
+    const { initialAdmin, ...hotelData } = parsed;
 
     const result = await prisma.$transaction(async (tx) => {
-      const hotel = await tx.hotel.create({ data: hotelData });
+      const hotel = await tx.hotel.create({ data: hotelData as any });
 
       if (initialAdmin) {
         const passwordHash = await bcrypt.hash(initialAdmin.password, 10);
