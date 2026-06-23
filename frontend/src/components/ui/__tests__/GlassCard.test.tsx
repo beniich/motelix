@@ -8,8 +8,10 @@ describe('GlassCard', () => {
     expect(screen.getByText('Hello')).toBeInTheDocument();
   });
 
-  it('applies the gold variant class', () => {
+  it('applies the gold variant style', () => {
     const { container } = render(<GlassCard variant="gold">x</GlassCard>);
-    expect(container.firstChild).toHaveClass('glass-gold');
+    expect(container.firstChild).toHaveStyle({
+      background: 'linear-gradient(135deg, rgba(212,175,55,0.10), rgba(212,175,55,0.05))'
+    });
   });
 });
