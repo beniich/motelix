@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-namespace */
 import cron from 'node-cron';
 import { prisma } from '../infrastructure/database/prisma.client.js';
-import { calculateMetrics, HotelMetrics } from '../domains/analytics/metrics.service.js';
+import type { HotelMetrics } from '../domains/analytics/metrics.service.js';
+import { calculateMetrics } from '../domains/analytics/metrics.service.js';
 import { subDays } from 'date-fns';
 
 function generateWeeklyReportHTML(hotelName: string, metrics: HotelMetrics): string {

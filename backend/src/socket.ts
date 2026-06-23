@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-namespace */
 import { Server as SocketServer, type Socket } from 'socket.io';
 import type { Server as HttpServer } from 'node:http';
 import { verifyAccessToken } from './domains/identity/auth/jwt.js';

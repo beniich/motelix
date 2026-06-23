@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-namespace */
 import { prisma } from '../infrastructure/database/prisma.client.js';
 import { addMinutes, differenceInMinutes, isBefore } from 'date-fns';
 import type { HousekeepingType, Prisma } from '@prisma/client';

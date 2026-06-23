@@ -79,7 +79,7 @@ export const getDashboard = asyncHandler(async (req: Request, res: Response) => 
     const stats = await affiliateService.getAffiliateStats(payload.affiliateId);
     
     // Ne pas renvoyer le hash
-    const { passwordHash, ...safeAffiliate } = stats.affiliate;
+    const { passwordHash: _passwordHash, ...safeAffiliate } = stats.affiliate;
     
     res.json({ ...stats, affiliate: safeAffiliate });
   } catch (e) {

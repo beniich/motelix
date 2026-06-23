@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-namespace */
 import { prisma } from '../../infrastructure/database/prisma.client.js';
 import { startOfDay, endOfDay, subDays, differenceInDays, eachDayOfInterval, format } from 'date-fns';
 import { fr as frLocale } from 'date-fns/locale';

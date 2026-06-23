@@ -3,8 +3,7 @@ import { z } from 'zod';
 import { prisma } from '../infrastructure/database/prisma.client.js';
 import { getTenantIdOrThrow } from '../shared/utils/tenant.js';
 import { asyncHandler } from '../shared/errors/asyncHandler.js';
-import { ApiError } from '../shared/errors/errorHandler.js';
-import { calculateMetrics, type HotelMetrics } from '../domains/analytics/metrics.service.js';
+import { calculateMetrics } from '../domains/analytics/metrics.service.js';
 import { subDays } from 'date-fns';
 
 const rangeSchema = z.object({
@@ -119,7 +118,7 @@ export const getPricingRecommendations = asyncHandler(async (req: Request, res: 
   const historical = await calculateMetrics(hotelId, subDays(today, 90), today);
   const last30 = historical.daily.slice(-30);
   const avgOccupancy = last30.reduce((s, d) => s + d.occupancyRate, 0) / (last30.length || 1);
-  const avgAdr = last30.reduce((s, d) => s + d.adr, 0) / (last30.length || 1);
+  // avgAdr not needed in this function (used in forecast only)
   
   const weekdayFactor = new Map<number, number>();
   const weekdayPatterns = new Map<number, number[]>();

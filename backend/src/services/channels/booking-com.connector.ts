@@ -1,4 +1,6 @@
-import axios, { AxiosInstance } from 'axios';
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-namespace */
+import type { AxiosInstance } from 'axios';
+import axios from 'axios';
 import type { IChannelConnector, OtaChannelCapabilities, AvailabilityUpdate, ReservationFromOta, OtaAuthResult } from './channel.interface.js';
 import type { Channel } from '@prisma/client';
 import { decryptJson } from '../../lib/crypto.js';

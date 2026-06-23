@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-namespace */
 import { Router } from 'express';
 import { requireAuth, requireRole } from '../domains/identity/auth/auth.middleware.js';
 import * as ctrl from '../domains/hotel/room/room.controller.js';

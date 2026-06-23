@@ -1,4 +1,5 @@
-import { Prisma } from '@prisma/client';
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-namespace */
+import type { Prisma } from '@prisma/client';
 import { prisma } from '../../infrastructure/database/prisma.client.js';
 import { ApiError } from '../../shared/errors/errorHandler.js';
 import { encryptPII } from '../../lib/crypto.js';

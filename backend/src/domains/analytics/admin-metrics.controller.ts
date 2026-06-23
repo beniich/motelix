@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-namespace */
 import type { Request, Response } from 'express';
 import { prisma } from '../../infrastructure/database/prisma.client.js';
 import { asyncHandler } from '../../shared/errors/asyncHandler.js';

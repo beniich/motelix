@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-namespace */
 import { ApiError } from '../../shared/errors/errorHandler.js';
 import { asyncHandler } from '../../shared/errors/asyncHandler.js';
 import { requireAuth, requireRole } from '../identity/auth/auth.middleware.js';

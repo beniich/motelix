@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import { prisma } from '../infrastructure/database/prisma.client.js';
 
 // Récupérer toutes les commandes Room Service d'un hôtel

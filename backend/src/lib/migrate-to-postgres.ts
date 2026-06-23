@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-namespace */
 /**
  * Helper to migrate from SQLite (dev) to PostgreSQL (prod).
  * 

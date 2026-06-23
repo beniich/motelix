@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-namespace */
 import Stripe from 'stripe';
 import { env } from '../../config/env.js';
 

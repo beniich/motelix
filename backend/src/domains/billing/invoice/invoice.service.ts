@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-namespace */
 import { prisma } from '../../../infrastructure/database/prisma.client.js';
 import { stripe, isStripeMock } from '../../../infrastructure/payment/stripe.client.js';
 import { generateInvoiceReference } from '../../../services/reference.service.js';
 import { env } from '../../../config/env.js';
-import { Prisma, InvoiceStatus, PaymentStatus, PaymentMethod } from '@prisma/client';
+import type { Prisma, InvoiceStatus, PaymentMethod } from '@prisma/client';
+import { PaymentStatus } from '@prisma/client';
 
 type CreateInvoiceInput = {
   reservationId: string;

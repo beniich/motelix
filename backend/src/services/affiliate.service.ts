@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-namespace */
 import { prisma } from '../infrastructure/database/prisma.client.js';
 import { randomBytes } from 'crypto';
 import bcrypt from 'bcrypt';

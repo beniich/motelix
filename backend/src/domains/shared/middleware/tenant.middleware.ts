@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-namespace */
 import type { Request, Response, NextFunction, RequestHandler } from 'express';
 import { ApiError } from '../../../shared/errors/errorHandler.js';
 

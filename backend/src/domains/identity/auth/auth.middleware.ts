@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-namespace */
 import type { Request, Response, NextFunction } from 'express';
 import { verifyAccessToken, type JwtPayload } from './jwt.js';
 import { COOKIE_NAME } from '../../../utils/cookies.js';

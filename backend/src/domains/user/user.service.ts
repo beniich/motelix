@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import { Prisma, Role } from '@prisma/client';
+import type { Prisma, Role } from '@prisma/client';
 import { prisma } from '../../infrastructure/database/prisma.client.js';
 import { env } from '../../config/env.js';
 import { ApiError } from '../../shared/errors/errorHandler.js';
